@@ -54,7 +54,7 @@ class ActionFilter:
     block_id: Optional[str] = None
 
 
-class ActionMatcher(JSONMatcher):
+class ActionMatcher(FormMatcher):
     def __init__(self, action_id, block_id=None, **kwargs):
         super().__init__()
         self.action_id = action_id
@@ -63,8 +63,11 @@ class ActionMatcher(JSONMatcher):
     def match(self, request):
         if not super().match(request):
             return False
-        payload = request.get_json()['payload']
-        type = payload['type']
+        if 'payload' not in request.form:
+            return False
+
+        payload = json.loads(request.form['payload'])
+        type = payload.get('type')
         if type != 'block_actions':  # TODO: Generalize in base class
             return False
         if 'actions' not in payload:
