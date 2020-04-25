@@ -3,7 +3,7 @@ from slack import WebClient
 import json
 
 
-app = Flack(__name__, dispatcher=Dispatcher())
+app = Flack(__name__)
 cli = WebClient('xoxb-SECRET-bot-token')
 
 

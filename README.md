@@ -8,7 +8,7 @@ from flask_slack import Flack, Dispatcher, async_task, respond
 
 # Create your slack app with the events dispatcher
 dp = Dispatcher()
-app = Flack(__name__, dispatcher=dp)
+app = Flack(__name__)
 
 
 # That's it! now you can declare commands, shortcuts, interactive actions handlers, and whatever you please!
