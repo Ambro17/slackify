@@ -106,9 +106,11 @@ There are different types that differ on the sent payload
 They all have the same request signature.
 ```
 POST
-Content-Type: application/json
-payload = request.get_json()['payload']
+Content-Type: application/x-www-form-urlencoded
+action = json.loads(request.form["payload"])
 ```
+Why they encode json into a form payload? We might never know..
+
 #### Types
 - `block_actions`  On user interaction in block element.
 - `message_actions` (Already covered as message shortcuts)

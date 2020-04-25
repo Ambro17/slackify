@@ -1,4 +1,4 @@
-from flask_slack import Flack, Dispatcher, request, jsonify
+from flask_slack import Flack, request, jsonify
 
 app = Flack(__name__)
 
