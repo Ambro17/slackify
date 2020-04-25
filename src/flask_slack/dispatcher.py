@@ -54,7 +54,7 @@ class ActionFilter:
 
 
 class ActionMatcher(JSONMatcher):
-    def __init__(self, action_id, block_id=None):
+    def __init__(self, action_id, block_id=None, **kwargs):
         super().__init__()
         self.action_id = action_id
         self.block_id = block_id
