@@ -58,3 +58,18 @@ def test_if_exception_is_raised_redirect_to_error_handler(client):
 
 def test_request_handling_with_no_added_matchers():
     pass
+
+
+def test_redirect_on_action_id(client):
+    payload = {
+        "type": "block_actions",
+        "actions": [{
+            'action_id': 'my-action-id',
+            'block_id': 'block-id',
+        }],
+        "token": "",
+        "response_url": "",
+        "trigger_id": "",
+    }
+    rv = client.post('/', json={'payload': payload})
+    assert b'Action' == rv.data

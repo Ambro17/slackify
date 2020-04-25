@@ -62,8 +62,13 @@ class ActionMatcher(JSONMatcher):
     def match(self, request):
         if not super().match(request):
             return False
-
         payload = request.get_json()['payload']
+        type = payload['type']
+        if type != 'block_actions':  # TODO: Generalize in base class
+            return False
+        if 'actions' not in payload:
+            return False
+
         action = payload['actions'][0]
         action_id = action['action_id']
         block_id = action['block_id']

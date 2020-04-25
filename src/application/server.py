@@ -19,7 +19,7 @@ class Flack(Flask):
 
     def command(self, func=None, **options):
         """A decorator that is used to register a function as a command handler.
-           
+          
            It can be used as a plain decorator or as a parametrized decorator factory.
            This does the same as `add_command_handler`
 
@@ -46,12 +46,12 @@ class Flack(Flask):
         else:
             return decorate
 
-    def action(self, **action_filter):
-        if 'action_id' not in action_filter:
-            raise TypeError("action() missing 1 required keyword argument: 'action_id'")
+    def action(self, id=None, **action_filter):
+        if id is None and 'action_id' not in action_filter:
+            raise TypeError("action() missing 1 required keyword argument: 'id'")
 
         def decorate(f):
-            command = action_filter.pop('action_id')  # TODO: Handle special characters that make url rule invalid?
+            command = id or action_filter.pop('action_id')  # TODO: Handle special characters that make url rule invalid?
             self.add_url_rule(f'/{command}', command, f, **action_filter)
             self.dispatcher.add_matcher(ActionMatcher(command, **action_filter))
             return f
@@ -67,18 +67,17 @@ def redirect_requests():
     req = _request_ctx_stack.top.request
     if req.routing_exception is not None:
         app.raise_routing_exception(req)
-    
+
     if request.method == 'GET':
-        return    
-    
+        return
 
     try:
         endpoint = app.dispatcher.match(req)
     except StopIteration:
         endpoint = 'unknown'
     except Exception as e:
+        print(repr(e))
         endpoint = 'error'
-
 
     rule = req.url_rule
     rule.endpoint = endpoint
@@ -97,6 +96,11 @@ def hello():
 @app.shortcut('my-shortcut')
 def shortcut():
     return 'Shortcut'
+
+
+@app.action(id='my-action-id')
+def my_action():
+    return 'Action'
 
 
 @app.route('/unknown')
