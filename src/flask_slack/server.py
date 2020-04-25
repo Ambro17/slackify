@@ -1,6 +1,6 @@
 import logging
 from flask import Flask, request, _request_ctx_stack
-from .dispatcher import dp, ShortcutMatcher, Command, ActionMatcher
+from .dispatcher import Dispatcher, ShortcutMatcher, Command, ActionMatcher
 from slack import WebClient
 
 cli = WebClient('xoxb-SECRET')
@@ -13,9 +13,7 @@ logger = logging.getLogger(__name__)
 class Flack(Flask):
 
     def __init__(self, import_name, **kwargs):
-        if 'dispatcher' not in kwargs:
-            raise ValueError('Missing required dispatcher argument')
-        self.dispatcher = kwargs.pop('dispatcher')
+        self.dispatcher = Dispatcher()
         super().__init__(import_name, **kwargs)
         self.before_request_funcs.setdefault(None, []).append(self._redirect_requests)
         self.add_url_rule('/', 'home', lambda: 'Home', methods=('GET', 'POST'))
@@ -93,7 +91,7 @@ class Flack(Flask):
         rule.endpoint = endpoint
 
 
-app = Flack(__name__, dispatcher=dp)
+app = Flack(__name__)
 
 
 @app.before_request
