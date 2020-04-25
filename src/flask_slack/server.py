@@ -1,5 +1,13 @@
+import logging
 from flask import Flask, request, _request_ctx_stack
 from .dispatcher import dp, ShortcutMatcher, Command, ActionMatcher
+from slack import WebClient
+
+cli = WebClient('xoxb-SECRET')
+
+
+logging.basicConfig()
+logger = logging.getLogger(__name__)
 
 
 class Flack(Flask):
@@ -77,8 +85,8 @@ class Flack(Flask):
             endpoint = app.dispatcher.match(req)
         except StopIteration:
             endpoint = 'unknown'
-        except Exception as e:
-            print(repr(e))
+        except Exception:
+            logger.exception('Bad')
             endpoint = 'error'
 
         rule = req.url_rule
@@ -114,8 +122,9 @@ def hello():
     return 'Hello'
 
 
-@app.shortcut('my-shortcut')
+@app.shortcut('funny_joke')
 def shortcut():
+    cli.chat_postMessage(channel='#general', text='Hi!')
     return 'Shortcut'
 
 

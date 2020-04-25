@@ -1,6 +1,7 @@
 from typing import List, Optional
 from flask import request
 from dataclasses import dataclass
+import json
 
 
 class Matcher:
@@ -41,7 +42,7 @@ class Command(FormMatcher):
         self.command = command
 
     def match(self, request):
-        return super().match(request) and request.form['command'] == f'/{self.command}'
+        return super().match(request) and request.form.get('command') == f'/{self.command}'
 
     def endpoint(self):
         return self.command
@@ -84,15 +85,17 @@ class ActionMatcher(JSONMatcher):
         return f'{self.action_id}'
 
 
-class ShortcutMatcher(JSONMatcher):
+class ShortcutMatcher(FormMatcher):
     def __init__(self, shortcut_id):
         self.id = shortcut_id
 
     def match(self, req):
         if not super().match(req):
             return False
+        if 'payload' not in request.form:
+            return False
 
-        payload = request.get_json()['payload']
+        payload = json.loads(request.form['payload'])
         type = payload.get('type')
         callback = payload.get('callback_id')
         return type in ('shortcut', 'message_action') and callback == self.id
