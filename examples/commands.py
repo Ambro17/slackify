@@ -1,6 +1,5 @@
 from flask_slack import Flack, Dispatcher, request, jsonify
 
-dp = Dispatcher()
 app = Flack(__name__)
 
 

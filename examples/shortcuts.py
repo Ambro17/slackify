@@ -1,4 +1,4 @@
-from flask_slack import Flack, Dispatcher, request
+from flask_slack import Flack, request
 from slack import WebClient
 import json
 

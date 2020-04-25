@@ -102,6 +102,3 @@ class ShortcutMatcher(FormMatcher):
 
     def endpoint(self):
         return self.id
-
-
-dp = Dispatcher()
