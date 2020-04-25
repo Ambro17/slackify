@@ -7,7 +7,6 @@ from flask_slack import Flack, Dispatcher, async_task, respond
 
 
 # Create your slack app with the events dispatcher
-dp = Dispatcher()
 app = Flack(__name__)
 
 
