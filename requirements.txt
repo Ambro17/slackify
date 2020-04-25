@@ -1,1 +1,2 @@
 Flask==1.1.2
+slackapiclient==2.5.0
