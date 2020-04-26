@@ -36,10 +36,13 @@ def my_background_job():
 ### What about new slack Shorcuts?
 See [examples/shortcuts.py](examples/shortcuts.py) for a self contained example
 
-### Are interactive actions supported?
-Yes! See [examples/actions.py](examples/actions.py) for a self contained example
+### But can i use new slack Modals?
+Of course! See [examples/views.py](examples/views.py) for a quick example
 
->Note: Legacy actions are not supported by design. But it could be implemented if users need it.
+### Are interactive actions supported?
+Yes! See [examples/actions.py](examples/actions.py) for a quickstart.
+
+>Note: Legacy actions are unsupported by design as they are discouraged by slack. Nevertheless, if there's popular demand, we could add support for them.
 
 ## Roadmap
 Support for slack events through [slackeventsapi](https://github.com/slackapi/python-slack-events-api)
