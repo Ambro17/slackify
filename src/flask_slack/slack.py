@@ -1,4 +1,5 @@
 import requests
+from flask import jsonify
 
 from .tasks import async_task
 
@@ -9,15 +10,9 @@ ACK = OK
 
 
 def reply(text):
-    return {
-        'text': text
-    }
-
-
-@async_task
-def respond(url, message):
-    """Respond async to interaction to allow fast acknowledge of interactive message request"""
-    return requests.post(url, json=message, timeout=5)
+    return jsonify({
+        'blocks': [text_block(text)]
+    })
 
 
 def text_block(text, markdown=True):
@@ -28,3 +23,13 @@ def text_block(text, markdown=True):
             "text": text
         }
     }
+
+
+def block_reply(blocks):
+    return jsonify({'blocks': blocks})
+
+
+@async_task
+def respond(url, message):
+    """Respond async to interaction to allow fast acknowledge of interactive message request"""
+    return requests.post(url, json=message, timeout=5)

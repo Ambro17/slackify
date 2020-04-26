@@ -1,9 +1,9 @@
 from .flack import Flack
-from .slack import reply, respond, text_block, OK, ACK
+from .slack import reply, block_reply, respond, text_block, OK, ACK
 from .tasks import async_task
 
 from flask import request, jsonify
-from flask import *
+from flask import *  # noqa: Expose all flask objects as top level imports
 
 
 __all__ = [
@@ -11,6 +11,7 @@ __all__ = [
     'jsonify',
     'request',
     'reply',
+    'block_reply',
     'respond',
     'text_block',
     'OK',

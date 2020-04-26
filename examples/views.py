@@ -9,7 +9,6 @@ cli = WebClient('xoxb-SECRET-TOKEN')
 
 @app.command
 def register():
-
     username_input_block = {
         "type": "input",
         "block_id": "username_block",
