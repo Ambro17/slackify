@@ -124,9 +124,10 @@ class ViewMatcher(FormMatcher):
         payload = self.get_payload(req)
         if not payload:
             return False
-
+        if 'view' not in payload:
+            return False
         type = payload.get('type')
-        callback = payload.get('callback_id')
+        callback = payload['view'].get('callback_id')
         return type == 'view_submission' and callback == self.id
 
     def endpoint(self):

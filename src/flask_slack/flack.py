@@ -3,6 +3,7 @@ import logging
 from flask import Flask, request, _request_ctx_stack
 
 from .dispatcher import Dispatcher, ShortcutMatcher, Command, ActionMatcher
+from flask_slack.dispatcher import ViewMatcher
 
 
 logger = logging.getLogger(__name__)
@@ -67,6 +68,14 @@ class Flack(Flask):
             options['methods'] = ('GET', 'POST')
             self.add_url_rule(f'/{command}', command, f, **options)
             self.dispatcher.add_matcher(ActionMatcher(command, **options))
+            return f
+
+        return decorate
+
+    def view(self, view_callback_id, **options):
+        def decorate(f):
+            self.add_url_rule(f'/{view_callback_id}', view_callback_id, f, **options)
+            self.dispatcher.add_matcher(ViewMatcher(view_callback_id))
             return f
 
         return decorate
