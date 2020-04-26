@@ -1,22 +1,21 @@
 # Flask-Slack
 `Flask-Slack` is a framework to accelerate your development of slack apps by letting you focus on **what you want** instead of fighting with *how to do it*
 
-# Usage
+## Quickstart
 ```
-from flask_slack import Flack, Dispatcher, async_task, respond
+from flask_slack import Flack, async_task
 
 
-# Create your slack app with the events dispatcher
 app = Flack(__name__)
 
 
-# That's it! now you can declare commands, shortcuts, interactive actions handlers, and whatever you please!
+# That's it! now you can declare commands, shortcuts, actions, and whatever you please!
 # No routing nightmare, no special endpoints, just declare what you want
 
 
 @app.command
 def hello():
-    return 'Hello'
+    return 'Hello from Slack'
 
 
 # Change the slash command name to /say_bye instead of the default function name
@@ -31,19 +30,13 @@ def my_background_job():
     """Non blocking long task"""
     sleep(15)
     return
-
-
-@app.shortcut('my-shortcut')
-def shortcut():
-    return respond('Shortcut')
-
-
-@app.action('my-action-id')
-def action():
-    return 'You clicked a button'
-
-
-@app.view('my-modal-id')
-def open_modal():
-    return 'Here is your modal!'
 ```
+
+
+## What about new slack Shorcuts?
+See [examples/shortcuts.py](examples/shortcuts.py) for a self contained example
+
+## Are interactive actions supported?
+Yes! See [examples/actions.py](examples/actions.py) for a self contained example
+
+>Note: Legacy actions are not supported by design. But it could be implemented if users need it.
