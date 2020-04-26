@@ -35,6 +35,13 @@ class FormMatcher:
     def match(self, request):
         return 'application/x-www-form-urlencoded' in request.headers.get('Content-Type', '')
 
+    def get_payload(self, req):
+        """Extract payload from request.form as dict"""
+        if 'payload' not in request.form:
+            return None
+
+        return json.loads(request.form['payload'])
+
 
 class Command(FormMatcher):
     def __init__(self, command):
@@ -63,10 +70,10 @@ class ActionMatcher(FormMatcher):
     def match(self, request):
         if not super().match(request):
             return False
-        if 'payload' not in request.form:
+        payload = self.get_payload(request)
+        if not payload:
             return False
 
-        payload = json.loads(request.form['payload'])
         type = payload.get('type')
         if type != 'block_actions':  # TODO: Generalize in base class
             return False
@@ -85,7 +92,7 @@ class ActionMatcher(FormMatcher):
         return matches
 
     def endpoint(self):
-        return f'{self.action_id}'
+        return self.action_id
 
 
 class ShortcutMatcher(FormMatcher):
@@ -95,13 +102,32 @@ class ShortcutMatcher(FormMatcher):
     def match(self, req):
         if not super().match(req):
             return False
-        if 'payload' not in request.form:
+        payload = self.get_payload(req)
+        if not payload:
             return False
-
-        payload = json.loads(request.form['payload'])
         type = payload.get('type')
         callback = payload.get('callback_id')
         return type in ('shortcut', 'message_action') and callback == self.id
+
+    def endpoint(self):
+        return self.id
+
+
+class ViewMatcher(FormMatcher):
+    def __init__(self, view_id):
+        self.id = view_id
+
+    def match(self, req):
+        if not super().match(req):
+            return False
+
+        payload = self.get_payload(req)
+        if not payload:
+            return False
+
+        type = payload.get('type')
+        callback = payload.get('callback_id')
+        return type == 'view_submission' and callback == self.id
 
     def endpoint(self):
         return self.id
