@@ -1,5 +1,5 @@
 import pytest
-from src.application.server import app
+from src.flask_slack.server import app
 
 
 @pytest.fixture

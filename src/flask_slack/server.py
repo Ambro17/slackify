@@ -17,6 +17,8 @@ class Flack(Flask):
         super().__init__(import_name, **kwargs)
         self.before_request_funcs.setdefault(None, []).append(self._redirect_requests)
         self.add_url_rule('/', 'home', lambda: 'Home', methods=('GET', 'POST'))
+        self.add_url_rule('/error', 'error', lambda: 'Oops..', methods=('GET', 'POST'))
+        self.add_url_rule('/unknown', 'unknown', lambda: 'Unknown Command', methods=('GET', 'POST'))
 
     def shortcut(self, callback_id, **options):
         def decorate(f):
@@ -84,7 +86,7 @@ class Flack(Flask):
         except StopIteration:
             endpoint = 'unknown'
         except Exception:
-            logger.exception('Bad')
+            logger.exception('Something bad happened.')
             endpoint = 'error'
 
         rule = req.url_rule
@@ -94,48 +96,16 @@ class Flack(Flask):
 app = Flack(__name__)
 
 
-@app.before_request
-def redirect_requests():
-    req = _request_ctx_stack.top.request
-    if req.routing_exception is not None:
-        app.raise_routing_exception(req)
-
-    if request.method == 'GET':
-        return
-
-    try:
-        endpoint = app.dispatcher.match(req)
-    except StopIteration:
-        endpoint = 'unknown'
-    except Exception as e:
-        print(repr(e))
-        endpoint = 'error'
-
-    rule = req.url_rule
-    rule.endpoint = endpoint
-
-
 @app.command(name='chau')
 def hello():
     return 'Hello'
 
 
-@app.shortcut('funny_joke')
+@app.shortcut('my-shortcut')
 def shortcut():
-    cli.chat_postMessage(channel='#general', text='Hi!')
     return 'Shortcut'
 
 
 @app.action(id='my-action-id')
 def my_action():
     return 'Action'
-
-
-@app.route('/unknown')
-def unknown():
-    return 'Unknown Command'
-
-
-@app.route('/error')
-def error():
-    return "Oops.. I really didn't really expect this"

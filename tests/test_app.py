@@ -1,6 +1,10 @@
+import json
+
+
 def test_home_page(client):
     rv = client.get('/')
     assert b'Home' in rv.data
+
 
 def test_redirect_to_command_handler(client):
     """Redirect to /hello based on form command"""
@@ -28,12 +32,14 @@ def test_redirect_to_command_handler_fails_on_invalid_command(client):
 
 def test_redirect_to_shortcut_handler(client):
     args = {
-        'payload': {
+        'payload': json.dumps({
             'type': 'shortcut',
             'callback_id': 'my-shortcut'
-        }
+        })
     }
-    rv = client.post('/', json=args)
+    rv = client.post('/',
+                     data=args,
+                     content_type='application/x-www-form-urlencoded')
     assert b'Shortcut' in rv.data
 
 
@@ -48,11 +54,13 @@ def test_redirect_to_shortcut_handler_invalid_id(client):
     assert b'Unknown Command' in rv.data
 
 
-def test_if_exception_is_raised_redirect_to_error_handler(client):
+def test_if_exception_is_raised_request_is_redirect_to_error_handler(client):
     args = {
-        'payload_wrong_key': {}
+        'payload': "Breaking JSON"
     }
-    rv = client.post('/', json=args)
+    rv = client.post('/',
+                     data=args,
+                     content_type='application/x-www-form-urlencoded')
     assert b'Oops..' in rv.data
 
 
@@ -71,5 +79,8 @@ def test_redirect_on_action_id(client):
         "response_url": "",
         "trigger_id": "",
     }
-    rv = client.post('/', json={'payload': payload})
+    rv = client.post('/',
+                     data={'payload': json.dumps(payload)},
+                     content_type='application/x-www-form-urlencoded')
+
     assert b'Action' == rv.data
