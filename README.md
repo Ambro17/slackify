@@ -45,4 +45,6 @@ Yes! See [examples/actions.py](examples/actions.py) for a quickstart.
 >Note: Legacy actions are unsupported by design as they are discouraged by slack. Nevertheless, if there's popular demand, we could add support for them.
 
 ## Roadmap
-Support for slack events through [slackeventsapi](https://github.com/slackapi/python-slack-events-api)
+1. Support for slack events through [slackeventsapi](https://github.com/slackapi/python-slack-events-api)
+2. Support for app factory pattern
+3. Support for blueprints
