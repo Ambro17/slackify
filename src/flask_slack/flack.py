@@ -1,12 +1,10 @@
 import logging
+
 from flask import Flask, request, _request_ctx_stack
+
 from .dispatcher import Dispatcher, ShortcutMatcher, Command, ActionMatcher
-from slack import WebClient
-
-cli = WebClient('xoxb-SECRET')
 
 
-logging.basicConfig()
 logger = logging.getLogger(__name__)
 
 
@@ -31,7 +29,7 @@ class Flack(Flask):
 
     def command(self, func=None, **options):
         """A decorator that is used to register a function as a command handler.
-         
+
            It can be used as a plain decorator or as a parametrized decorator factory.
            This does the same as `add_command_handler`
 
@@ -76,13 +74,13 @@ class Flack(Flask):
     def _redirect_requests(self):
         req = _request_ctx_stack.top.request
         if req.routing_exception is not None:
-            app.raise_routing_exception(req)
+            self.raise_routing_exception(req)
 
         if request.method == 'GET':
             return
 
         try:
-            endpoint = app.dispatcher.match(req)
+            endpoint = self.dispatcher.match(req)
         except StopIteration:
             endpoint = 'unknown'
         except Exception:
@@ -91,21 +89,3 @@ class Flack(Flask):
 
         rule = req.url_rule
         rule.endpoint = endpoint
-
-
-app = Flack(__name__)
-
-
-@app.command(name='chau')
-def hello():
-    return 'Hello'
-
-
-@app.shortcut('my-shortcut')
-def shortcut():
-    return 'Shortcut'
-
-
-@app.action(id='my-action-id')
-def my_action():
-    return 'Action'

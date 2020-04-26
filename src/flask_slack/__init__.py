@@ -1,4 +1,4 @@
-from .server import Flack
+from .flack import Flack
 from .slack import reply, respond
 from .tasks import async_task
 
