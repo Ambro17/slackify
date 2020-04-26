@@ -2,7 +2,7 @@
 `Flask-Slack` is a framework to accelerate your development of slack apps by letting you focus on **what you want** instead of fighting with *how to do it*
 
 ## Quickstart
-```
+```python
 from flask_slack import Flack, async_task
 
 
