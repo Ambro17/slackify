@@ -84,3 +84,26 @@ def test_redirect_on_action_id(client):
                      content_type='application/x-www-form-urlencoded')
 
     assert b'Action' == rv.data
+
+
+def test_action_redirects_based_on_block_and_action_ids():
+    pass
+
+
+def test_view_decorator_captures_modal_callbacks(client):
+    payload = {
+        'type': 'view_submission',
+        'user': {'id': 'UG31KD90T', 'name': 'ambro17.1', 'team_id': 'TG4H5ANVC'},
+        'view': {'blocks': [{'block_id': 'username_block'},
+                            {'block_id': 'password_block'}],
+                 'callback_id': 'my-first-view',
+                 'state': {'values': {'password_block': {'password_value': {'type': 'plain_text_input',
+                                                                            'value': 'eagae'}},
+                                      'username_block': {'username_value': {'type': 'plain_text_input',
+                                                                            'value': 'aeg'}}}},
+                 'type': 'modal'}}
+    rv = client.post('/',
+                     data={'payload': json.dumps(payload)},
+                     content_type='application/x-www-form-urlencoded')
+
+    assert b'View' == rv.data

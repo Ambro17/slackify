@@ -26,4 +26,8 @@ def test_app():
     def my_action():
         return 'Action'
 
+    @app.view('my-first-view')
+    def my_view():
+        return 'View'
+
     return app
