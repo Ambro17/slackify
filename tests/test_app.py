@@ -64,8 +64,11 @@ def test_if_exception_is_raised_request_is_redirect_to_error_handler(client):
     assert b'Oops..' in rv.data
 
 
-def test_request_handling_with_no_added_matchers():
-    pass
+def test_request_handling_with_no_added_matchers(bare_client):
+    rv = bare_client.post('/',
+                          json={'data': {'a': 1}},
+                          content_type='application/json')
+    assert b'Unknown Command' == rv.data
 
 
 def test_redirect_on_action_id(client):
@@ -86,8 +89,30 @@ def test_redirect_on_action_id(client):
     assert b'Action' == rv.data
 
 
-def test_action_redirects_based_on_block_and_action_ids():
-    pass
+def test_action_redirects_based_on_block_and_action_ids(client):
+    payload = {
+        "type": "block_actions",
+        "actions": [{
+            'action_id': 'incorrect-action-id',
+            'block_id': 'a-block-id',
+        }],
+        "token": "",
+        "response_url": "",
+        "trigger_id": "",
+    }
+    rv = client.post('/',
+                     data={'payload': json.dumps(payload)},
+                     content_type='application/x-www-form-urlencoded')
+
+    assert b'Unknown Command' == rv.data
+
+    # Fix payload acion id
+    payload['actions'][0]['action_id'] = 'the-id'
+    rv = client.post('/',
+                     data={'payload': json.dumps(payload)},
+                     content_type='application/x-www-form-urlencoded')
+
+    assert b'Complex Action' == rv.data
 
 
 def test_view_decorator_captures_modal_callbacks(client):

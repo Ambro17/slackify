@@ -10,6 +10,15 @@ def client(test_app):
         yield client
 
 
+@pytest.fixture
+def bare_client():
+    app = Flack('testing')
+    app.config['TESTING'] = True
+
+    with app.test_client() as client:
+        yield client
+
+
 @pytest.fixture(scope="session")
 def test_app():
     app = Flack('testing')
@@ -25,6 +34,10 @@ def test_app():
     @app.action(id='my-action-id')
     def my_action():
         return 'Action'
+
+    @app.action(action_id='the-id', block_id='a-block-id')
+    def complex_action():
+        return 'Complex Action'
 
     @app.view('my-first-view')
     def my_view():

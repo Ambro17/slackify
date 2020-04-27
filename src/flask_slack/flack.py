@@ -16,8 +16,8 @@ class Flack(Flask):
         super().__init__(import_name, **kwargs)
         self.before_request_funcs.setdefault(None, []).append(self._redirect_requests)
         self.add_url_rule('/', 'home', lambda: 'Home', methods=('GET', 'POST'))
-        self.add_url_rule('/error', 'error', lambda: 'Oops..', methods=('GET', 'POST'))
-        self.add_url_rule('/unknown', 'unknown', lambda: 'Unknown Command', methods=('GET', 'POST'))
+        self.add_url_rule('/error', 'error', lambda: 'Oops..')
+        self.add_url_rule('/unknown', 'unknown', lambda: 'Unknown Command')
 
     def shortcut(self, callback_id, **options):
         def decorate(f):
@@ -51,8 +51,6 @@ class Flack(Flask):
             self.dispatcher.add_matcher(Command(command))
             return f
 
-        options['methods'] = ('GET', 'POST')
-
         used_as_plain_decorator = bool(func)
         if used_as_plain_decorator:
             return decorate(func)
@@ -65,9 +63,9 @@ class Flack(Flask):
 
         def decorate(f):
             command = id or options.pop('action_id')  # TODO: Handle special characters that make url rule invalid?
-            options['methods'] = ('GET', 'POST')
+            block_id = options.pop('block_id', None)
             self.add_url_rule(f'/{command}', command, f, **options)
-            self.dispatcher.add_matcher(ActionMatcher(command, **options))
+            self.dispatcher.add_matcher(ActionMatcher(command, block_id=block_id))
             return f
 
         return decorate
