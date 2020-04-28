@@ -15,9 +15,7 @@ class Flack(Flask):
         self.dispatcher = Dispatcher()
         super().__init__(import_name, **kwargs)
         self.before_request_funcs.setdefault(None, []).append(self._redirect_requests)
-        self.add_url_rule('/', 'home', lambda: 'Home', methods=('GET', 'POST'))
-        self.add_url_rule('/error', 'error', lambda: 'Oops..')
-        self.add_url_rule('/unknown', 'unknown', lambda: 'Unknown Command')
+        self.add_url_rule('/', '_entrypoint', lambda: 'Home', methods=('GET', 'POST'))
 
     def shortcut(self, callback_id, **options):
         def decorate(f):
@@ -78,6 +76,22 @@ class Flack(Flask):
 
         return decorate
 
+    def event(self, event, **kwargs):
+        pass
+
+    def default(self, f):
+        self._handle_unknown = f
+
+    def _handle_unknown(self):
+        """Ignore unknown commands by default."""
+        return None
+
+    def error(self, f):
+        self._handle_error = f
+
+    def _handle_error(self, e):
+        return 'Oops..'
+
     def _redirect_requests(self):
         req = _request_ctx_stack.top.request
         if req.routing_exception is not None:
@@ -89,10 +103,11 @@ class Flack(Flask):
         try:
             endpoint = self.dispatcher.match(req)
         except StopIteration:
-            endpoint = 'unknown'
-        except Exception:
+            logger.info('No handler matched this request')
+            return self._handle_unknown()
+        except Exception as e:
             logger.exception('Something bad happened.')
-            endpoint = 'error'
+            return self._handle_error(e)
 
         rule = req.url_rule
         rule.endpoint = endpoint
