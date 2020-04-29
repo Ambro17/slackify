@@ -51,4 +51,8 @@ def test_app():
     def unknown_command():
         return 'Unknown Command'
 
+    @app.event('reaction_added')
+    def react_to_reaction(payload):
+        return '🐍'
+
     return app

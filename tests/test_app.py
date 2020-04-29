@@ -132,3 +132,30 @@ def test_view_decorator_captures_modal_callbacks(client):
                      content_type='application/x-www-form-urlencoded')
 
     assert b'View' == rv.data
+
+
+def test_capture_reaction_event(client, mocker):
+    payload = {
+        'event': {
+            'type': 'reaction_added',
+            'text': 'python',
+            'user': 'UG31KD90T',
+            'ts': '1588116040.001700',
+            'team': 'TG4H5ANVC',
+            'blocks': [{}],
+            'channel': 'CG34PCNRY',
+            'event_ts': '1588116040.001700',
+            'channel_type': 'channel'
+        },
+        'type': 'event_callback',
+        'event_id': 'Ev0129KEQSS3',
+    }
+    client.application.emitter = mocker.MagicMock()
+    rv = client.post('/slack/events',
+                     json=payload,
+                     content_type='application/json')
+
+    assert rv.data == b''
+    assert rv.status == '200 OK'
+    assert client.application.emitter.emit.called
+    client.application.emitter.emit.assert_called_with('reaction_added', payload)

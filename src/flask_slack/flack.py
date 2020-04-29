@@ -1,10 +1,9 @@
 import logging
 
-from flask import Flask, request, _request_ctx_stack
+from flask import Flask, _request_ctx_stack, request, make_response
+from pyee import BaseEventEmitter
 
-from .dispatcher import Dispatcher, ShortcutMatcher, Command, ActionMatcher
-from flask_slack.dispatcher import ViewMatcher
-
+from .dispatcher import ActionMatcher, Command, Dispatcher, ShortcutMatcher, ViewMatcher
 
 logger = logging.getLogger(__name__)
 
@@ -12,10 +11,12 @@ logger = logging.getLogger(__name__)
 class Flack(Flask):
 
     def __init__(self, import_name, **kwargs):
-        self.dispatcher = Dispatcher()
         super().__init__(import_name, **kwargs)
+        self.dispatcher = Dispatcher()
         self.before_request_funcs.setdefault(None, []).append(self._redirect_requests)
-        self.add_url_rule('/', '_entrypoint', lambda: 'Home', methods=('GET', 'POST'))
+        self.emitter = BaseEventEmitter()
+        self._bind_main_entrypoint()
+        self._bind_events_entrypoint()
 
     def shortcut(self, callback_id, **options):
         def decorate(f):
@@ -76,8 +77,11 @@ class Flack(Flask):
 
         return decorate
 
-    def event(self, event, **kwargs):
-        pass
+    def event(self, event, f=None):
+        def add_listener(f):
+            self.emitter.on(event, f)
+
+        return add_listener(f) if f else add_listener
 
     def default(self, f):
         self._handle_unknown = f
@@ -93,15 +97,15 @@ class Flack(Flask):
         return 'Oops..'
 
     def _redirect_requests(self):
-        req = _request_ctx_stack.top.request
-        if req.routing_exception is not None:
-            self.raise_routing_exception(req)
+        request = _request_ctx_stack.top.request
+        if request.routing_exception is not None:
+            self.raise_routing_exception(request)
 
-        if request.method == 'GET':
+        if request.method == 'GET' or request.path != '/':
             return
 
         try:
-            endpoint = self.dispatcher.match(req)
+            endpoint = self.dispatcher.match(request)
         except StopIteration:
             logger.info('No handler matched this request')
             return self._handle_unknown()
@@ -109,5 +113,25 @@ class Flack(Flask):
             logger.exception('Something bad happened.')
             return self._handle_error(e)
 
-        rule = req.url_rule
+        rule = request.url_rule
         rule.endpoint = endpoint
+
+    def _bind_main_entrypoint(self):
+        self.add_url_rule('/', '_entrypoint', lambda: 'Home', methods=('GET', 'POST'))
+
+    def _bind_events_entrypoint(self):
+        self.add_url_rule(f'/slack/events', '_slack_events', self._handle_event, methods=('POST',))
+
+    def _handle_event(self):
+        """Respond to event request sync and emit event for async event handling"""
+        event_data = request.get_json()
+        # Respond to slack challenge to enable our endpoint as an event receiver
+        if "challenge" in event_data:
+            return make_response(
+                event_data.get("challenge"), 200, {"content_type": "application/json"}
+            )
+
+        if "event" in event_data:
+            event_type = event_data["event"]["type"]
+            self.emitter.emit(event_type, event_data)
+            return make_response("", 200)
