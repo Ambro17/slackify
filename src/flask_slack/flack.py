@@ -10,13 +10,14 @@ logger = logging.getLogger(__name__)
 
 class Flack(Flask):
 
-    def __init__(self, import_name, **kwargs):
+    def __init__(self, import_name, endpoint='/', events_endpoint='/slack/events', **kwargs):
         super().__init__(import_name, **kwargs)
         self.dispatcher = Dispatcher()
         self.before_request_funcs.setdefault(None, []).append(self._redirect_requests)
         self.emitter = BaseEventEmitter()
-        self._bind_main_entrypoint()
-        self._bind_events_entrypoint()
+        self._endpoint = endpoint
+        self._bind_main_entrypoint(endpoint)
+        self._bind_events_entrypoint(events_endpoint)
 
     def shortcut(self, callback_id, **options):
         def decorate(f):
@@ -101,7 +102,7 @@ class Flack(Flask):
         if request.routing_exception is not None:
             self.raise_routing_exception(request)
 
-        if request.method == 'GET' or request.path != '/':
+        if request.method == 'GET' or request.path != self._endpoint:
             return
 
         try:
@@ -116,11 +117,11 @@ class Flack(Flask):
         rule = request.url_rule
         rule.endpoint = endpoint
 
-    def _bind_main_entrypoint(self):
-        self.add_url_rule('/', '_entrypoint', lambda: 'Home', methods=('GET', 'POST'))
+    def _bind_main_entrypoint(self, endpoint):
+        self.add_url_rule(endpoint, '_entrypoint', lambda: 'Home', methods=('GET', 'POST'))
 
-    def _bind_events_entrypoint(self):
-        self.add_url_rule(f'/slack/events', '_slack_events', self._handle_event, methods=('POST',))
+    def _bind_events_entrypoint(self, endpoint):
+        self.add_url_rule(endpoint, '_slack_events', self._handle_event, methods=('POST',))
 
     def _handle_event(self):
         """Respond to event request sync and emit event for async event handling"""
