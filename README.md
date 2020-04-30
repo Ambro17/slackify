@@ -1,5 +1,5 @@
 # Flask-Slack
-`Flask-Slack` is a framework to accelerate your development of slack apps by letting you focus on **what you want** instead of fighting with *how to do it*
+`Flask-Slack` is a light framework designed to accelerate your development of slack apps by letting you focus on **what you want** instead of fighting with *how to do it*
 
 ## Quickstart
 ```python
@@ -41,10 +41,19 @@ Of course! See [examples/views.py](examples/views.py) for a quick example
 
 ### Are interactive actions supported?
 Yes! See [examples/actions.py](examples/actions.py) for a quickstart.
-
 >Note: Legacy actions are unsupported by design as they are discouraged by slack. Nevertheless, if there's popular demand, we could add support for them.
 
+### And slack events?
+As you may have guessed, they are also supported. See [examples/events.py](examples/events.py) for an example.
+
+
+## Full fledged example
+If you wanna see the full dance, go ahead and look [examples/full.py](examples/full.py) for an example of all available functionality including
+- A register command that opens a modal
+- A hello command that shows interactive buttons
+- A shortcut to roll a dice and get a random number
+- An event handler that echoes reactions to messages.
+
 ## Roadmap
-1. Support for slack events through [slackeventsapi](https://github.com/slackapi/python-slack-events-api)
-2. Support for app factory pattern
-3. Support for blueprints
+1. Support for app factory pattern
+2. Support for blueprints

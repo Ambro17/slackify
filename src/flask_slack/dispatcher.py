@@ -1,6 +1,5 @@
-from typing import List, Optional
+from typing import List
 from flask import request
-from dataclasses import dataclass
 import json
 
 
@@ -53,12 +52,6 @@ class Command(FormMatcher):
 
     def endpoint(self):
         return self.command
-
-
-@dataclass(eq=True, frozen=True)
-class ActionFilter:
-    action_id: str
-    block_id: Optional[str] = None
 
 
 class ActionMatcher(FormMatcher):
