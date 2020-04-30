@@ -8,14 +8,14 @@ slack = Slack(os.environ["SLACK_BOT_TOKEN"])
 
 @app.event("message")
 def handle_message(payload):
-    """Listen to message events and react with python emoji
+    """Listen to messages containing `python` and react with python emoji
 
     Note:
-        *ALL* event handlers will receive a payload positional argument with the event info.
+        Your event handler function *MUST* accept a positional argument with the event payload
 
     Preconditions:
-        - Setup event subscription https://api.slack.com/events-api
-        - Suscribe to `message.channels` events so your app gets notified
+        - Setup event subscription https://api.slack.com/events-api and point to `/slack/events` uri
+        - Suscribe to `message.channels` events so your app gets notified of this event
     """
     event = payload["event"]
     if event.get("subtype") is None and 'python' in event.get('text', ''):

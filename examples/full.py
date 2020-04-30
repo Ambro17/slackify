@@ -2,13 +2,11 @@ import json
 import os
 import random
 
-from slack import WebClient
-
 from flask_slack import (ACK, OK, Flack, async_task, block_reply, request,
-                         respond, text_block)
+                         respond, text_block, Slack)
 
 app = Flack(__name__)
-cli = WebClient(os.getenv('BOT_TOKEN'))
+cli = Slack(os.getenv('BOT_TOKEN'))
 
 
 @app.command
@@ -154,3 +152,14 @@ def dice_roll():
     msg = f'🎲 {dice_value}'
     send_message(cli, blocks=[text_block(msg)], user_id=payload['user']['id'])
     return ACK
+
+
+@app.event('reaction_added')
+def echo_reaction(payload):
+    event = payload['event']
+    reaction = event['reaction']
+    cli.reactions_add(
+        name=reaction,
+        channel=event['item']['channel'],
+        timestamp=event['item']['ts']
+    )
