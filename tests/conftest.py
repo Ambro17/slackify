@@ -15,10 +15,6 @@ def bare_client():
     app = Flack('testing')
     app.config['TESTING'] = True
 
-    @app.default
-    def unknown_command():  # TODO: Review this
-        return 'Unknown Command'
-
     with app.test_client() as client:
         yield client
 

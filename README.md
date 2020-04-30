@@ -48,8 +48,7 @@ As you may have guessed, they are also supported. See [examples/events.py](examp
 
 
 ## Full fledged example
-If you wanna see the full dance, go ahead and look [examples/full.py](examples/full.py) for an example
-of all available functionality including
+If you wanna see the full dance, go ahead and look [examples/full.py](examples/full.py) for an example of all available functionality including
 - A register command that opens a modal
 - A hello command that shows interactive buttons
 - A shortcut to roll a dice and get a random number

@@ -68,7 +68,7 @@ def test_request_handling_with_no_added_matchers(bare_client):
     rv = bare_client.post('/',
                           json={'data': {'a': 1}},
                           content_type='application/json')
-    assert b'Unknown Command' == rv.data
+    assert b'Home' == rv.data
 
 
 def test_redirect_on_action_id(client):
