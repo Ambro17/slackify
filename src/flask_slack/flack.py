@@ -1,7 +1,7 @@
 import logging
 
 from flask import Flask, _request_ctx_stack, request, make_response
-from pyee import BaseEventEmitter
+from pyee import ExecutorEventEmitter
 
 from .dispatcher import ActionMatcher, Command, Dispatcher, ShortcutMatcher, ViewMatcher
 
@@ -14,7 +14,7 @@ class Flack(Flask):
         super().__init__(import_name, **kwargs)
         self.dispatcher = Dispatcher()
         self.before_request_funcs.setdefault(None, []).append(self._redirect_requests)
-        self.emitter = BaseEventEmitter()
+        self.emitter = ExecutorEventEmitter()
         self._endpoint = endpoint
         self._bind_main_entrypoint(endpoint)
         self._bind_events_entrypoint(events_endpoint)
