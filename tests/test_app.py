@@ -200,3 +200,57 @@ def test_action_decorator_must_receive_id_kwarg(bare_client):
 def test_raise_exception_on_post_to_invalid_route(client):
     rv = client.post('/bad_endpoint', data={'a': 1})
     assert rv.status_code == 404
+
+
+def test_shortcut_without_id_fails(bare_client):
+    app = bare_client.application
+
+    with pytest.raises(TypeError, match=r'shortcut\(\) missing 1 required positional argument: \'callback_id\''):
+        @app.shortcut()
+        def helper():
+            return 0
+
+
+def test_view_without_id_fails(bare_client):
+    app = bare_client.application
+
+    with pytest.raises(TypeError, match=r'view\(\) missing 1 required positional argument: \'view_callback_id\''):
+        @app.view()
+        def helper():
+            return 0
+
+
+def test_view_without_action_id_fails(bare_client):
+    app = bare_client.application
+
+    with pytest.raises(TypeError, match=r'action\(\) missing 1 required positional argument: \'action_id\''):
+        @app.action()
+        def helper():
+            return 0
+
+
+def test_slack_event_challenge_is_passed(bare_client):
+    rv = bare_client.post('/slack/events', json={'challenge': "17"})
+    assert rv.data == b"17"
+    assert rv.content_type == 'application/json'
+
+
+def test_override_error_handler(bare_client):
+    args = {
+        'payload': "Not valid JSON"
+    }
+    rv = bare_client.post('/',
+                          data=args,
+                          content_type='application/x-www-form-urlencoded')
+    assert b'Oops..' == rv.data
+
+    app = bare_client.application
+
+    @app.error
+    def new_handler(exception):
+        return 'Sorry'
+
+    rv = bare_client.post('/',
+                          data=args,
+                          content_type='application/x-www-form-urlencoded')
+    assert b'Sorry' == rv.data

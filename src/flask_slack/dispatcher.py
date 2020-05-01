@@ -23,9 +23,11 @@ class Dispatcher:
     matchers: List[Matcher] = []
 
     def add_matcher(self, matcher):
+        """Add a new request matcher to handle incoming slack requests"""
         self.matchers.append(matcher)
 
     def match(self, request):
+        """Find a matcher that handle the request. Raises StopIteration if not found"""
         return next(
             matcher.endpoint()
             for matcher in self.matchers
