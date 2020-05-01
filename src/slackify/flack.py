@@ -96,7 +96,7 @@ class Flack(Flask):
         self._handle_error = func
 
     def _handle_error(self, e):
-        return 'Oops..'
+        return self.make_response(('Oops..', 500))
 
     def _redirect_requests(self):
         request = _request_ctx_stack.top.request

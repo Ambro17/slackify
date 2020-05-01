@@ -236,6 +236,39 @@ def echo_reaction(payload):
     )
 ```
 
+
+## API Reference
+```python
+
+@app.command
+or
+@app.command(name='custom')
+
+
+@app.shortcut('shorcut-id')
+
+
+@app.action('action_id')
+or
+@app.action(action_id='action_id', block_id='block_id')
+
+
+@app.event('event_name') # See https://api.slack.com/events for all available events
+
+
+@app.view('callback_id')
+
+
+# Specify what to do if a slack request doesn't match any of your handlers.
+# By default it simply ignores the request.
+@app.default
+
+# Handle unexpected errors that occur inside handlers.
+# By default returns status 500 and a generic message. 
+# The exception will be passed as a positional argument to the decorated function
+@app.error
+```
+
 ## Roadmap
 1. Inject payload to action/event/shortcut handlers to avoid code repetition on each handler.
 2. Support for app factory pattern
