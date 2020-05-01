@@ -1,4 +1,4 @@
-from flask_slack import async_task, respond
+from slackify import async_task, respond
 from unittest.mock import patch
 
 

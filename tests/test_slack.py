@@ -1,4 +1,4 @@
-from flask_slack.slack import block_reply, reply, text_block
+from slackify import block_reply, reply_text, text_block
 
 
 def test_block_reply():
@@ -10,7 +10,7 @@ def test_block_reply():
 
 
 def test_reply():
-    assert reply('hello') == (
+    assert reply_text('hello') == (
         '{"text": "hello"}',
         200,
         {'Content-Type': 'application/json'}

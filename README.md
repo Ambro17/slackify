@@ -20,14 +20,14 @@ app = Flack(__name__)
 
 @app.command
 def hello():
-    return reply('Hello from Slack')
+    return reply_text('Hello from Slack')
 
 
 # Change the slash command name to /say_bye instead of the default function name
 @app.command(name='say_bye')
 def bye():
     my_background_job()
-    return reply('Bye')
+    return reply_text('Bye')
 
 
 @async_task

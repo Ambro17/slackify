@@ -1,4 +1,4 @@
-from flask_slack import Flack, request, jsonify
+from slackify import Flack, request, reply_text
 
 app = Flack(__name__)
 
@@ -7,13 +7,10 @@ app = Flack(__name__)
 def hello():
     form = request.form['command']
     text = request.form['text']
-    return jsonify({
-        'text': f'You called `{form} {text}`'
-    })
+    return reply_text(f'You called `{form} {text}`')
 
 
-@app.command(name='abc')
+@app.command(name='bye')
 def goodbye():
-    return jsonify({
-        'text': f'Mandril'
-    })
+    return reply_text(f'Goodbye')
+

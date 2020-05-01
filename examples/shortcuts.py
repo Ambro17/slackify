@@ -1,10 +1,9 @@
-from flask_slack import Flack, request
-from slack import WebClient
+from slackify import Flack, request, Slack
 import json
 
 
 app = Flack(__name__)
-cli = WebClient('xoxb-SECRET-bot-token')
+cli = Slack('xoxb-SECRET-bot-token')
 
 
 @app.shortcut('funny_joke')
