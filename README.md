@@ -70,6 +70,7 @@ cli = Slack(os.getenv('BOT_TOKEN'))
 
 @app.command
 def hello():
+    """Send hello message with question and yes no buttons"""
     YES = 'yes'
     NO = 'no'
     yes_no_buttons_block = {
@@ -108,6 +109,7 @@ def hello():
 
 @app.action("yes")
 def yes():
+    """If a user clicks yes on the message above, execute this callback"""
     action = json.loads(request.form["payload"])
     text_blok = text_block('Super! I do too :thumbsup:')
     respond(action['response_url'], {'blocks': [text_blok]})
@@ -116,6 +118,7 @@ def yes():
 
 @app.action("no")
 def no():
+    """If a user clicks no on the hello message, execute this callback"""
     action = json.loads(request.form["payload"])
     text_blok = text_block('Boo! You are so boring :thumbsdown:')
     respond(action['response_url'], {'blocks': [text_blok]})
@@ -124,6 +127,7 @@ def no():
 
 @app.command
 def register():
+    """Open a registration popup that asks for username and password. Don't enter any credentials!"""
     username_input_block = {
         "type": "input",
         "block_id": "username_block",
@@ -192,6 +196,7 @@ def register():
 
 @app.view("registration_form")
 def register_callback():
+    """Handle registration form submission."""
     action = json.loads(request.form["payload"])
     response = action['view']['state']['values']
     text_blok = text_block(f':heavy_check_mark: You are now registered.\nForm payload:\n```{response}```')
@@ -206,6 +211,7 @@ def send_message(cli, blocks, user_id):
 
 @app.shortcut('dice_roll')
 def dice_roll():
+    """Roll a virtual dice to give a pseudo-random number"""
     payload = json.loads(request.form['payload'])
     dice_value = random.randint(1, 6)
     msg = f'🎲 {dice_value}'
@@ -215,6 +221,7 @@ def dice_roll():
 
 @app.event('reaction_added')
 def echo_reaction(payload):
+    """If any user reacts to a message, also react with that emoji to the message"""
     event = payload['event']
     reaction = event['reaction']
     cli.reactions_add(
@@ -225,5 +232,6 @@ def echo_reaction(payload):
 ```
 
 ## Roadmap
-1. Support for app factory pattern
-2. Support for blueprints
+1. Inject payload to action/event/shortcut handlers to avoid code repetition on each handler.
+2. Support for app factory pattern
+3. Support for blueprints
