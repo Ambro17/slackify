@@ -1,9 +1,11 @@
 # Flask-Slack
 `Flask-Slack` is a light framework designed to accelerate your development of slack apps by letting you focus on **what you want** instead of fighting with *how to do it*
 
+To do so, it stands on the shoulders of `Flask` and `slackclient` (_The official python slack client_) and offers a more declarative API over slack commands, events, shortcuts, actions and modals.
+
 ## Quickstart
 ```python
-from flask_slack import Flack, async_task
+from slackify import Flack, async_task
 
 
 app = Flack(__name__)
@@ -15,14 +17,14 @@ app = Flack(__name__)
 
 @app.command
 def hello():
-    return 'Hello from Slack'
+    return reply('Hello from Slack')
 
 
 # Change the slash command name to /say_bye instead of the default function name
 @app.command(name='say_bye')
 def bye():
     my_background_job()
-    return 'Bye'
+    return reply('Bye')
 
 
 @async_task
@@ -61,7 +63,7 @@ import json
 import os
 import random
 
-from flask_slack import (ACK, OK, Flack, async_task, block_reply, request,
+from slackify import (ACK, OK, Flack, async_task, block_reply, request,
                          respond, text_block, Slack)
 
 app = Flack(__name__)
