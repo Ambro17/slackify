@@ -16,15 +16,17 @@ def reply_text(text: str):
     """Helper method that returns a plain text response to slack"""
     return json.dumps({'text': text}), 200, JSON_TYPE
 
+
 def reply(body: dict):
     """Helper method that returns a complex response to slack
-    
+
     It may contain a blocks payload. A simple text structure or
     whatever slack admits as a valid response to certain action.
     It does nothing fancy. Just transforms dict to json, and
     passes json as Content-Type as slack requires.
     """
     return json.dumps(body), 200, JSON_TYPE
+
 
 def text_block(text: str, markdown=True):
     return {

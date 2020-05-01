@@ -1,5 +1,5 @@
 from flask import *  # noqa: Expose all flask objects as top level imports
-from flask import jsonify, request
+from flask import request
 from slack import WebClient as Slack
 
 from .flack import Flack

@@ -24,6 +24,7 @@ def test_reply_works_with_blocks_input():
         {'Content-Type': 'application/json'}
     )
 
+
 def test_reply_works_with_text_input():
     assert reply({'blocks': [1, 2]}) == (
         '{"blocks": [1, 2]}',

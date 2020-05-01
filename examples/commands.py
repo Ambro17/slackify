@@ -13,4 +13,3 @@ def hello():
 @app.command(name='bye')
 def goodbye():
     return reply_text(f'Goodbye')
-
