@@ -1,5 +1,5 @@
 import pytest
-from src.flask_slack.flack import Flack
+from flask_slack.flack import Flack
 
 
 @pytest.fixture
