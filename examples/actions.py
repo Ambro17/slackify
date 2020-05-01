@@ -76,7 +76,7 @@ def askme():
     return jsonify(message_as_blocks)
 
 
-@app.action(id="yes")
+@app.action("yes")
 def yes():
     """You may ask here, why do we respond to response_url instead of the request itself?
 
@@ -92,7 +92,7 @@ def yes():
     return OK
 
 
-@app.action(id="no")
+@app.action("no")
 def no():
     action = json.loads(request.form["payload"])
 

@@ -1,12 +1,20 @@
-from typing import List
-from flask import request
 import json
+from abc import ABC, abstractmethod
+from typing import List
+
+from flask import request
 
 
-class Matcher:
+class Matcher(ABC):
     """Match interface to capture a specific request"""
+
+    @abstractmethod
     def match(self, request):
-        pass
+        """Determine if a request should be handled by this matcher"""
+
+    @abstractmethod
+    def endpoint(self):
+        """Flask view endpoint"""
 
 
 class Dispatcher:
@@ -25,12 +33,7 @@ class Dispatcher:
         )
 
 
-class JSONMatcher:
-    def match(self, request):
-        return request.headers.get('Content-Type') == 'application/json'
-
-
-class FormMatcher:
+class FormMatcher(Matcher):
     def match(self, request):
         return 'application/x-www-form-urlencoded' in request.headers.get('Content-Type', '')
 

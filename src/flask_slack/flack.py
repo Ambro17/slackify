@@ -57,13 +57,13 @@ class Flack(Flask):
         else:
             return decorate
 
-    def action(self, id=None, **options):
-        if id is None and 'action_id' not in options:
-            raise TypeError("action() missing 1 required keyword argument: 'id'")
+    def action(self, action_id=None, **options):
+        if action_id is None and options.get('block_id') is None or callable(action_id):
+            raise TypeError("action() missing 1 required positional argument: 'action_id'")
 
         def decorate(f):
-            command = id or options.pop('action_id')  # TODO: Handle special characters that make url rule invalid?
             block_id = options.pop('block_id', None)
+            command = action_id or block_id  # TODO: Handle special characters that make url rule invalid?
             self.add_url_rule(f'/{command}', command, f, **options)
             self.dispatcher.add_matcher(ActionMatcher(command, block_id=block_id))
             return f

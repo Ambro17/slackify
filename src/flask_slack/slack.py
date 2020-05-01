@@ -1,5 +1,6 @@
+import json
 import requests
-from flask import jsonify
+
 
 from .tasks import async_task
 
@@ -8,11 +9,12 @@ from .tasks import async_task
 OK = '', 200
 ACK = OK
 
+JSON_TYPE = {'Content-Type': 'application/json'}
+
 
 def reply(text):
-    return jsonify({
-        'blocks': [text_block(text)]
-    })
+    """Return tuple response of simple text"""
+    return json.dumps({'text': text}), 200, JSON_TYPE
 
 
 def text_block(text, markdown=True):
@@ -26,7 +28,7 @@ def text_block(text, markdown=True):
 
 
 def block_reply(blocks):
-    return jsonify({'blocks': blocks})
+    return json.dumps({'blocks': blocks}), 200, JSON_TYPE
 
 
 @async_task

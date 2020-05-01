@@ -27,11 +27,15 @@ def test_app():
     def hello():
         return 'Hello'
 
+    @app.command
+    def goodbye():
+        return 'Bye'
+
     @app.shortcut('my-shortcut')
     def shortcut():
         return 'Shortcut'
 
-    @app.action(id='my-action-id')
+    @app.action('my-action-id')
     def my_action():
         return 'Action'
 

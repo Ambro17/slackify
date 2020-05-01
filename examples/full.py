@@ -47,7 +47,7 @@ def hello():
     return block_reply(blocks)
 
 
-@app.action(id="yes")
+@app.action("yes")
 def yes():
     action = json.loads(request.form["payload"])
     text_blok = text_block('Super! I do too :thumbsup:')
@@ -55,7 +55,7 @@ def yes():
     return OK
 
 
-@app.action(id="no")
+@app.action("no")
 def no():
     action = json.loads(request.form["payload"])
     text_blok = text_block('Boo! You are so boring :thumbsdown:')

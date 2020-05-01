@@ -1,4 +1,5 @@
 import json
+import pytest
 
 
 def test_home_page(client):
@@ -12,6 +13,14 @@ def test_redirect_to_command_handler(client):
                      data={'command': '/chau'},
                      content_type='application/x-www-form-urlencoded')
     assert b'Hello' in rv.data
+
+
+def test_redirect_to_command_handler_using_bare_decorator(client):
+    """Redirect to /hello based on form command"""
+    rv = client.post('/',
+                     data={'command': '/goodbye'},
+                     content_type='application/x-www-form-urlencoded')
+    assert b'Bye' in rv.data
 
 
 def test_function_name_gets_overriden_by_decorator_arg(client):
@@ -89,6 +98,24 @@ def test_redirect_on_action_id(client):
     assert b'Action' == rv.data
 
 
+def test_action_payload_without_action_key_is_ignored(client):
+    payload = {
+        "type": "block_actions",
+        "bad_actions_key": [{
+            'action_id': 'my-action-id',
+            'block_id': 'block-id',
+        }],
+        "token": "",
+        "response_url": "",
+        "trigger_id": "",
+    }
+    rv = client.post('/',
+                     data={'payload': json.dumps(payload)},
+                     content_type='application/x-www-form-urlencoded')
+
+    assert b'Unknown Command' == rv.data
+
+
 def test_action_redirects_based_on_block_and_action_ids(client):
     payload = {
         "type": "block_actions",
@@ -159,3 +186,17 @@ def test_capture_reaction_event(client, mocker):
     assert rv.status == '200 OK'
     assert client.application.emitter.emit.called
     client.application.emitter.emit.assert_called_with('reaction_added', payload)
+
+
+def test_action_decorator_must_receive_id_kwarg(bare_client):
+    app = bare_client.application
+
+    with pytest.raises(TypeError, match=r'action\(\) missing 1 required positional argument: \'action_id\''):
+        @app.action
+        def helper():
+            return 0
+
+
+def test_raise_exception_on_post_to_invalid_route(client):
+    rv = client.post('/bad_endpoint', data={'a': 1})
+    assert rv.status_code == 404

@@ -1,9 +1,10 @@
-from threading import Thread
+from concurrent.futures import ThreadPoolExecutor
+
+pool = ThreadPoolExecutor(max_workers=10)
 
 
 def async_task(f):
     def wrapper(*args, **kwargs):
-        t = Thread(target=f, args=args, kwargs=kwargs)
-        t.start()
-        return t
+        future = pool.submit(f, *args, **kwargs)
+        return future
     return wrapper
