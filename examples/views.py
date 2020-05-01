@@ -1,10 +1,9 @@
-from flask_slack import Flack, request, text_block, ACK
-from slack import WebClient
+from slackify import Flack, request, text_block, Slack, ACK
 import json
 
 
 app = Flack(__name__)
-cli = WebClient('xoxb-SECRET-TOKEN')
+cli = Slack('xoxb-SECRET-TOKEN')
 
 
 @app.command

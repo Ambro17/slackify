@@ -1,15 +1,14 @@
 import time
-from flask_slack import Flack, async_task, reply
-from slack import WebClient
+from slackify import Flack, async_task, reply_text, Slack
 
 app = Flack(__name__)
-cli = WebClient('xoxb-SECRET-token')
+cli = Slack('xoxb-SECRET-token')
 
 
 @app.command()
 def hello():
     my_background_job()
-    return reply('Instant Response')
+    return reply_text('Instant Response')
 
 
 @async_task

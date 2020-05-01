@@ -1,12 +1,8 @@
-from flask_slack import Flack, respond
-from slack import WebClient
-from flask import jsonify, request
+from slackify import Flack, respond, Slack, reply, request, OK
 import json
 
 app = Flack(__name__)
-cli = WebClient('xoxb-SECRET-token')
-
-OK = '', 200
+cli = Slack('xoxb-SECRET-token')
 
 
 def text_block(text):
@@ -73,7 +69,7 @@ def askme():
     message_as_blocks = {
         'blocks': blocks
     }
-    return jsonify(message_as_blocks)
+    return reply(message_as_blocks)
 
 
 @app.action("yes")

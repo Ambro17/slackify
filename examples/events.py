@@ -1,5 +1,5 @@
 import os
-from flask_slack import Flack, Slack
+from slackify import Flack, Slack
 
 app = Flack(__name__)
 
