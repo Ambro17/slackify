@@ -67,7 +67,7 @@ import os
 import random
 
 from slackify import (ACK, OK, Flack, async_task, block_reply, request,
-                         respond, text_block, Slack)
+                      respond, text_block, Slack)
 
 app = Flack(__name__)
 cli = Slack(os.getenv('BOT_TOKEN'))
@@ -269,7 +269,36 @@ or
 @app.error
 ```
 
+
+## How does it work?
+If you are curious you may want to know how the lib works.
+
+In fact there's really little to know and hopefully
+you can understand it by browsing the code and this brief introduction.
+
+The lib exposes a main class called `Flack` that inherits from `flask.Flask` and binds two routes. One for commands, shortcuts, actions and another one for slack events.
+
+The first route is `/` by default, it inspects the incoming requests and looks for any declared handler that is interested
+in handling this request to redirect it. 
+
+If it finds one, it redirects the request to that function by overriding its `Request.url_rule.endpoint`
+
+If there's no match, it ignores the request and it follows the 
+normal request lifecycle.
+
+If there's an error, an overridable function through `@app.error` is executed to show a friendly message.
+
+The second route the lib adds is the events route at `/slack/events`.
+
+When it receives a post request, it emits an event through `pyee.ExecutorEventEmitter` with the event type and quickly responds with the response acknowledgment slack requires to avoid showing an error to the user. This allows asynchronous execution of the function, while still responding quickly to slack.
+In other words, when you decorate a function with `app.event('event_type')` what you are really doing is setting up a listener for the `event_type` that will receive the event payload. No magic.
+
+If after reading this you have an idea of how we can extend or improve this lib in any way, i would be really grateful to receive an issue or pull request!
+I feel there's still a void on slack bots with python that java and javascript have covered with [bolt's](https://github.com/slackapi/bolt) beautiful API.
+Below you can find the current roadmap of features i would like to include.
+
 ## Roadmap
-1. Inject payload to action/event/shortcut handlers to avoid code repetition on each handler.
-2. Support for app factory pattern
-3. Support for blueprints
+1. Add `@app.message(r'my_regex')` decorator to capture message based on a regex or string
+2. Inject payload to action/event/shortcut handler arguments to avoid code repetition on loading request data.
+3. Add example with `Flask` app factory pattern
+4. Add example with `Flask` blueprints
