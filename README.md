@@ -6,6 +6,11 @@
 
 To do so, it stands on the shoulders of `Flask` and `slackclient` (_The official python slack client_) and offers a more declarative API over slack commands, events, shortcuts, actions and modals.
 
+## Installation
+`python3 -m pip install slackify`
+
+_Requires python3.6+_
+
 ## Quickstart
 Create a file named `quickstart.py` with the following content
 ```python
