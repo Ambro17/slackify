@@ -7,6 +7,7 @@
 To do so, it stands on the shoulders of `Flask` and `slackclient` (_The official python slack client_) and offers a more declarative API over slack commands, events, shortcuts, actions and modals.
 
 ## Quickstart
+Create a file named `quickstart.py` with the following content
 ```python
 from slackify import Flack, async_task
 
@@ -37,11 +38,19 @@ def my_background_job():
     return
 ```
 
+To connect it to slack you need to meet this preconditions:
 
-### What about new slack Shorcuts?
-See [examples/shortcuts.py](examples/shortcuts.py) for a self contained example
+0. [Create a slack app](https://api.slack.com/apps?new_app=1)
+1. Download [ngrok](https://ngrok.com/download) and run `ngrok http 5000` to create a https proxy to localhost
+2. [Create a slash command](https://api.slack.com/apps) and set the url to ngrok's https url of step #1
+3. On your terminal export flask app variable `export FLASK_APP='quickstart:app'`
+4. Run your app with `flask run --port=5000` (The port should match the one on step #1)
+5. Write `/hello` to your new slack bot and let the magic begin
 
-### But can i use new slack Modals?
+### Does it support new slack Shorcuts?
+Yes, See [examples/shortcuts.py](examples/shortcuts.py) for a self contained example
+
+### And can i use new slack Modals?
 Of course! See [examples/views.py](examples/views.py) for a quick example
 
 ### Are interactive actions supported?
