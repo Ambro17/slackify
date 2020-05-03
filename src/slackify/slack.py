@@ -1,5 +1,6 @@
 import json
 import requests
+import re
 
 
 from .tasks import async_task
@@ -10,6 +11,8 @@ OK = '', 200
 ACK = OK
 
 JSON_TYPE = {'Content-Type': 'application/json'}
+
+RE_PATTERN = type(re.compile(r''))  # py3.6 does not have re.Pattern :(
 
 
 def reply_text(text: str):

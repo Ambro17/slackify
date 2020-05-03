@@ -75,9 +75,10 @@ Here you have a more complete example showcasing all functionality. It includes:
 - A hello command that shows interactive buttons
 - Callbacks for each interactive button click
 - A register command that opens a new slack modal
+- A callback on modal form submission
 - A shortcut to roll a dice and get a random number
 - An event handler that echoes reactions to messages.
-
+- A greeting whenever someone says `hello` in a channel where the bot is present.
 >Remember to `export BOT_TOKEN=xoxb-your-bot-secret` to enable slack api calls.
 ```python
 import json
@@ -252,6 +253,12 @@ def echo_reaction(payload):
         channel=event['item']['channel'],
         timestamp=event['item']['ts']
     )
+
+
+@app.message('hello')
+def say_hi(payload):
+    event = payload['event']
+    cli.chat_postMessage(channel=event['channel'], text='Hi! 👋')
 ```
 
 
@@ -272,6 +279,12 @@ or
 
 
 @app.event('event_name') # See https://api.slack.com/events for all available events
+
+
+# Shortcut for `message` events that match certain string or regex
+@app.message('Hi!')
+or
+@app.message(re.compile(r'Bye|see you|xoxo'))
 
 
 @app.view('callback_id')
@@ -316,7 +329,6 @@ I feel there's still a void on slack bots with python that java and javascript h
 Below you can find the current roadmap of features i would like to include.
 
 ## Roadmap
-1. Add `@app.message(r'my_regex')` decorator to capture message based on a regex or string
-2. Inject payload to action/event/shortcut handler arguments to avoid code repetition on loading request data.
-3. Add example with `Flask` app factory pattern
-4. Add example with `Flask` blueprints
+1. Inject payload to action/event/shortcut handler arguments to avoid code repetition on loading request data.
+2. Add example with `Flask` app factory pattern
+3. Add example with `Flask` blueprints

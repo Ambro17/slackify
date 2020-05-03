@@ -1,9 +1,13 @@
+from inspect import signature
 import logging
+import re
 
 from flask import Flask, _request_ctx_stack, request, make_response
 from pyee import ExecutorEventEmitter
 
 from .dispatcher import ActionMatcher, Command, Dispatcher, ShortcutMatcher, ViewMatcher
+from .slack import RE_PATTERN
+
 
 logger = logging.getLogger(__name__)
 
@@ -81,9 +85,36 @@ class Flack(Flask):
     def event(self, event, func=None):
 
         def add_listener(func):
+            if len(signature(func).parameters) != 1:
+                error = f"Invalid signature for '{func.__name__}'. Must expect one and only one positional argument"
+                raise TypeError(error)
             self.emitter.on(event, func)
 
         return add_listener(func) if func else add_listener
+
+    def message(self, message, func=None, **kwargs):
+        msg_regex = re.compile(message) if isinstance(message, str) else message
+        if not isinstance(msg_regex, RE_PATTERN):
+            raise TypeError(f"'message' must be either str or a compiled regex. Not {type(msg_regex)!r}")
+
+        def quit_if_no_match(user_handler, regex, event_payload):
+            """Quit listener execution if event text doesn't match the specified regex."""
+            text = event_payload['event'].get('text', '')
+            if not regex.search(text):
+                return
+
+            return user_handler(event_payload)
+
+        def decorate(func):
+            if len(signature(func).parameters) != 1:
+                error = f"Invalid signature for '{func.__name__}'. Must expect one and only one positional argument"
+                raise TypeError(error)
+
+            listener = lambda payload: quit_if_no_match(func, msg_regex, payload)  # noqa: sh!
+            self.event('message', listener)
+            return func
+
+        return decorate(func) if func else decorate
 
     def default(self, func):
         self._handle_unknown = func
