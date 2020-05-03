@@ -6,6 +6,8 @@ from flask import Flask, _request_ctx_stack, request, make_response
 from pyee import ExecutorEventEmitter
 
 from .dispatcher import ActionMatcher, Command, Dispatcher, ShortcutMatcher, ViewMatcher
+from .slack import RE_PATTERN
+
 
 logger = logging.getLogger(__name__)
 
@@ -92,7 +94,7 @@ class Flack(Flask):
 
     def message(self, message, func=None, **kwargs):
         msg_regex = re.compile(message) if isinstance(message, str) else message
-        if not isinstance(msg_regex, re.Pattern):
+        if not isinstance(msg_regex, RE_PATTERN):
             raise TypeError(f"'message' must be either str or a compiled regex. Not {type(msg_regex)!r}")
 
         def quit_if_no_match(user_handler, regex, event_payload):
