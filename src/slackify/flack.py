@@ -1,4 +1,5 @@
 import logging
+import re
 
 from flask import Flask, _request_ctx_stack, request, make_response
 from pyee import ExecutorEventEmitter
@@ -84,6 +85,28 @@ class Flack(Flask):
             self.emitter.on(event, func)
 
         return add_listener(func) if func else add_listener
+
+    def message(self, message, func=None, **kwargs):
+        msg_regex = re.compile(message) if isinstance(message, str) else message 
+        if not isinstance(msg_regex, re.Pattern):
+            raise TypeError("'message' must be either str or a compiled regex.")
+
+        def quit_if_no_match(user_handler, regex, event_payload):
+            """Quit listener execution if event text doesn't match the specified regex."""
+            text = event_payload['event'].get('text', '')
+            if not regex.search(text):
+                return lambda payload: None
+            
+            return user_handler(event_payload)
+
+
+        def decorate(func): 
+            listener = lambda event_payload: quit_if_no_match(func, msg_regex, event_payload)
+            self.event('message', listener)
+            return func
+
+        return decorate(func) if func else decorate
+
 
     def default(self, func):
         self._handle_unknown = func
