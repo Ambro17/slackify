@@ -4,8 +4,6 @@ from collections import defaultdict
 import pytest
 from pyee import BaseEventEmitter
 
-from slackify import Flack
-
 
 def given_a_cli_with_message_handlers(cli):
     app = cli.application
@@ -30,7 +28,6 @@ class FakeEmitter(BaseEventEmitter):
         super().__init__()
         self.listeners = defaultdict(list)
         self.results = []
-
 
     def on(self, event, func):
         self.listeners[event].append(func)
@@ -120,27 +117,29 @@ def test_invalid_message_usage(bare_client):
 
     with pytest.raises(TypeError, match="'message' must be either str or a compiled regex."):
         @app.message(123)
-        def try_it(payload):
+        def try_it_2(payload):
             pass
 
     with pytest.raises(TypeError, match=r"message\(\) missing 1 required positional argument: 'message'"):
         @app.message()
-        def try_it(payload):
+        def try_it_3(payload):
             pass
 
-    with pytest.raises(TypeError, match=r"'message' must be either str or a compiled regex. Not <class 'function'>"):
+    with pytest.raises(
+        TypeError,
+        match=r"'message' must be either str or a compiled regex. Not <class 'function'>"
+    ):
         @app.message
-        def try_it(payload):
+        def try_it_4(payload):
             pass
 
 
 def test_message_not_expecting_payload_arg_should_fail(bare_client):
     app = bare_client.application
 
-
     with pytest.raises(
-        TypeError, 
-        match=f"Invalid signature for 'bad_function_missing_payload_arg'. Must expect one and only one positional argument"
+        TypeError,
+        match=f"Invalid signature for 'bad_function_missing_payload_arg'. Must expect one and only one positional argument"  # noqa
     ):
         @app.message('hi')
         def bad_function_missing_payload_arg():
@@ -150,10 +149,9 @@ def test_message_not_expecting_payload_arg_should_fail(bare_client):
 def test_event_handler_not_expecting_payload_arg_should_fail(bare_client):
     app = bare_client.application
 
-
     with pytest.raises(
-        TypeError, 
-        match=f"Invalid signature for 'your_func'. Must expect one and only one positional argument"
+        TypeError,
+        match=f"Invalid signature for 'your_func'. Must expect one and only one positional argument"  # noqa
     ):
         @app.event('bla')
         def your_func():

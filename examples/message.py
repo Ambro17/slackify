@@ -1,6 +1,6 @@
 import re
 import os
-from slackify import Flack, Slack, reply_text
+from slackify import Flack, Slack
 
 
 app = Flack(__name__)

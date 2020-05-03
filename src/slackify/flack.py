@@ -84,13 +84,14 @@ class Flack(Flask):
 
         def add_listener(func):
             if len(signature(func).parameters) != 1:
-                raise TypeError(f"Invalid signature for '{func.__name__}'. Must expect one and only one positional argument")
+                error = f"Invalid signature for '{func.__name__}'. Must expect one and only one positional argument"
+                raise TypeError(error)
             self.emitter.on(event, func)
 
         return add_listener(func) if func else add_listener
 
     def message(self, message, func=None, **kwargs):
-        msg_regex = re.compile(message) if isinstance(message, str) else message 
+        msg_regex = re.compile(message) if isinstance(message, str) else message
         if not isinstance(msg_regex, re.Pattern):
             raise TypeError(f"'message' must be either str or a compiled regex. Not {type(msg_regex)!r}")
 
@@ -99,20 +100,19 @@ class Flack(Flask):
             text = event_payload['event'].get('text', '')
             if not regex.search(text):
                 return
-            
-            return user_handler(event_payload)
 
+            return user_handler(event_payload)
 
         def decorate(func):
             if len(signature(func).parameters) != 1:
-                raise TypeError(f"Invalid signature for '{func.__name__}'. Must expect one and only one positional argument")
+                error = f"Invalid signature for '{func.__name__}'. Must expect one and only one positional argument"
+                raise TypeError(error)
 
-            listener = lambda payload: quit_if_no_match(func, msg_regex, payload)
+            listener = lambda payload: quit_if_no_match(func, msg_regex, payload)  # noqa: sh!
             self.event('message', listener)
             return func
 
         return decorate(func) if func else decorate
-
 
     def default(self, func):
         self._handle_unknown = func
