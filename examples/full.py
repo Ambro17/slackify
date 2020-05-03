@@ -163,3 +163,9 @@ def echo_reaction(payload):
         channel=event['item']['channel'],
         timestamp=event['item']['ts']
     )
+
+
+@app.message('hello')
+def say_hi(payload):
+    event = payload['event']
+    cli.chat_postMessage(channel=event['channel'], text='Hi! 👋')
