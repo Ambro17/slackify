@@ -13,11 +13,11 @@ def given_a_cli_with_message_handlers(cli):
     # Used as functions instead of decorator to
     # Allow asserting being called
     @app.message('hello')
-    def hi():
+    def hi(payload):
         return 'Hi!'
 
     @app.message(re.compile(r'bye|see you'))
-    def bye():
+    def bye(payload):
         return 'Bye!'
 
     return cli
