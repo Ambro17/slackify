@@ -46,11 +46,15 @@ def my_background_job():
 To connect it to slack you need to meet this preconditions:
 
 0. [Create a slack app](https://api.slack.com/apps?new_app=1)
-1. Download [ngrok](https://ngrok.com/download) and run `ngrok http 5000` to create a https proxy to localhost
+1. Download [ngrok*](https://ngrok.com/download) and run `ngrok http 5000` to create a https proxy to localhost
 2. [Create a slash command](https://api.slack.com/apps) and set the url to ngrok's https url of step #1
 3. On your terminal export flask app variable `export FLASK_APP='quickstart:app'`
 4. Run your app with `flask run --port=5000` (The port should match the one on step #1)
 5. Write `/hello` to your new slack bot and let the magic begin
+
+>*This is a development setup so you can quickly see your code changes in slack without the need to redeploy your whole site.
+> Once your bot is ready for production you should update your commands url to a permanent one.
+> [Heroku](https://duckduckgo.com/?q=flask+on+heroku&t=brave&ia=web) might be a good choice if you are just getting started as it has a generous free tier.
 
 ### Does it support new slack Shorcuts?
 Yes, See [examples/shortcuts.py](examples/shortcuts.py) for a self contained example
