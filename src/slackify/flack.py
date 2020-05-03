@@ -95,7 +95,7 @@ class Flack(Flask):
             """Quit listener execution if event text doesn't match the specified regex."""
             text = event_payload['event'].get('text', '')
             if not regex.search(text):
-                return lambda payload: None
+                return
             
             return user_handler(event_payload)
 
