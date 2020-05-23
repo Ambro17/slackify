@@ -2,7 +2,7 @@ from inspect import signature
 import logging
 import re
 
-from flask import Flask, _request_ctx_stack, request, make_response
+from flask import Flask, _request_ctx_stack, request, make_response, Blueprint
 from pyee import ExecutorEventEmitter
 
 from .dispatcher import ActionMatcher, Command, Dispatcher, ShortcutMatcher, ViewMatcher
@@ -33,10 +33,23 @@ class Slackify:
     def _configure_app(self, endpoint, events_endpoint):
         """Configure app to redirect slack requests if they match a registered handler"""
         # Listen for each request and redirect it if there's a matching handler
+        self._endpoint = self._get_final_endpoint(endpoint)
         self.app.before_request(self._redirect_slack_requests)
-        self._endpoint = endpoint
         self._bind_main_entrypoint(endpoint)
         self._bind_events_entrypoint(events_endpoint)
+
+    def _get_final_endpoint(self, endpoint):
+        """Prepend blueprint prefix to endpoint if used as a blueprint"""
+        if isinstance(self.app, Blueprint):
+            if not self.app.url_prefix:
+                # TODO: Perhaps relax this constraint once we figure out how to know
+                # at which url_prefix will the blueprint be listening on registration.
+                # Probably hooking after Blueprint.register to update with app.bp.url_prefix
+                raise ValueError(f"Missing required 'url_prefix' for blueprint {self.app.name}")
+
+            return self.app.url_prefix + endpoint
+        else:
+            return endpoint
 
     def _bind_main_entrypoint(self, endpoint):
         self.app.add_url_rule(endpoint, 'slackify_entrypoint', lambda: 'Slackify Home', methods=('GET', 'POST'))
@@ -123,7 +136,7 @@ class Slackify:
             command = options.pop('name', func.__name__)
             rule = f'/{command}' if not command.startswith('/') else command
             self.app.add_url_rule(rule, command, func, **options)
-            self.dispatcher.add_matcher(Command(command))
+            self.dispatcher.add_matcher(Command(command)) # CommandMatcher fails to recognise blueprint prefix. How should we solve that?
             return func
 
         used_as_plain_decorator = bool(func)
