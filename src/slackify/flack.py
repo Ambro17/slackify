@@ -40,16 +40,16 @@ class Slackify:
 
     def _get_final_endpoint(self, endpoint):
         """Prepend blueprint prefix to endpoint if used as a blueprint"""
-        if isinstance(self.app, Blueprint):
-            if not self.app.url_prefix:
-                # TODO: Perhaps relax this constraint once we figure out how to know
-                # at which url_prefix will the blueprint be listening on registration.
-                # Probably hooking after Blueprint.register to update with app.bp.url_prefix
-                raise ValueError(f"Missing required 'url_prefix' for blueprint {self.app.name}")
+        if self._is_blueprint() and not self.app.url_prefix:
+            # TODO: Perhaps relax this constraint once we figure out how to know
+            # at which url_prefix the blueprint will be listening on registration.
+            # Probably hooking after Blueprint.register to update with app.bp.url_prefix
+            raise ValueError(f"Missing required 'url_prefix' for blueprint {self.app.name}")
 
-            return self.app.url_prefix + endpoint
-        else:
-            return endpoint
+        return f'{self.app.url_prefix}{endpoint}' if self._is_blueprint() else endpoint
+
+    def _is_blueprint(self):
+        return isinstance(self.app, Blueprint)
 
     def _bind_main_entrypoint(self, endpoint):
         self.app.add_url_rule(endpoint, 'slackify_entrypoint', lambda: 'Slackify Home', methods=('GET', 'POST'))
@@ -89,7 +89,7 @@ class Slackify:
             return self._handle_error(e)
 
         rule = request.url_rule
-        rule.endpoint = f'{self.app.name}.{endpoint}' if isinstance(self.app, Blueprint) else endpoint
+        rule.endpoint = f'{self.app.name}.{endpoint}' if self._is_blueprint() else endpoint
 
     def _should_handle_request(self, req):
         return req.method == 'POST' and request.path == self._endpoint
@@ -136,7 +136,7 @@ class Slackify:
             command = options.pop('name', func.__name__)
             rule = f'/{command}' if not command.startswith('/') else command
             self.app.add_url_rule(rule, command, func, **options)
-            self.dispatcher.add_matcher(Command(command)) # CommandMatcher fails to recognise blueprint prefix. How should we solve that?
+            self.dispatcher.add_matcher(Command(command))
             return func
 
         used_as_plain_decorator = bool(func)
