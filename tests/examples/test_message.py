@@ -8,8 +8,6 @@ from pyee import BaseEventEmitter
 def given_a_cli_with_message_handlers(cli):
     app = cli.application
 
-    # Used as functions instead of decorator to
-    # Allow asserting being called
     @app.message('hello')
     def hi(payload):
         return 'Hi!'

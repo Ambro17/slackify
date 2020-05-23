@@ -70,7 +70,7 @@ def test_if_exception_is_raised_request_is_redirect_to_error_handler(client):
     rv = client.post('/',
                      data=args,
                      content_type='application/x-www-form-urlencoded')
-    assert b'Oops..' in rv.data
+    assert b'Something went wrong..' in rv.data
 
 
 def test_request_handling_with_no_added_matchers(bare_client):
@@ -161,7 +161,7 @@ def test_view_decorator_captures_modal_callbacks(client):
     assert b'View' == rv.data
 
 
-def test_capture_reaction_event(client, mocker):
+def test_capture_reaction_event(slackify_test, mocker):
     payload = {
         'event': {
             'type': 'reaction_added',
@@ -177,15 +177,20 @@ def test_capture_reaction_event(client, mocker):
         'type': 'event_callback',
         'event_id': 'Ev0129KEQSS3',
     }
-    client.application.emitter = mocker.MagicMock()
+    app = slackify_test.app
+    app.config['TESTING'] = True
+    client = app.test_client()
+
+    slackify_test.emitter = mocker.MagicMock()
+
     rv = client.post('/slack/events',
                      json=payload,
                      content_type='application/json')
 
     assert rv.data == b''
     assert rv.status == '200 OK'
-    assert client.application.emitter.emit.called
-    client.application.emitter.emit.assert_called_with('reaction_added', payload)
+    assert slackify_test.emitter.emit.called
+    slackify_test.emitter.emit.assert_called_with('reaction_added', payload)
 
 
 def test_action_decorator_must_receive_id_kwarg(bare_client):
