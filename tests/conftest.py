@@ -11,11 +11,15 @@ def client(test_app):
 
 
 @pytest.fixture
-def bare_client():
-    app = Slackify()
-    app.config['TESTING'] = True
+def bare_app():
+    return Slackify()
 
-    with app.test_client() as client:
+
+@pytest.fixture
+def bare_client(bare_app):
+    bare_app.app.config['TESTING'] = True
+
+    with bare_app.app.test_client() as client:
         yield client
 
 
