@@ -89,7 +89,7 @@ class Slackify:
             return self._handle_error(e)
 
         rule = request.url_rule
-        rule.endpoint = endpoint
+        rule.endpoint = f'{self.app.name}.{endpoint}' if isinstance(self.app, Blueprint) else endpoint
 
     def _should_handle_request(self, req):
         return req.method == 'POST' and request.path == self._endpoint
