@@ -15,8 +15,8 @@ def test_we_can_add_a_custom_endpoint_besides_blueprint_prefix():
     app.register_blueprint(bp)
 
     client = app.test_client()
-    rv = client.post('/blueprintBla/commands',
-                     data={'command': '/slack'},
+    rv = client.post('/blueprintBla/slack',
+                     data={'command': '/hello'},
                      content_type='application/x-www-form-urlencoded')
     assert rv.status == '200 OK'
     assert rv.data == b'Hello from special endpoint'

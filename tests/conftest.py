@@ -1,5 +1,5 @@
 import pytest
-from slackify import Flack, Slackify
+from slackify import Slackify
 
 
 @pytest.fixture
@@ -12,7 +12,7 @@ def client(test_app):
 
 @pytest.fixture
 def bare_client():
-    app = Flack('testing')
+    app = Slackify()
     app.config['TESTING'] = True
 
     with app.test_client() as client:

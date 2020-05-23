@@ -1,8 +1,9 @@
-from slackify import Flack, request, Slack
+from slackify import Slackify, request, Slack
 import json
 
 
-app = Flack(__name__)
+# Important! Before running set FLASK_APP=examples.async_task:app.app
+app = Slackify()
 cli = Slack('xoxb-SECRET-bot-token')
 
 
