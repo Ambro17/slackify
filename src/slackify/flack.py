@@ -52,7 +52,7 @@ class Slackify:
         return isinstance(self.app, Blueprint)
 
     def _bind_main_entrypoint(self, endpoint):
-        self.app.add_url_rule(endpoint, 'slackify_entrypoint', lambda: 'Slackify Home', methods=('GET', 'POST'))
+        self.app.add_url_rule(endpoint, 'slackify_entrypoint', lambda: '🚀 Slackify Home', methods=('GET', 'POST'))
 
     def _bind_events_entrypoint(self, events_endpoint):
         self.app.add_url_rule(events_endpoint, 'slackify_events', self._handle_event, methods=('POST',))
@@ -200,4 +200,3 @@ class Slackify:
             return func
 
         return decorate(func) if func else decorate
-

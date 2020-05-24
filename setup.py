@@ -4,9 +4,6 @@ from setuptools import setup
 with open("README.md", "r") as f:
     long_description = f.read()
 
-with open('requirements.txt') as fp:
-    install_requires = fp.read()
-
 if sys.version_info < (3, 6):
     sys.exit('Sorry, Python < 3.6 is not supported')
 
@@ -21,6 +18,11 @@ setup(
     long_description_content_type="text/markdown",
     packages=['slackify'],
     package_dir={'': 'src'},
-    install_requires=install_requires,
+    install_requires=[
+        "Flask>=1.0.0",
+        "slackclient>=2.5.0",
+        "requests>=2.0.0",
+        "pyee>=7.0.0",
+    ],
     python_requires='>=3.6'
 )

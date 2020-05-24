@@ -1,0 +1,18 @@
+{
+  "name": "Slackify full example",
+  "description": "A Slackify example with commands, buttons, modals, and event subscriptions",
+  "repository": "https://github.com/Ambro17/slackify",
+  "logo": "https://blog.open-agora.com/wp-content/uploads/2017/06/logo-slack-150x150.png",
+  "keywords": ["slack", "python", "flask", "bot", "modern", "quickly"],
+  "env": {
+    "FLASK_APP": {
+        "description": "Optionally change the example to run. By default it runs the full example.",
+        "value": "examples.full:app",
+        "required": true
+    },
+    "BOT_TOKEN": {
+        "description": "Visit https://api.slack.com/apps to create an app and get the Bot User OAuth Access Token",
+        "value": ""
+    }
+  }
+}
