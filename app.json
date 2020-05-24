@@ -14,10 +14,5 @@
         "description": "Visit https://api.slack.com/apps to create an app and get the Bot User OAuth Access Token",
         "value": ""
     }
-  },
-  "scripts": {
-    "postdeploy": [
-        "python setup.py develop"
-       ]
   }
 }
