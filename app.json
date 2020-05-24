@@ -6,12 +6,13 @@
   "keywords": ["slack", "python", "flask", "bot", "modern", "quickly"],
   "env": {
     "FLASK_APP": {
-        "description": "Path to the flask instance",
-        "value": "examples.full:app.app"
+        "description": "Optionally change the example to run. By default it runs the full example.",
+        "value": "examples.full:app.app",
+        "required": true
     },
     "BOT_TOKEN": {
-        "description": "Your app bot secret generated in https://api.slack.com/apps",
-        "value": "Complete with your Bot User OAuth Access Token"
+        "description": "Visit https://api.slack.com/apps to create an app and get the Bot User OAuth Access Token",
+        "value": ""
     }
   },
   "scripts": {
