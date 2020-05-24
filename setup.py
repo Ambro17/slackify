@@ -12,7 +12,7 @@ if sys.version_info < (3, 6):
 
 setup(
     name='slackify',
-    version='0.0.3',
+    version='0.1.0',
     url='https://github.com/Ambro17/Flask-Slack',
     author='Nahuel Ambrosini',
     author_email='ambro17.1@gmail.com',
