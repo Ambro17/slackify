@@ -13,7 +13,7 @@ _Requires python3.6+_
 
 ## Quickstart
 1. 1-Click-Way:
-[![Deploy](https://www.herokucdn.com/deploy/button.svg)](https://www.heroku.com/deploy
+[![Deploy](https://www.herokucdn.com/deploy/button.svg)](https://www.heroku.com/deploy)
 
 2. Manual way
 Create a file named `quickstart.py` with the following content
