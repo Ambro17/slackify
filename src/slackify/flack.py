@@ -150,7 +150,7 @@ class Flack(Flask):
         rule.endpoint = endpoint
 
     def _bind_main_entrypoint(self, endpoint):
-        self.add_url_rule(endpoint, '_entrypoint', lambda: 'Home', methods=('GET', 'POST'))
+        self.add_url_rule(endpoint, '_entrypoint', lambda: '🚀 Slackify Home', methods=('GET', 'POST'))
 
     def _bind_events_entrypoint(self, endpoint):
         self.add_url_rule(endpoint, '_slack_events', self._handle_event, methods=('POST',))
