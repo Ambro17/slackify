@@ -4,7 +4,7 @@ import pytest
 
 def test_home_page(client):
     rv = client.get('/')
-    assert b'Home' in rv.data
+    assert '🚀 Slackify Home' in rv.data.decode('utf-8')
 
 
 def test_redirect_to_command_handler(client):
@@ -77,7 +77,7 @@ def test_request_handling_with_no_added_matchers(bare_client):
     rv = bare_client.post('/',
                           json={'data': {'a': 1}},
                           content_type='application/json')
-    assert b'Home' == rv.data
+    assert '🚀 Slackify Home' == rv.data.decode('utf-8')
 
 
 def test_redirect_on_action_id(client):
