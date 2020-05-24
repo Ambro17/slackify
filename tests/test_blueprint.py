@@ -56,7 +56,7 @@ def test_blueprint_url_must_be_provided_with_trailing_slash(client):
 
 def test_blueprint_home_responds_with_default_message(client):
     rv = client.post('/blueprintBla/', data={'bla': 1}, content_type='application/x-www-form-urlencoded')
-    assert b'Slackify Home' == rv.data
+    assert '🚀 Slackify Home' in rv.data.decode('utf-8')
 
 
 def test_post_to_main_endpoint_redirects_on_command_argument(client):
