@@ -13,5 +13,10 @@
         "description": "Your app bot secret generated in https://api.slack.com/apps",
         "value": "Complete with your Bot User OAuth Access Token"
     }
-  } 
+  },
+  "scripts": {
+    "postdeploy": [
+        "python setup.py develop",
+       ]
+  }
 }
