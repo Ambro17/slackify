@@ -1,0 +1,11 @@
+{
+  "name": "Slackify full example",
+  "description": "A Slackify example with commands, buttons, modals, and event subscriptions",
+  "repository": "https://github.com/Ambro17/slackify",
+  "logo": "https://blog.open-agora.com/wp-content/uploads/2017/06/logo-slack-150x150.png",
+  "keywords": ["slack", "python", "flask", "bot", "modern", "quickly"]
+  "env": {
+    "FLASK_APP": 'examples.full:app.app'
+    "BOT_TOKEN": 'Your-Bot-Token'
+  } 
+}
