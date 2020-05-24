@@ -12,11 +12,12 @@ To do so, it stands on the shoulders of `Flask` and `slackclient` (_The official
 _Requires python3.6+_
 
 ## Quickstart
-1. 1-Click-Way:
+1. The easy way:
 
-[![Deploy](https://www.herokucdn.com/deploy/button.svg)](https://www.heroku.com/deploy)
+[![Deploy](https://www.herokucdn.com/deploy/button.svg)](https://heroku.com/deploy?template=https://github.com/Ambro17/slackify/tree/master)
 
-2. Manual way
+2. The manual way
+
 Create a file named `quickstart.py` with the following content
 ```python
 from slackify import Flack, async_task
