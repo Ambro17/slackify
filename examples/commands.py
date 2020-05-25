@@ -1,6 +1,7 @@
-from slackify import Flack, request, reply_text
+from slackify import Slackify, request, reply_text
 
-app = Flack(__name__)
+# Important! Before running set FLASK_APP=examples.async_task:app.app
+app = Slackify()
 
 
 @app.command

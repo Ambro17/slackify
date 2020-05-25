@@ -1,5 +1,5 @@
 import pytest
-from slackify import Flack
+from slackify import Slackify
 
 
 @pytest.fixture
@@ -11,17 +11,21 @@ def client(test_app):
 
 
 @pytest.fixture
-def bare_client():
-    app = Flack('testing')
-    app.config['TESTING'] = True
+def bare_app():
+    return Slackify()
 
-    with app.test_client() as client:
+
+@pytest.fixture
+def bare_client(bare_app):
+    bare_app.app.config['TESTING'] = True
+
+    with bare_app.app.test_client() as client:
         yield client
 
 
 @pytest.fixture(scope="session")
 def test_app():
-    app = Flack('testing')
+    app = Slackify()
 
     @app.command(name='chau')
     def hello():
@@ -50,6 +54,17 @@ def test_app():
     @app.default
     def unknown_command():
         return 'Unknown Command'
+
+    @app.event('reaction_added')
+    def react_to_reaction(payload):
+        return '🐍'
+
+    return app.app
+
+
+@pytest.fixture
+def slackify_test():
+    app = Slackify()
 
     @app.event('reaction_added')
     def react_to_reaction(payload):

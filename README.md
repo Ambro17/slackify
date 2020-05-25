@@ -20,14 +20,10 @@ _Requires python3.6+_
 
 Create a file named `quickstart.py` with the following content
 ```python
-from slackify import Flack, async_task
+from slackify import Slackify, async_task
 
 
-app = Flack(__name__)
-
-
-# That's it! now you can declare commands, shortcuts, actions, and whatever you please!
-# No routing nightmare, no special endpoints, just declare what you want
+app = Slackify()
 
 
 @app.command
@@ -54,7 +50,7 @@ To connect it to slack you need to meet this preconditions:
 0. [Create a slack app](https://api.slack.com/apps?new_app=1)
 1. Download [ngrok*](https://ngrok.com/download) and run `ngrok http 5000` to create a https proxy to localhost
 2. [Create a slash command](https://api.slack.com/apps) and set the url to ngrok's https url of step #1
-3. On your terminal export flask app variable `export FLASK_APP='quickstart:app'`
+3. On your terminal export flask app variable `export FLASK_APP='quickstart:app.app'` (Yes, app.app)
 4. Run your app with `flask run --port=5000` (The port should match the one on step #1)
 5. Write `/hello` to your new slack bot and let the magic begin
 
@@ -91,10 +87,10 @@ import json
 import os
 import random
 
-from slackify import (ACK, OK, Flack, async_task, block_reply, request,
+from slackify import (ACK, OK, Slackify, async_task, block_reply, request,
                       respond, text_block, Slack)
 
-app = Flack(__name__)
+slackify = Slackify()
 cli = Slack(os.getenv('BOT_TOKEN'))
 
 
@@ -313,12 +309,13 @@ If you are curious you may want to know how the lib works.
 In fact there's really little to know and hopefully
 you can understand it by browsing the code and this brief introduction.
 
-The lib exposes a main class called `Flack` that inherits from `flask.Flask` and binds two routes. One for commands, shortcuts, actions and another one for slack events.
+The lib exposes a main class called `Slackify` that can either receive a Flask instance
+as `app` argument or creates one on the fly.
+It then binds two routes. One for commands, shortcuts, actions and another one for slack events.
 
-The first route is `/` by default, it inspects the incoming requests and looks for any declared handler that is interested
-in handling this request to redirect it. 
+The first route is `/` by default, it inspects the incoming requests and looks for any declared handler that is interested in handling this request to redirect it. 
 
-If it finds one, it redirects the request to that function by overriding its `Request.url_rule.endpoint`
+If it finds a handler, it redirects the request to that function by overriding its `Request.url_rule.endpoint`
 
 If there's no match, it ignores the request and it follows the 
 normal request lifecycle.
@@ -335,6 +332,5 @@ I feel there's still a void on slack bots with python that java and javascript h
 Below you can find the current roadmap of features i would like to include.
 
 ## Roadmap
-1. Inject payload to action/event/shortcut handler arguments to avoid code repetition on loading request data.
-2. Add example with `Flask` app factory pattern
-3. Add example with `Flask` blueprints
+1. Inject payload argument to slack event handlers to avoid code repetition on loading request data.
+2. Add example with `Flask` app factory pattern with the lib as a blueprint

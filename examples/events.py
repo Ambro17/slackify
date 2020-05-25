@@ -1,7 +1,8 @@
 import os
-from slackify import Flack, Slack
+from slackify import Slackify, Slack
 
-app = Flack(__name__)
+# Important! Before running set FLASK_APP=examples.async_task:app.app
+app = Slackify()
 
 slack = Slack(os.environ["SLACK_BOT_TOKEN"])
 

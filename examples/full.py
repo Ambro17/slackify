@@ -2,10 +2,10 @@ import json
 import os
 import random
 
-from slackify import (ACK, OK, Flack, async_task, block_reply,
+from slackify import (ACK, OK, Slackify, async_task, block_reply,
                       request, respond, text_block, Slack)
 
-app = Flack(__name__)
+app = Slackify()
 cli = Slack(os.getenv('BOT_TOKEN'))
 
 

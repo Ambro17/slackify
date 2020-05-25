@@ -7,7 +7,7 @@
   "env": {
     "FLASK_APP": {
         "description": "Optionally change the example to run. By default it runs the full example.",
-        "value": "examples.full:app",
+        "value": "examples.full:app.app",
         "required": true
     },
     "BOT_TOKEN": {

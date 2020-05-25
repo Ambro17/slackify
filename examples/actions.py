@@ -1,7 +1,7 @@
-from slackify import Flack, respond, Slack, reply, request, OK
+from slackify import Slackify, respond, Slack, reply, request, OK
 import json
 
-app = Flack(__name__)
+app = Slackify()
 cli = Slack('xoxb-SECRET-token')
 
 

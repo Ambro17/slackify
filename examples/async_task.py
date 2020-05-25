@@ -1,7 +1,8 @@
 import time
-from slackify import Flack, async_task, reply_text, Slack
+from slackify import Slackify, async_task, reply_text, Slack
 
-app = Flack(__name__)
+# Important! Before running set FLASK_APP=examples.async_task:app.app (Yes, app.app)
+app = Slackify()
 cli = Slack('xoxb-SECRET-token')
 
 
