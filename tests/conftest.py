@@ -1,4 +1,5 @@
 import pytest
+from flask import Flask
 from slackify import Slackify
 
 
@@ -25,49 +26,51 @@ def bare_client(bare_app):
 
 @pytest.fixture(scope="session")
 def test_app():
-    app = Slackify()
+    app = Flask(__name__)
+    slackify = Slackify(app=app)
 
-    @app.command(name='chau')
+    @slackify.command(name='chau')
     def hello():
         return 'Hello'
 
-    @app.command
+    @slackify.command
     def goodbye():
         return 'Bye'
 
-    @app.shortcut('my-shortcut')
+    @slackify.shortcut('my-shortcut')
     def shortcut():
         return 'Shortcut'
 
-    @app.action('my-action-id')
+    @slackify.action('my-action-id')
     def my_action():
         return 'Action'
 
-    @app.action(action_id='the-id', block_id='a-block-id')
+    @slackify.action(action_id='the-id', block_id='a-block-id')
     def complex_action():
         return 'Complex Action'
 
-    @app.view('my-first-view')
+    @slackify.view('my-first-view')
     def my_view():
         return 'View'
 
-    @app.default
+    @slackify.default
     def unknown_command():
         return 'Unknown Command'
 
-    @app.event('reaction_added')
-    def react_to_reaction(payload):
-        return '🐍'
-
-    return app.app
-
-
-@pytest.fixture
-def slackify_test():
-    app = Slackify()
-
-    @app.event('reaction_added')
+    @slackify.event('reaction_added')
     def react_to_reaction(payload):
         return '🐍'
 
     return app
+
+
+@pytest.fixture
+def slackify_test():
+    app = Flask(__name__)
+    slackify = Slackify(app=app)
+
+    @slackify.event('reaction_added')
+    def react_to_reaction(payload):
+        return '🐍'
+
+    return slackify

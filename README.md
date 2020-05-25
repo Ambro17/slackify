@@ -20,19 +20,21 @@ _Requires python3.6+_
 
 Create a file named `quickstart.py` with the following content
 ```python
+from flask import Flask
 from slackify import Slackify, async_task
 
 
-app = Slackify()
+app = Flask(__name__)
+slackify = Slackify(app=app)
 
 
-@app.command
+@slackify.command
 def hello():
     return reply_text('Hello from Slack')
 
 
 # Change the slash command name to /say_bye instead of the default function name
-@app.command(name='say_bye')
+@slackify.command(name='say_bye')
 def bye():
     my_background_job()
     return reply_text('Bye')
@@ -50,7 +52,7 @@ To connect it to slack you need to meet this preconditions:
 0. [Create a slack app](https://api.slack.com/apps?new_app=1)
 1. Download [ngrok*](https://ngrok.com/download) and run `ngrok http 5000` to create a https proxy to localhost
 2. [Create a slash command](https://api.slack.com/apps) and set the url to ngrok's https url of step #1
-3. On your terminal export flask app variable `export FLASK_APP='quickstart:app.app'` (Yes, app.app)
+3. On your terminal export flask app variable `export FLASK_APP='quickstart:app'`
 4. Run your app with `flask run --port=5000` (The port should match the one on step #1)
 5. Write `/hello` to your new slack bot and let the magic begin
 
@@ -87,14 +89,16 @@ import json
 import os
 import random
 
+from flask import Flask
 from slackify import (ACK, OK, Slackify, async_task, block_reply, request,
                       respond, text_block, Slack)
 
-app = Slackify()
+app = Flask(__name__)
+slackify = Slackify(app=app)
 cli = Slack(os.getenv('BOT_TOKEN'))
 
 
-@app.command
+@slackify.command
 def hello():
     """Send hello message with question and yes no buttons"""
     YES = 'yes'
@@ -133,7 +137,7 @@ def hello():
     return block_reply(blocks)
 
 
-@app.action("yes")
+@slackify.action("yes")
 def yes():
     """If a user clicks yes on the message above, execute this callback"""
     action = json.loads(request.form["payload"])
@@ -142,7 +146,7 @@ def yes():
     return OK
 
 
-@app.action("no")
+@slackify.action("no")
 def no():
     """If a user clicks no on the hello message, execute this callback"""
     action = json.loads(request.form["payload"])
@@ -151,7 +155,7 @@ def no():
     return OK
 
 
-@app.command
+@slackify.command
 def register():
     """Open a registration popup that asks for username and password. Don't enter any credentials!"""
     username_input_block = {
@@ -220,7 +224,7 @@ def register():
     return OK
 
 
-@app.view("registration_form")
+@slackify.view("registration_form")
 def register_callback():
     """Handle registration form submission."""
     action = json.loads(request.form["payload"])
@@ -235,7 +239,7 @@ def send_message(cli, blocks, user_id):
     return cli.chat_postMessage(channel=user_id, user_id=user_id, blocks=blocks)
 
 
-@app.shortcut('dice_roll')
+@slackify.shortcut('dice_roll')
 def dice_roll():
     """Roll a virtual dice to give a pseudo-random number"""
     payload = json.loads(request.form['payload'])
@@ -245,7 +249,7 @@ def dice_roll():
     return ACK
 
 
-@app.event('reaction_added')
+@slackify.event('reaction_added')
 def echo_reaction(payload):
     """If any user reacts to a message, also react with that emoji to the message"""
     event = payload['event']
@@ -257,7 +261,7 @@ def echo_reaction(payload):
     )
 
 
-@app.message('hello')
+@slackify.message('hello')
 def say_hi(payload):
     event = payload['event']
     cli.chat_postMessage(channel=event['channel'], text='Hi! 👋')
@@ -267,39 +271,39 @@ def say_hi(payload):
 ## API Reference
 ```python
 
-@app.command
+@slackify.command
 or
-@app.command(name='custom')
+@slackify.command(name='custom')
 
 
-@app.shortcut('shorcut-id')
+@slackify.shortcut('shorcut-id')
 
 
-@app.action('action_id')
+@slackify.action('action_id')
 or
-@app.action(action_id='action_id', block_id='block_id')
+@slackify.action(action_id='action_id', block_id='block_id')
 
 
-@app.event('event_name') # See https://api.slack.com/events for all available events
+@slackify.event('event_name') # See https://api.slack.com/events for all available events
 
 
 # Shortcut for `message` events that match certain string or regex
-@app.message('Hi!')
+@slackify.message('Hi!')
 or
-@app.message(re.compile(r'Bye|see you|xoxo'))
+@slackify.message(re.compile(r'Bye|see you|xoxo'))
 
 
-@app.view('callback_id')
+@slackify.view('callback_id')
 
 
 # Specify what to do if a slack request doesn't match any of your handlers.
 # By default it simply ignores the request.
-@app.default
+@slackify.default
 
 # Handle unexpected errors that occur inside handlers.
 # By default returns status 500 and a generic message. 
 # The exception will be passed as a positional argument to the decorated function
-@app.error
+@slackify.error
 ```
 
 
@@ -320,7 +324,7 @@ If it finds a handler, it redirects the request to that function by overriding i
 If there's no match, it ignores the request and it follows the 
 normal request lifecycle.
 
-If there's an error, an overridable function through `@app.error` is executed to show a friendly message.
+If there's an error, an overridable function through `@slackify.error` is executed to show a friendly message.
 
 The second route the lib adds is the events route at `/slack/events`.
 

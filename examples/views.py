@@ -1,13 +1,15 @@
+from flask import Flask
 from slackify import Slackify, request, text_block, Slack, ACK
 import json
 
 
-# Important! Before running set FLASK_APP=examples.async_task:app.app
-app = Slackify()
+# Important! Before running set FLASK_APP=examples.async_task:app
+app = Flask(__name__)
+slackify = Slackify(app=app)
 cli = Slack('xoxb-SECRET-TOKEN')
 
 
-@app.command
+@slackify.command
 def register():
     username_input_block = {
         "type": "input",
@@ -74,7 +76,7 @@ def register():
     return ACK
 
 
-@app.view("registration_form")
+@slackify.view("registration_form")
 def register_callback():
     """You may ask here, why DON'T we also use the response_url as we did in actions.py?
 

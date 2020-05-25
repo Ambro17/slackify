@@ -2,14 +2,17 @@ import json
 import os
 import random
 
+from flask import Flask
 from slackify import (ACK, OK, Slackify, async_task, block_reply,
                       request, respond, text_block, Slack)
 
-app = Slackify()
+
+app = Flask(__name__)
+slackify = Slackify(app=app)
 cli = Slack(os.getenv('BOT_TOKEN'))
 
 
-@app.command
+@slackify.command
 def hello():
     YES = 'yes'
     NO = 'no'
@@ -47,7 +50,7 @@ def hello():
     return block_reply(blocks)
 
 
-@app.action("yes")
+@slackify.action("yes")
 def yes():
     action = json.loads(request.form["payload"])
     text_blok = text_block('Super! I do too :thumbsup:')
@@ -55,7 +58,7 @@ def yes():
     return OK
 
 
-@app.action("no")
+@slackify.action("no")
 def no():
     action = json.loads(request.form["payload"])
     text_blok = text_block('Boo! You are so boring :thumbsdown:')
@@ -63,7 +66,7 @@ def no():
     return OK
 
 
-@app.command
+@slackify.command
 def register():
     username_input_block = {
         "type": "input",
@@ -131,7 +134,7 @@ def register():
     return OK
 
 
-@app.view("registration_form")
+@slackify.view("registration_form")
 def register_callback():
     action = json.loads(request.form["payload"])
     response = action['view']['state']['values']
@@ -145,7 +148,7 @@ def send_message(cli, blocks, user_id):
     return cli.chat_postMessage(channel=user_id, user_id=user_id, blocks=blocks)
 
 
-@app.shortcut('dice_roll')
+@slackify.shortcut('dice_roll')
 def dice_roll():
     payload = json.loads(request.form['payload'])
     dice_value = random.randint(1, 6)
@@ -154,7 +157,7 @@ def dice_roll():
     return ACK
 
 
-@app.event('reaction_added')
+@slackify.event('reaction_added')
 def echo_reaction(payload):
     event = payload['event']
     reaction = event['reaction']
@@ -165,7 +168,7 @@ def echo_reaction(payload):
     )
 
 
-@app.message('hello')
+@slackify.message('hello')
 def say_hi(payload):
     event = payload['event']
     cli.chat_postMessage(channel=event['channel'], text='Hi! 👋')

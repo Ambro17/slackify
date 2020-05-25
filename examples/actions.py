@@ -1,7 +1,9 @@
+from flask import Flask
 from slackify import Slackify, respond, Slack, reply, request, OK
 import json
 
-app = Slackify()
+app = Flask(__name__)
+slackify = Slackify(app=app)
 cli = Slack('xoxb-SECRET-token')
 
 
@@ -15,7 +17,7 @@ def text_block(text):
     }
 
 
-@app.command
+@slackify.command
 def askme():
     """Slack API recommended way of making messages interactive is through blocks
 
@@ -72,7 +74,7 @@ def askme():
     return reply(message_as_blocks)
 
 
-@app.action("yes")
+@slackify.action("yes")
 def yes():
     """You may ask here, why do we respond to response_url instead of the request itself?
 
@@ -88,7 +90,7 @@ def yes():
     return OK
 
 
-@app.action("no")
+@slackify.action("no")
 def no():
     action = json.loads(request.form["payload"])
 

@@ -1,13 +1,15 @@
+from flask import Flask
 from slackify import Slackify, request, Slack
 import json
 
 
-# Important! Before running set FLASK_APP=examples.async_task:app.app
-app = Slackify()
+# Important! Before running set FLASK_APP=examples.async_task:app
+app = Flask(__name__)
+slackify = Slackify(app=app)
 cli = Slack('xoxb-SECRET-bot-token')
 
 
-@app.shortcut('funny_joke')
+@slackify.shortcut('funny_joke')
 def tell_joke():
     payload = json.loads(request.form['payload'])
     user = payload['user']

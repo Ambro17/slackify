@@ -1,13 +1,15 @@
 import os
+from flask import Flask
 from slackify import Slackify, Slack
 
-# Important! Before running set FLASK_APP=examples.async_task:app.app
-app = Slackify()
+# Important! Before running set FLASK_APP=examples.async_task:app
+app = Flask(__name__)
+slackify = Slackify(app=app)
 
 slack = Slack(os.environ["SLACK_BOT_TOKEN"])
 
 
-@app.event("message")
+@slackify.event("message")
 def handle_message(payload):
     """Listen to messages containing `python` and react with python emoji
 

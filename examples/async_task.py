@@ -1,12 +1,14 @@
 import time
+from flask import Flask
 from slackify import Slackify, async_task, reply_text, Slack
 
-# Important! Before running set FLASK_APP=examples.async_task:app.app (Yes, app.app)
-app = Slackify()
+# Important! Before running set FLASK_APP=examples.async_task:app
+app = Flask(__name__)
+slackify = Slackify(app=app)
 cli = Slack('xoxb-SECRET-token')
 
 
-@app.command()
+@slackify.command()
 def hello():
     my_background_job()
     return reply_text('Instant Response')

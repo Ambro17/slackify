@@ -245,9 +245,7 @@ def test_override_error_handler(bare_app, bare_client):
                           content_type='application/x-www-form-urlencoded')
     assert b'Something went wrong..' == rv.data
 
-    app = bare_app
-
-    @app.error
+    @bare_app.error
     def new_handler(exception):
         return 'Sorry'
 

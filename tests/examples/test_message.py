@@ -121,20 +121,19 @@ def test_message_is_captured_if_it_matches_precompiled_regex(test_app, bare_clie
 
 
 def test_invalid_message_usage(test_app):
-    app = test_app
 
     with pytest.raises(TypeError, match="'message' must be either str or a compiled regex."):
-        @app.message(b'123')
+        @test_app.message(b'123')
         def try_it(payload):
             pass
 
     with pytest.raises(TypeError, match="'message' must be either str or a compiled regex."):
-        @app.message(123)
+        @test_app.message(123)
         def try_it_2(payload):
             pass
 
     with pytest.raises(TypeError, match=r"message\(\) missing 1 required positional argument: 'message'"):
-        @app.message()
+        @test_app.message()
         def try_it_3(payload):
             pass
 
@@ -142,7 +141,7 @@ def test_invalid_message_usage(test_app):
         TypeError,
         match=r"'message' must be either str or a compiled regex. Not <class 'function'>"
     ):
-        @app.message
+        @test_app.message
         def try_it_4(payload):
             pass
 

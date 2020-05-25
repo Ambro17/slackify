@@ -1,16 +1,18 @@
+from flask import Flask
 from slackify import Slackify, request, reply_text
 
-# Important! Before running set FLASK_APP=examples.async_task:app.app
-app = Slackify()
+# Important! Before running set FLASK_APP=examples.async_task:app
+app = Flask(__name__)
+slackify = Slackify(app=app)
 
 
-@app.command
+@slackify.command
 def hello():
     form = request.form['command']
     text = request.form['text']
     return reply_text(f'You called `{form} {text}`')
 
 
-@app.command(name='bye')
+@slackify.command(name='bye')
 def goodbye():
     return reply_text(f'Goodbye')
