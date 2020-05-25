@@ -90,7 +90,7 @@ import random
 from slackify import (ACK, OK, Slackify, async_task, block_reply, request,
                       respond, text_block, Slack)
 
-slackify = Slackify()
+app = Slackify()
 cli = Slack(os.getenv('BOT_TOKEN'))
 
 
