@@ -272,6 +272,33 @@ def say_hi(payload):
     cli.chat_postMessage(channel=event['channel'], text='Hi! 👋')
 ```
 
+## Usage as a Blueprint
+If you already have a Flask app, you can attach 
+flask functionality _slackifying_ your blueprint
+```python
+# slack_blueprint.py
+from flask import Blueprint
+from slackify import Slackify, reply_text
+
+bp = Blueprint('slackify_bp', __name__, url_prefix='/slack')
+slackify = Slackify(app=bp)
+
+
+@slackify.command
+def hello():
+    return reply_text('Hello from a blueprint')
+
+
+# app.py
+from flask import Flask
+from slack_blueprint import bp
+
+def create_app():
+    app = Flask(__name__)
+    app.register_blueprint(bp)
+    return app
+
+```
 
 ## API Reference
 ```python
@@ -342,4 +369,3 @@ Below you can find the current roadmap of features i would like to include.
 
 ## Roadmap
 1. Inject payload argument to slack event handlers to avoid code repetition on loading request data.
-2. Add example with `Flask` app factory pattern with the lib as a blueprint
