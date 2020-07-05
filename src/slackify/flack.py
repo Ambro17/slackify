@@ -1,3 +1,5 @@
+from typing import Callable
+from build.lib.slackify import injector
 from inspect import signature
 import logging
 import re
@@ -88,8 +90,14 @@ class Slackify:
             logger.exception('Something bad happened.')
             return self._handle_error(e)
 
-        rule = request.url_rule
-        rule.endpoint = f'{self.app.name}.{endpoint}' if self._is_blueprint() else endpoint
+        view_func = self._get_endpoint_handler(endpoint)
+        injected_func = injector.inject(view_func)
+        return injected_func(**request.view_args)
+
+    def _get_endpoint_handler(self, endpoint):
+        endpoint = f'{self.app.name}.{endpoint}' if self._is_blueprint() else endpoint
+        view_func = self.app.view_functions[endpoint]
+        return view_func
 
     def _should_handle_request(self, req):
         return req.method == 'POST' and request.path == self._endpoint
@@ -125,12 +133,12 @@ class Slackify:
         Usage:
             >>>@command
             >>>def hola():
-            >>>    print('hola', kwargs)
+            >>>    print('hola')
 
 
             >>>@command(name='goodbye')
             >>>def chau():
-            >>>    print('chau', kwargs)
+            >>>    print('chau')
         """
         def decorate(func):
             command = options.pop('name', func.__name__)
