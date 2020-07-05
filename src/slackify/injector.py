@@ -26,8 +26,27 @@ class Injector:
             param: self.injectors[param]()
             for param in params_to_inject
         }
-        fn = functools.partial(fn, **injected_args)
+        if injected_args:
+            fn = functools.partial(fn, **injected_args)
+
         return fn
+
+    def inject2(self, fn: Callable) -> Callable:
+        """Inject parameters declared as function dependencies and return the injected function
+        
+        Note: 
+            Functions should be injected *at call time*, rather than function definition time, 
+            as injectors might need flask request context that's only available at call timec
+        """
+        parameters = inspect.signature(fn).parameters
+        params_to_inject = [p for p in parameters if p in self.injectors]
+
+        for param in params_to_inject:
+            inject_param = self.injectors[param]
+            fn = functools.partial(fn, inject_param())
+
+        return fn
+
 
 
 def get_payload():
