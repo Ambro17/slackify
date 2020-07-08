@@ -1,6 +1,5 @@
 # slack_blueprint.py
-from flask import Blueprint
-from slackify import Slackify, reply_text
+from slackify import Slackify, Blueprint, reply_text
 
 bp = Blueprint('slackify_bp', __name__, url_prefix='/slack')
 slackify = Slackify(app=bp)

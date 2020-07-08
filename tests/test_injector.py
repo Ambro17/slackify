@@ -1,10 +1,9 @@
-from flask.blueprints import Blueprint
 from build.lib import slackify
 from tests.conftest import bare_app, bare_client
 from flask import Flask
 import pytest
 
-from slackify import Slackify
+from slackify import Slackify, Blueprint
 from slackify.injection import Injector
 
 
@@ -113,12 +112,8 @@ def test_injector_with_blueprint():
     app = Flask('Bare')
     app.register_blueprint(bp)
  
-    import pdb; pdb.set_trace()
     with app.test_client() as client:
         rv = client.post('/bp_url_prefix/slack',
                         data={'command': '/greeting'},
                         content_type='application/x-www-form-urlencoded')
         assert b'I am /greeting' == rv.data, rv.data
-
-# TypeError: hello() missing 1 required positional argument: 'command'
-# Flask routing should be overriden to allow extra args that were unknown on registration.

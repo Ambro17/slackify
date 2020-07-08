@@ -1,5 +1,5 @@
 from typing import Callable
-from build.lib.slackify import injector
+from slackify.injection import builtin_injector
 from inspect import signature
 import logging
 import re
@@ -25,12 +25,14 @@ class Slackify:
         app=None,
         emitter=None,
         dispatcher=None,
+        injector=None,
         **kwargs
     ):
         self.app = app or Flask(__name__)
         self._configure_app(endpoint, events_endpoint)
         self.dispatcher = dispatcher or Dispatcher()
         self.emitter = emitter or ExecutorEventEmitter()
+        self.injector = injector or builtin_injector
 
     def _configure_app(self, endpoint, events_endpoint):
         """Configure app to redirect slack requests if they match a registered handler"""
@@ -91,7 +93,7 @@ class Slackify:
             return self._handle_error(e)
 
         view_func = self._get_endpoint_handler(endpoint)
-        injected_func = injector.inject(view_func)
+        injected_func = self.injector.inject(view_func)
         return injected_func(**request.view_args)
 
     def _get_endpoint_handler(self, endpoint):
