@@ -366,6 +366,3 @@ In other words, when you decorate a function with `app.event('event_type')` what
 If after reading this you have an idea of how we can extend or improve this lib in any way, i would be really grateful to receive an issue or pull request!
 I feel there's still a void on slack bots with python that java and javascript have covered with [bolt's](https://github.com/slackapi/bolt) beautiful API.
 Below you can find the current roadmap of features i would like to include.
-
-## Roadmap
-1. Inject payload argument to slack event handlers to avoid code repetition on loading request data.
