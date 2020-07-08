@@ -72,7 +72,7 @@ def test_inject_all_args(injector):
     assert injected() == ('A', 'B', 'C', 'D')
 
 
-def test_injected_args_must_be_the_first_args_or_bad_things_may_happen(injector):
+def test_injected_args_must_be_the_first_args_or_it_will_mix_the_args_order(injector):
     def func(a, not_injected, b):
         return a, not_injected, b
 
