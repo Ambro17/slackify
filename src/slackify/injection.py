@@ -45,10 +45,6 @@ def get_command() -> str:
 def get_response_url() -> str:
     return request.form["response_url"]
 
-def get_shortcut() -> dict:
-    """Global and message shortcuts have json content type"""
-    return request.get_json()['payload']
-
 
 injector = Injector(
     injectors={
@@ -56,6 +52,5 @@ injector = Injector(
         'command': get_command,
         'command_args': get_command_args,
         'response_url': get_response_url,
-        'shortcut': get_shortcut,
     }
 )
