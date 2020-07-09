@@ -90,13 +90,23 @@ def test_injector_with_real_app(bare_app, bare_client):
     client = bare_client
 
     @slackify.command
-    def hello(command):
-        return f'I am {command}'
+    def hello(command, command_args, response_url, payload):
+        return f'{command} {command_args} at {response_url} {payload}'
 
+    form_data = {
+        'command': '/hello',
+        'text': 'From Argentina',
+        'response_url': 'http://lasmalvinassonargentinas.com.ar',
+        'payload': '{}',
+    }
     rv = client.post('/',
-                     data={'command': '/hello'},
+                     data=form_data,
                      content_type='application/x-www-form-urlencoded')
-    assert b'I am /hello' == rv.data
+    assert b'/hello From Argentina at http://lasmalvinassonargentinas.com.ar {}' == rv.data
+
+
+def test_injector_repr_copies_instantiation():
+    assert repr(Injector({'a': 1, 'b': 2})) == "Injector(injectors={'a': 1, 'b': 2})"
 
 
 def test_injector_with_blueprint():
