@@ -2,6 +2,8 @@ from flask import Flask
 from slackify import Slackify, request, text_block, Slack, ACK
 import json
 
+from slackify.tasks import async_task
+
 
 # Important! Before running set FLASK_APP=examples.async_task:app
 app = Flask(__name__)
@@ -97,5 +99,6 @@ def register_callback():
     return ACK
 
 
+@async_task
 def send_message(cli, blocks, user_id):
     return cli.chat_postMessage(channel=user_id, user_id=user_id, blocks=blocks)

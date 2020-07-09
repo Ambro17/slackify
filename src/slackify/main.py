@@ -1,3 +1,4 @@
+from slackify.injection import injector as builtin_injector
 from inspect import signature
 import logging
 import re
@@ -23,12 +24,14 @@ class Slackify:
         app=None,
         emitter=None,
         dispatcher=None,
+        injector=None,
         **kwargs
     ):
         self.app = app or Flask(__name__)
         self._configure_app(endpoint, events_endpoint)
         self.dispatcher = dispatcher or Dispatcher()
         self.emitter = emitter or ExecutorEventEmitter()
+        self.injector = injector or builtin_injector
 
     def _configure_app(self, endpoint, events_endpoint):
         """Configure app to redirect slack requests if they match a registered handler"""
@@ -88,8 +91,14 @@ class Slackify:
             logger.exception('Something bad happened.')
             return self._handle_error(e)
 
-        rule = request.url_rule
-        rule.endpoint = f'{self.app.name}.{endpoint}' if self._is_blueprint() else endpoint
+        view_func = self._get_endpoint_handler(endpoint)
+        injected_func = self.injector.inject(view_func)
+        return injected_func(**request.view_args)
+
+    def _get_endpoint_handler(self, endpoint):
+        endpoint = f'{self.app.name}.{endpoint}' if self._is_blueprint() else endpoint
+        view_func = self.app.view_functions[endpoint]
+        return view_func
 
     def _should_handle_request(self, req):
         return req.method == 'POST' and request.path == self._endpoint
@@ -107,9 +116,16 @@ class Slackify:
     def _handle_error(self, e):
         return self.app.make_response(('Something went wrong..', 500))
 
-    def shortcut(self, callback_id, **options):
+    def shortcut(self, shortcut_id: str, **options):
+        """
+        Usage:
+            >>>@slackify.shortcut('shortcut-id')
+            >>>def hello():
+            >>>    ...
+        """
+
         def register_handler(shortcut_handler):
-            command = callback_id
+            command = shortcut_id
             self.app.add_url_rule(f'/{command}', command, shortcut_handler, **options)
             self.dispatcher.add_matcher(ShortcutMatcher(command))
             return shortcut_handler
@@ -125,12 +141,12 @@ class Slackify:
         Usage:
             >>>@command
             >>>def hola():
-            >>>    print('hola', kwargs)
+            >>>    print('hola')
 
 
             >>>@command(name='goodbye')
             >>>def chau():
-            >>>    print('chau', kwargs)
+            >>>    print('chau')
         """
         def decorate(func):
             command = options.pop('name', func.__name__)

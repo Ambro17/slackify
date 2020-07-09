@@ -1,5 +1,5 @@
-pytest
-pytest-mock
-pytest-cov
 codecov
 flake8
+pytest
+pytest-cov
+pytest-mock
