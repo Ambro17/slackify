@@ -207,7 +207,7 @@ def test_raise_exception_on_post_to_invalid_route(client):
 
 def test_shortcut_without_id_fails(bare_app):
 
-    with pytest.raises(TypeError, match=r'shortcut\(\) missing 1 required positional argument: \'callback_id\''):
+    with pytest.raises(TypeError, match=r'shortcut\(\) missing 1 required positional argument: \'shortcut_id\''):
         @bare_app.shortcut()
         def helper():
             return 0
