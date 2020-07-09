@@ -1,4 +1,3 @@
-from typing import Callable
 from slackify.injection import builtin_injector
 from inspect import signature
 import logging

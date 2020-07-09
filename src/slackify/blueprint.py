@@ -3,7 +3,7 @@ from flask import Blueprint as BP
 
 class Blueprint(BP):
     """Allow polymorhpic treatment of apps and blueprints while rerouting requests.
-    
+
     See `Slackify._get_endpoint_handler` for details of why this is required.
     """
 

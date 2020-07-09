@@ -1,5 +1,3 @@
-from build.lib import slackify
-from tests.conftest import bare_app, bare_client
 from flask import Flask
 import pytest
 
@@ -111,9 +109,9 @@ def test_injector_with_blueprint():
 
     app = Flask('Bare')
     app.register_blueprint(bp)
- 
+
     with app.test_client() as client:
         rv = client.post('/bp_url_prefix/slack',
-                        data={'command': '/greeting'},
-                        content_type='application/x-www-form-urlencoded')
+                         data={'command': '/greeting'},
+                         content_type='application/x-www-form-urlencoded')
         assert b'I am /greeting' == rv.data, rv.data

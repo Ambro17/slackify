@@ -15,4 +15,4 @@ def hello():
 
 @slackify.command(name='bye')
 def goodbye():
-    return reply_text(f'Goodbye')
+    return reply_text('Goodbye')

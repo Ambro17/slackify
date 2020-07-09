@@ -14,9 +14,9 @@ class Injector:
 
     def inject(self, fn: Callable) -> Callable:
         """Inject parameters declared as function dependencies and return the injected function
-        
-        Note: 
-            Functions should be injected *at call time*, rather than function definition time, 
+
+        Note:
+            Functions should be injected *at call time*, rather than function definition time,
             as injectors might need flask request context that's only available at call timec
         """
         parameters = inspect.signature(fn).parameters
@@ -44,7 +44,7 @@ def get_command() -> str:
 
 def get_response_url() -> str:
     return request.form["response_url"]
-    
+
 def get_shortcut() -> dict:
     """Global and message shortcuts have json content type"""
     return request.get_json()['payload']

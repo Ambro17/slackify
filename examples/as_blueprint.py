@@ -11,7 +11,7 @@ def hello():
 
 
 # app.py
-from flask import Flask
+from flask import Flask                                 # noqa: Ignore E402, as it is an example
 # from slack_blueprint import bp
 
 def create_app():

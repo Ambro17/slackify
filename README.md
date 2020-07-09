@@ -273,7 +273,7 @@ def say_hi(payload):
 ```
 
 ## Usage as a Blueprint
-If you already have a Flask app, you can attach 
+If you already have a Flask app, you can attach
 flask functionality _slackifying_ your blueprint
 ```python
 # slack_blueprint.py
@@ -333,7 +333,7 @@ or
 @slackify.default
 
 # Handle unexpected errors that occur inside handlers.
-# By default returns status 500 and a generic message. 
+# By default returns status 500 and a generic message.
 # The exception will be passed as a positional argument to the decorated function
 @slackify.error
 ```
@@ -349,11 +349,11 @@ The lib exposes a main class called `Slackify` that can either receive a Flask i
 as `app` argument or creates one on the fly.
 It then binds two routes. One for commands, shortcuts, actions and another one for slack events.
 
-The first route is `/` by default, it inspects the incoming requests and looks for any declared handler that is interested in handling this request to redirect it. 
+The first route is `/` by default, it inspects the incoming requests and looks for any declared handler that is interested in handling this request to redirect it.
 
 If it finds a handler, it redirects the request to that function by overriding its `Request.url_rule.endpoint`
 
-If there's no match, it ignores the request and it follows the 
+If there's no match, it ignores the request and it follows the
 normal request lifecycle.
 
 If there's an error, an overridable function through `@slackify.error` is executed to show a friendly message.
