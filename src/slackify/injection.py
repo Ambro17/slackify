@@ -46,12 +46,13 @@ def get_response_url() -> str:
     return request.form["response_url"]
 
 
-injector = Injector(
-    injectors={
-        'action': get_payload,
-        'payload': get_payload,
-        'command': get_command,
-        'command_args': get_command_args,
-        'response_url': get_response_url,
-    }
-)
+BUILTIN_INJECTORS = {
+    'action': get_payload,
+    'payload': get_payload,
+    'command': get_command,
+    'command_args': get_command_args,
+    'response_url': get_response_url,
+}
+
+
+injector = Injector(injectors=BUILTIN_INJECTORS)
