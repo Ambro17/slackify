@@ -1,6 +1,7 @@
-from slackify import Slackify
-from flask import Blueprint, Flask
 import pytest
+from flask import Flask
+
+from slackify import Slackify, Blueprint
 
 
 def test_we_can_add_a_custom_endpoint_besides_blueprint_prefix():

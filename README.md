@@ -78,6 +78,21 @@ Yes! See [examples/actions.py](examples/actions.py) for a quickstart.
 ### And slack events?
 As you may have guessed, they are also supported. See [examples/events.py](examples/events.py) for an example.
 
+## Dependency Injection
+As you grow more and more commands you will find yourself repeating request parsing on every function
+
+The lib offers a solution to this with dependency injection.
+```python
+@slackify.command
+def hello(command, command_args, response_url):
+    return reply_text(f"You called `{command} {command_args}`. Use {response_url} for delayed responses")
+```
+Your view function will now get the request command, arguments and response_url for free! Pretty cool, right?
+
+If you are a user of pytest, this idea is similar to pytest fixtures
+
+See [examples/injection.py](examples/injection.py) for the full example
+
 
 ## Full example
 Here you have a more complete example showcasing all functionality. It includes:
@@ -143,20 +158,18 @@ def hello():
 
 
 @slackify.action("yes")
-def yes():
+def yes(payload):
     """If a user clicks yes on the message above, execute this callback"""
-    action = json.loads(request.form["payload"])
     text_blok = text_block('Super! I do too :thumbsup:')
-    respond(action['response_url'], {'blocks': [text_blok]})
+    respond(payload['response_url'], {'blocks': [text_blok]})
     return OK
 
 
 @slackify.action("no")
-def no():
+def no(payload):
     """If a user clicks no on the hello message, execute this callback"""
-    action = json.loads(request.form["payload"])
     text_blok = text_block('Boo! You are so boring :thumbsdown:')
-    respond(action['response_url'], {'blocks': [text_blok]})
+    respond(payload['response_url'], {'blocks': [text_blok]})
     return OK
 
 
@@ -230,12 +243,11 @@ def register():
 
 
 @slackify.view("registration_form")
-def register_callback():
+def register_callback(payload):
     """Handle registration form submission."""
-    action = json.loads(request.form["payload"])
-    response = action['view']['state']['values']
+    response = payload['view']['state']['values']
     text_blok = text_block(f':heavy_check_mark: You are now registered.\nForm payload:\n```{response}```')
-    send_message(cli, [text_blok], action['user']['id'])
+    send_message(cli, [text_blok], payload['user']['id'])
     return ACK
 
 
@@ -245,9 +257,8 @@ def send_message(cli, blocks, user_id):
 
 
 @slackify.shortcut('dice_roll')
-def dice_roll():
+def dice_roll(payload):
     """Roll a virtual dice to give a pseudo-random number"""
-    payload = json.loads(request.form['payload'])
     dice_value = random.randint(1, 6)
     msg = f'🎲 {dice_value}'
     send_message(cli, blocks=[text_block(msg)], user_id=payload['user']['id'])
@@ -277,8 +288,7 @@ If you already have a Flask app, you can attach
 flask functionality _slackifying_ your blueprint
 ```python
 # slack_blueprint.py
-from flask import Blueprint
-from slackify import Slackify, reply_text
+from slackify import Slackify, reply_text, Blueprint
 
 bp = Blueprint('slackify_bp', __name__, url_prefix='/slack')
 slackify = Slackify(app=bp)
@@ -299,6 +309,7 @@ def create_app():
     return app
 
 ```
+> Note: You must import Blueprint from slackify instead of flask to get it working
 
 ## API Reference
 ```python
@@ -351,7 +362,7 @@ It then binds two routes. One for commands, shortcuts, actions and another one f
 
 The first route is `/` by default, it inspects the incoming requests and looks for any declared handler that is interested in handling this request to redirect it.
 
-If it finds a handler, it redirects the request to that function by overriding its `Request.url_rule.endpoint`
+If it finds a handler, it injects any dependency the view may require as a view argument, and then call the view function, passing the return value as the request response.
 
 If there's no match, it ignores the request and it follows the
 normal request lifecycle.
@@ -363,6 +374,6 @@ The second route the lib adds is the events route at `/slack/events`.
 When it receives a post request, it emits an event through `pyee.ExecutorEventEmitter` with the event type and quickly responds with the response acknowledgment slack requires to avoid showing an error to the user. This allows asynchronous execution of the function, while still responding quickly to slack.
 In other words, when you decorate a function with `app.event('event_type')` what you are really doing is setting up a listener for the `event_type` that will receive the event payload. No magic.
 
-If after reading this you have an idea of how we can extend or improve this lib in any way, i would be really grateful to receive an issue or pull request!
+If after reading this you have an idea of how we can extend or improve this lib in any way, it would be great to receive an issue or pull request!
 I feel there's still a void on slack bots with python that java and javascript have covered with [bolt's](https://github.com/slackapi/bolt) beautiful API.
 Below you can find the current roadmap of features i would like to include.
