@@ -1,4 +1,3 @@
-import json
 import os
 import random
 
@@ -51,16 +50,14 @@ def hello():
 
 
 @slackify.action("yes")
-def yes():
-    action = json.loads(request.form["payload"])
+def yes(action):
     text_blok = text_block('Super! I do too :thumbsup:')
     respond(action['response_url'], {'blocks': [text_blok]})
     return OK
 
 
 @slackify.action("no")
-def no():
-    action = json.loads(request.form["payload"])
+def no(action):
     text_blok = text_block('Boo! You are so boring :thumbsdown:')
     respond(action['response_url'], {'blocks': [text_blok]})
     return OK
@@ -135,11 +132,10 @@ def register():
 
 
 @slackify.view("registration_form")
-def register_callback():
-    action = json.loads(request.form["payload"])
-    response = action['view']['state']['values']
+def register_callback(payload):
+    response = payload['view']['state']['values']
     text_blok = text_block(f':heavy_check_mark: You are now registered.\nForm payload:\n```{response}```')
-    send_message(cli, [text_blok], action['user']['id'])
+    send_message(cli, [text_blok], payload['user']['id'])
     return ACK
 
 
@@ -149,8 +145,7 @@ def send_message(cli, blocks, user_id):
 
 
 @slackify.shortcut('dice_roll')
-def dice_roll():
-    payload = json.loads(request.form['payload'])
+def dice_roll(payload):
     dice_value = random.randint(1, 6)
     msg = f'🎲 {dice_value}'
     send_message(cli, blocks=[text_block(msg)], user_id=payload['user']['id'])

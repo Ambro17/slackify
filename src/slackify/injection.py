@@ -48,6 +48,7 @@ def get_response_url() -> str:
 
 injector = Injector(
     injectors={
+        'action': get_payload,
         'payload': get_payload,
         'command': get_command,
         'command_args': get_command_args,
