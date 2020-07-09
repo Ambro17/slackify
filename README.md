@@ -80,7 +80,7 @@ Yes! See [examples/actions.py](examples/actions.py) for a quickstart.
 As you may have guessed, they are also supported. See [examples/events.py](examples/events.py) for an example.
 
 ## Dependency Injection
-As you grow more and more commands you will find yourself repeating request parsing on every function
+As you add more and more commands you will find yourself repeating yourself while parsing slack request on every function
 
 The lib offers a solution to this with dependency injection.
 ```python
