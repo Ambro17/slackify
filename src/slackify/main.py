@@ -116,9 +116,16 @@ class Slackify:
     def _handle_error(self, e):
         return self.app.make_response(('Something went wrong..', 500))
 
-    def shortcut(self, callback_id, **options):
+    def shortcut(self, shortcut_id: str, **options):
+        """
+        Usage:
+            >>>@slackify.shortcut('shortcut-id')
+            >>>def hello():
+            >>>    ...
+        """
+
         def register_handler(shortcut_handler):
-            command = callback_id
+            command = shortcut_id
             self.app.add_url_rule(f'/{command}', command, shortcut_handler, **options)
             self.dispatcher.add_matcher(ShortcutMatcher(command))
             return shortcut_handler
