@@ -1,6 +1,7 @@
 # Slackify
 ![Build & Test](https://github.com/Ambro17/flask-slack/workflows/Build%20&%20Test/badge.svg)
 [![codecov](https://codecov.io/gh/Ambro17/flask-slack/branch/master/graph/badge.svg)](https://codecov.io/gh/Ambro17/flask-slack)
+[![pre-commit](https://img.shields.io/badge/pre--commit-enabled-brightgreen?logo=pre-commit&logoColor=white)](https://github.com/pre-commit/pre-commit)
 
 `Slackify` is a light framework designed to accelerate your development of slack apps by letting you focus on **what you want** instead of fighting with *how to do it*
 
