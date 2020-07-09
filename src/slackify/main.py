@@ -1,4 +1,4 @@
-from slackify.injection import builtin_injector
+from slackify.injection import injector as builtin_injector
 from inspect import signature
 import logging
 import re
