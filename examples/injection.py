@@ -1,6 +1,5 @@
 from flask import Flask
-from slackify import Slackify, reply_text
-from slackify.slack import block_reply, text_block
+from slackify import Slackify, reply_text, block_reply, text_block
 
 app = Flask(__name__)
 slackify = Slackify(app=app)
