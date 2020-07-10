@@ -16,5 +16,3 @@ repos:
       - id: flake8
         language_version: python3
         args: ['src/slackify', 'tests']
-    stages:
-      - push

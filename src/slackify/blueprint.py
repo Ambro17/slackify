@@ -10,3 +10,4 @@ class Blueprint(BP):
     def register(self, app, options, first_registration: bool):
         super().register(app, options, first_registration)
         self.view_functions = app.view_functions
+        self.url_prefix = options.get('url_prefix') or self.url_prefix

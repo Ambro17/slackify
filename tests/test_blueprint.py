@@ -1,7 +1,6 @@
-import pytest
-from flask import Flask
-
 from slackify import Slackify, Blueprint
+from flask import Flask
+import pytest
 
 
 def test_we_can_add_a_custom_endpoint_besides_blueprint_prefix():
@@ -21,6 +20,27 @@ def test_we_can_add_a_custom_endpoint_besides_blueprint_prefix():
                      content_type='application/x-www-form-urlencoded')
     assert rv.status == '200 OK'
     assert rv.data == b'Hello from special endpoint'
+
+
+def test_blueprint_with_overriden_prefix_on_registration():
+    bp = Blueprint('BP', __name__, url_prefix='/first')
+    slackify = Slackify(app=bp)
+
+    @slackify.command
+    def hello():
+        return 'Hii'
+
+    app = Flask('Bare')
+    app.register_blueprint(bp, url_prefix='/second')
+    assert bp.url_prefix == '/second'  # Slackify instance is not Accessible in blueprint.register
+    print(app.url_map)
+
+    client = app.test_client()
+    rv = client.post('/second/',
+                     data={'command': '/hello'},
+                     content_type='application/x-www-form-urlencoded')
+    assert rv.status == '200 OK'
+    assert rv.data == b'Hii'
 
 
 def test_we_cant_use_a_bp_with_no_url_prefix():
