@@ -5,7 +5,6 @@
 
 `Slackify` is a light framework designed to accelerate your development of slack apps by letting you focus on **what you want** instead of fighting with *how to do it*
 
-To do so, it stands on the shoulders of `Flask` and `slackclient` (_The official python slack client_) and offers a more declarative API over slack commands, events, shortcuts, actions and modals.
 
 ## Installation
 `python3 -m pip install slackify`
@@ -353,6 +352,9 @@ or
 ```
 
 
+## Dependencies
+This projects uses `Flask` as the web server and `slackclient` (_The official python slack client_) as slacks' API wrapper
+
 ## How does it work?
 If you are curious you may want to know how the lib works.
 
@@ -377,6 +379,5 @@ The second route the lib adds is the events route at `/slack/events`.
 When it receives a post request, it emits an event through `pyee.ExecutorEventEmitter` with the event type and quickly responds with the response acknowledgment slack requires to avoid showing an error to the user. This allows asynchronous execution of the function, while still responding quickly to slack.
 In other words, when you decorate a function with `app.event('event_type')` what you are really doing is setting up a listener for the `event_type` that will receive the event payload. No magic.
 
-If after reading this you have an idea of how we can extend or improve this lib in any way, it would be great to receive an issue or pull request!
-I feel there's still a void on slack bots with python that java and javascript have covered with [bolt's](https://github.com/slackapi/bolt) beautiful API.
-Below you can find the current roadmap of features i would like to include.
+If after reading this you have an idea of how we can extend or improve this lib in any way, feel free to open an issue or pull request!
+I feel there's still a gap bewtween developing slack bots with python and doing it with java or javascript as they have [bolt's](https://github.com/slackapi/bolt) beautiful API. This lib attempts to offer a similar API to enjoy writing bots.
