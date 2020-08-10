@@ -1,9 +1,18 @@
 # Slackify
-![Build & Test](https://github.com/Ambro17/flask-slack/workflows/Build%20&%20Test/badge.svg)
-[![codecov](https://codecov.io/gh/Ambro17/flask-slack/branch/master/graph/badge.svg)](https://codecov.io/gh/Ambro17/flask-slack)
-[![pre-commit](https://img.shields.io/badge/pre--commit-enabled-brightgreen?logo=pre-commit&logoColor=white)](https://github.com/pre-commit/pre-commit)
+<p align="center">
+    <img src="https://raw.githubusercontent.com/Ambro17/slackify/master/docs/logopro.svg" title="Logo">
+</p>
+<p align="center">
+    <img alt="Build" src="https://github.com/Ambro17/flask-slack/workflows/Build%20&%20Test/badge.svg">
+    <a href="https://codecov.io/gh/Ambro17/slackify">
+        <img alt="Codecov" src="https://codecov.io/gh/Ambro17/flask-slack/branch/master/graph/badge.svg">
+    </a>
+    <img alt="pre-commit" src="https://img.shields.io/badge/pre--commit-enabled-brightgreen?logo=pre-commit&logoColor=white">
+</p>
+<p align="center">
+    <i><b>Slackify</i></b> is a lightweight framework that lets you to write slack bots focusing on <b>what you want</b> instead of fighting with <i>how to do it</i>
+</p>
 
-`Slackify` is a light framework designed to accelerate your development of slack apps by letting you focus on **what you want** instead of fighting with *how to do it*
 
 
 ## Installation
