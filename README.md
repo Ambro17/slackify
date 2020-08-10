@@ -84,22 +84,6 @@ Yes! See [examples/actions.py](examples/actions.py) for a quickstart.
 ### And slack events?
 As you may have guessed, they are also supported. See [examples/events.py](examples/events.py) for an example.
 
-## Dependency Injection
-As you add more and more commands you will find yourself repeating yourself while parsing slack request on every function
-
-The lib offers a solution to this with dependency injection.
-```python
-@slackify.command
-def hello(command, command_args, response_url):
-    return reply_text(f"You called `{command} {command_args}`. Use {response_url} for delayed responses")
-```
-Your view function will now get the request command, arguments and response_url for free! Pretty cool, right?
-
-If you are a user of pytest, this idea is similar to pytest fixtures
-
-See [examples/injection.py](examples/injection.py) for the full example
-
-
 ## Full example
 Here you have a more complete example showcasing all functionality. It includes:
 - A hello command that shows interactive buttons
@@ -291,6 +275,25 @@ def say_hi(payload):
     cli.chat_postMessage(channel=event['channel'], text='Hi! 👋')
 ```
 
+
+
+## Dependency Injection
+As you add more and more commands you will find yourself parsing slack's request over and over again. 
+
+Slackify offers shortcut for this using dependency injection.
+```python
+@slackify.command
+def hello(command, command_args, response_url):
+    return reply_text(f"You called `{command} {command_args}`. Use {response_url} for delayed responses")
+```
+
+Your view function will now receive the slash command, the arguments and the response_url upon invocation. Pretty cool, right?
+
+If you are a user of pytest, this idea is similar to pytest fixtures
+
+See [examples/injection.py](examples/injection.py) for the full example
+
+
 ## Usage as a Blueprint
 If you already have a Flask app, you can attach
 flask functionality _slackifying_ your blueprint
@@ -359,7 +362,7 @@ or
 
 
 ## Dependencies
-This projects uses `Flask` as the web server and `slackclient` (_The official python slack client_) as slacks' API wrapper
+This projects uses `Flask` as the web server and `slackclient` (_The official python slack client_) as slack's API wrapper
 
 ## How does it work?
 If you are curious you may want to know how the lib works.
