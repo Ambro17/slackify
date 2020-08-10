@@ -10,7 +10,7 @@
 </p>
 
 # Slackify
-`Slackify` is a light framework designed to accelerate your development of slack apps by letting you focus on **what you want** instead of fighting with *how to do it*
+`Slackify` is a lightweight framework that lets you focus on **what you want** instead of fighting with *how to do it*
 
 ## Installation
 `python3 -m pip install slackify`
