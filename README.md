@@ -10,7 +10,7 @@
 </p>
 
 # Slackify
-`Slackify` is a lightweight framework that lets you focus on **what you want** instead of fighting with *how to do it*
+`Slackify` is a lightweight framework that lets you quickly develop modern Slack bots focusing in **what you want** instead of struggling with *how to do it*
 
 ## Installation
 `python3 -m pip install slackify`
