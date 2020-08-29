@@ -1,5 +1,6 @@
 import os
 import random
+import re
 
 from flask import Flask
 from slackify import (ACK, OK, Slackify, async_task, block_reply,
@@ -167,3 +168,13 @@ def echo_reaction(payload):
 def say_hi(payload):
     event = payload['event']
     cli.chat_postMessage(channel=event['channel'], text='Hi! 👋')
+
+
+@slackify.message(re.compile(r'python', re.IGNORECASE))
+def reply_python_emoji(payload):
+    event = payload['event']
+    cli.reactions_add(
+        name='snake',
+        channel=event['channel'],
+        timestamp=event['ts']
+    )
