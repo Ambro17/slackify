@@ -1,7 +1,7 @@
 import functools
 import inspect
 import json
-from typing import Callable, Mapping
+from typing import Any, Callable, Dict, Mapping
 
 from flask import request
 
@@ -32,7 +32,7 @@ class Injector:
         return f'{type(self).__name__}(injectors={self.injectors})'
 
 
-def get_payload() -> dict:
+def get_payload() -> Dict[str, Any]:
     """Interactive actions have form content type, but contain json inside the payload key"""
     return json.loads(request.form["payload"])
 
