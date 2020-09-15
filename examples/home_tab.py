@@ -11,9 +11,10 @@ cli = Slack(os.getenv('SLACK_BOT_TOKEN'))
 
 
 @slackify.event('app_home_opened')
-def show_home():
+def show_home(payload):
 	{
 		"type": "home",
+		"callback_id": "show_home_tab",
 		"blocks": [
 			{
 				"type": "header",
@@ -187,8 +188,14 @@ def show_home():
 		}
 	cli.views_publish(
 		trigger_id = request.form['trigger_id'],
-		view = registration_form
+		view = show_home_tab
 		)
+	return ACK
+
+@slackify.view("show_home_tab")
+def home_tab_callback():
+	action = json.loads(request.form["payload"])
+	response = action['view']['state']['values']
 	return ACK
 
 
