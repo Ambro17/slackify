@@ -192,6 +192,7 @@ def show_home(payload):
 		)
 	return ACK
 
+
 @slackify.view("show_home_tab")
 def home_tab_callback():
 	action = json.loads(request.form["payload"])
