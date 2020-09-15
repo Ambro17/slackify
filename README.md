@@ -74,6 +74,9 @@ To connect it to slack you need to meet this preconditions:
 ### Does it support new slack Shorcuts?
 Yes, See [examples/shortcuts.py](examples/shortcuts.py) for a self contained example
 
+### Does it support Slack's new Block Kit?
+Yes, See [examples/using_blocks.py](using_blocks.py) for a self contained example
+
 ### And can i use new slack Modals?
 Of course! See [examples/views.py](examples/views.py) for a quick example
 
