@@ -74,7 +74,7 @@ def register():
 		trigger_id = request.form['trigger_id'],
 		view = registration_form
 		)
-	return OK
+	return ACK
 
 
 @slackify.view("registration_form")
