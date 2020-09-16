@@ -50,6 +50,3 @@ def say_hi(payload):
 			]
 		)
 
-
-if __name__ == "__main__":
-	app.run(port = os.environ.get('PORT'))

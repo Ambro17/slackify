@@ -74,23 +74,11 @@ def register():
 		trigger_id = request.form['trigger_id'],
 		view = registration_form
 		)
-	return ACK
+	return OK
 
 
 @slackify.view("registration_form")
 def register_callback():
-	"""You may ask here, why DON'T we also use the response_url as we did in actions.py?
-
-	Well, slack doesn't include a response_url on view_submission payload.
-	https://api.slack.com/surfaces/modals/using#handling_submissions#modal_response_url
-	From that link we understand we have 3 options:
-	- Use the WebClient API
-	- Use a webhook,
-	- Include a `conversation_select` block in your modal view.
-
-	We'll stick to the first one as it is the easiest for demostration purposes. But
-	read the link to respond by any of the other options.
-	"""
 	action = json.loads(request.form["payload"])
 	response = action['view']['state']['values']
 	text_blok = text_block(f':heavy_check_mark: You are now registered.\nPayload:\n```{response}```')
