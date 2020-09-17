@@ -9,9 +9,22 @@ app = Flask(__name__)
 slackify = Slackify(app = app)
 cli = Slack(os.getenv('SLACK_BOT_TOKEN'))
 
+import os
+from flask import Flask
+from slackify import Slackify, request, reply_text, Slack, ACK
 
-def show_home():
-	home_blocks = [{
+app = Flask(__name__)
+slackify = Slackify(app = app)
+cli = Slack(os.getenv('BOT_TOKEN'))
+
+
+@slackify.command
+def register():
+	user = request.form['user_id']
+	sample = {
+	"type": "home",
+	"blocks": [
+		{
 		"type": "section",
 		"text": {
 			"type": "mrkdwn",
@@ -19,36 +32,39 @@ def show_home():
 			}
 		},
 		{
-			"type": "actions",
-			"elements": [
-				{
-					"type": "button",
-					"text": {
-						"type": "plain_text",
-						"text": "Action A",
-						"emoji": True
-						}
-					},
-				{
-					"type": "button",
-					"text": {
-						"type": "plain_text",
-						"text": "Action B",
-						"emoji": True
-						}
+		"type": "actions",
+		"elements": [
+			{
+				"type": "button",
+				"action_id": "tell_joke",
+				"text": {
+					"type": "plain_text",
+					"text": "Tell me a Joke",
+					"emoji": True
 					}
-				]
-			}
+				},
+			]
+		}
 		]
-	return home_blocks
+	}
+	resp = cli.views_publish(
+		user_id = user,
+		view = sample
+		)
+	assert resp.get('ok', False), f"Could not build home tab.\nError:\n{resp.data!r}"
+	return reply_text(f'You are `{user}`.')
 
 
-@slackify.event('app_home_opened')
-def home_hook(payload):
-	event = payload["event"]
-	if (event['type'] == 'app_home_opened') and ('tab' in event) and (event['tab'] == 'home'):
-		user = event['user']
-		channel = event['channel']
-		blocks = show_home()
-		views = {"type": "home", "blocks": blocks}
-		cli.views_publish(user_id = user, view = views)
+@slackify.action('tell_joke')
+def tell_a_joke(action):
+	resp = cli.chat_postMessage(
+		channel = action['user']['id'],  # Send the user a private message through slackbot
+		text = "I can't remember any joke right now 😅"
+		)
+	assert resp.get('ok'), f"Error sending message. {resp.data}"
+	return ACK
+
+
+if __name__ == '__main__':
+	print('Running')
+	app.run('0.0.0.0', port = 3000)
