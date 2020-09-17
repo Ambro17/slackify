@@ -5,7 +5,7 @@ import re
 from flask import Flask
 from slackify import (
 	ACK, OK, Slackify, async_task, block_reply,
-	request, respond, text_block, Slack)
+	request, respond, text_block, reply_text, Slack)
 
 app = Flask(__name__)
 slackify = Slackify(app = app)
