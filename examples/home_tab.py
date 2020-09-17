@@ -2,7 +2,7 @@ import os
 
 import Slack as Slack
 
-from slackify import Slackify, Flask, Slack
+from slackify import Slackify, Flask, Slack, reply_text
 
 # Initialize App
 app = Flask(__name__)
