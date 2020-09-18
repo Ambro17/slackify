@@ -4,3 +4,4 @@ pytest
 pytest-cov
 pytest-mock
 mypy
+pdoc3
