@@ -1,6 +1,6 @@
 import json
 import re
-from typing import Any, Dict, Tuple, Union, TypeVar
+from typing import Any, Dict, Tuple
 
 import requests
 
