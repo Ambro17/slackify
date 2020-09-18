@@ -3,7 +3,7 @@ from slackify import Slackify, respond, Slack, reply, request, OK
 import json
 
 app = Flask(__name__)
-slackify = Slackify(app = app)
+slackify = Slackify(app=app)
 cli = Slack('xoxb-SECRET-token')
 
 

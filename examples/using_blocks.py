@@ -6,7 +6,7 @@ from slackify import Slackify, Flask, Slack
 
 # Initialize App
 app = Flask(__name__)
-slackify = Slackify(app = app)
+slackify = Slackify(app=app)
 cli = Slack(os.getenv('SLACK_BOT_TOKEN'))
 
 
@@ -15,9 +15,9 @@ cli = Slack(os.getenv('SLACK_BOT_TOKEN'))
 def say_hi(payload):
     event = payload['event']
     cli.chat_postMessage(
-        channel = event['channel'],
+        channel=event['channel'],
         # Blocks can be used to insert markdown support for links, images, and more. Check out https://api.slack.com/reference/block-kit for more.
-        blocks = [
+        blocks=[
             {
                 "type": "section",
                 "text": {

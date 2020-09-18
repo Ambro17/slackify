@@ -24,12 +24,12 @@ def bare_client(bare_app):
         yield client
 
 
-@pytest.fixture(scope = "session")
+@pytest.fixture(scope="session")
 def test_app():
     app = Flask(__name__)
-    slackify = Slackify(app = app)
+    slackify = Slackify(app=app)
     
-    @slackify.command(name = 'chau')
+    @slackify.command(name='chau')
     def hello():
         return 'Hello'
     
@@ -45,7 +45,7 @@ def test_app():
     def my_action():
         return 'Action'
     
-    @slackify.action(action_id = 'the-id', block_id = 'a-block-id')
+    @slackify.action(action_id='the-id', block_id='a-block-id')
     def complex_action():
         return 'Complex Action'
     
@@ -67,7 +67,7 @@ def test_app():
 @pytest.fixture
 def slackify_test():
     app = Flask(__name__)
-    slackify = Slackify(app = app)
+    slackify = Slackify(app=app)
     
     @slackify.event('reaction_added')
     def react_to_reaction(payload):

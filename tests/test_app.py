@@ -10,31 +10,31 @@ def test_home_page(client):
 def test_redirect_to_command_handler(client):
     """Redirect to /hello based on form command"""
     rv = client.post('/',
-                     data = {'command': '/chau'},
-                     content_type = 'application/x-www-form-urlencoded')
+                     data={'command': '/chau'},
+                     content_type='application/x-www-form-urlencoded')
     assert b'Hello' in rv.data
 
 
 def test_redirect_to_command_handler_using_bare_decorator(client):
     """Redirect to /hello based on form command"""
     rv = client.post('/',
-                     data = {'command': '/goodbye'},
-                     content_type = 'application/x-www-form-urlencoded')
+                     data={'command': '/goodbye'},
+                     content_type='application/x-www-form-urlencoded')
     assert b'Bye' in rv.data
 
 
 def test_function_name_gets_overriden_by_decorator_arg(client):
     rv = client.post('/',
-                     data = {'command': '/hello'},
-                     content_type = 'application/x-www-form-urlencoded')
+                     data={'command': '/hello'},
+                     content_type='application/x-www-form-urlencoded')
     assert b'Unknown Command' in rv.data
 
 
 def test_redirect_to_command_handler_fails_on_invalid_command(client):
     """Redirect to /hello based on form command"""
     rv = client.post('/',
-                     data = {'command': '/Inexistent'},
-                     content_type = 'application/x-www-form-urlencoded')
+                     data={'command': '/Inexistent'},
+                     content_type='application/x-www-form-urlencoded')
     assert b'Unknown Command' in rv.data
 
 
@@ -46,8 +46,8 @@ def test_redirect_to_shortcut_handler(client):
             })
         }
     rv = client.post('/',
-                     data = args,
-                     content_type = 'application/x-www-form-urlencoded')
+                     data=args,
+                     content_type='application/x-www-form-urlencoded')
     assert b'Shortcut' in rv.data
 
 
@@ -58,7 +58,7 @@ def test_redirect_to_shortcut_handler_invalid_id(client):
             'callback_id': 'not-a-shortcut'
             }
         }
-    rv = client.post('/', json = args)
+    rv = client.post('/', json=args)
     assert b'Unknown Command' in rv.data
 
 
@@ -67,15 +67,15 @@ def test_if_exception_is_raised_request_is_redirect_to_error_handler(client):
         'payload': "Breaking JSON"
         }
     rv = client.post('/',
-                     data = args,
-                     content_type = 'application/x-www-form-urlencoded')
+                     data=args,
+                     content_type='application/x-www-form-urlencoded')
     assert b'Something went wrong..' in rv.data
 
 
 def test_request_handling_with_no_added_matchers(bare_client):
     rv = bare_client.post('/',
-                          json = {'data': {'a': 1}},
-                          content_type = 'application/json')
+                          json={'data': {'a': 1}},
+                          content_type='application/json')
     assert '🚀 Slackify Home' == rv.data.decode('utf-8')
 
 
@@ -91,8 +91,8 @@ def test_redirect_on_action_id(client):
         "trigger_id": "",
         }
     rv = client.post('/',
-                     data = {'payload': json.dumps(payload)},
-                     content_type = 'application/x-www-form-urlencoded')
+                     data={'payload': json.dumps(payload)},
+                     content_type='application/x-www-form-urlencoded')
     
     assert b'Action' == rv.data
 
@@ -109,8 +109,8 @@ def test_action_payload_without_action_key_is_ignored(client):
         "trigger_id": "",
         }
     rv = client.post('/',
-                     data = {'payload': json.dumps(payload)},
-                     content_type = 'application/x-www-form-urlencoded')
+                     data={'payload': json.dumps(payload)},
+                     content_type='application/x-www-form-urlencoded')
     
     assert b'Unknown Command' == rv.data
 
@@ -127,16 +127,16 @@ def test_action_redirects_based_on_block_and_action_ids(client):
         "trigger_id": "",
         }
     rv = client.post('/',
-                     data = {'payload': json.dumps(payload)},
-                     content_type = 'application/x-www-form-urlencoded')
+                     data={'payload': json.dumps(payload)},
+                     content_type='application/x-www-form-urlencoded')
     
     assert b'Unknown Command' == rv.data
     
     # Fix payload acion id
     payload['actions'][0]['action_id'] = 'the-id'
     rv = client.post('/',
-                     data = {'payload': json.dumps(payload)},
-                     content_type = 'application/x-www-form-urlencoded')
+                     data={'payload': json.dumps(payload)},
+                     content_type='application/x-www-form-urlencoded')
     
     assert b'Complex Action' == rv.data
 
@@ -169,8 +169,8 @@ def test_view_decorator_captures_modal_callbacks(client):
             }
         }
     rv = client.post('/',
-                     data = {'payload': json.dumps(payload)},
-                     content_type = 'application/x-www-form-urlencoded')
+                     data={'payload': json.dumps(payload)},
+                     content_type='application/x-www-form-urlencoded')
     
     assert b'View' == rv.data
 
@@ -198,8 +198,8 @@ def test_capture_reaction_event(slackify_test, mocker):
     slackify_test.emitter = mocker.MagicMock()
     
     rv = client.post('/slack/events',
-                     json = payload,
-                     content_type = 'application/json')
+                     json=payload,
+                     content_type='application/json')
     
     assert rv.data == b''
     assert rv.status == '200 OK'
@@ -208,40 +208,40 @@ def test_capture_reaction_event(slackify_test, mocker):
 
 
 def test_action_decorator_must_receive_id_kwarg(bare_app):
-    with pytest.raises(TypeError, match = r'action\(\) missing 1 required positional argument: \'action_id\''):
+    with pytest.raises(TypeError, match=r'action\(\) missing 1 required positional argument: \'action_id\''):
         @bare_app.action
         def helper():
             return 0
 
 
 def test_raise_exception_on_post_to_invalid_route(client):
-    rv = client.post('/bad_endpoint', data = {'a': 1})
+    rv = client.post('/bad_endpoint', data={'a': 1})
     assert rv.status_code == 404
 
 
 def test_shortcut_without_id_fails(bare_app):
-    with pytest.raises(TypeError, match = r'shortcut\(\) missing 1 required positional argument: \'shortcut_id\''):
+    with pytest.raises(TypeError, match=r'shortcut\(\) missing 1 required positional argument: \'shortcut_id\''):
         @bare_app.shortcut()
         def helper():
             return 0
 
 
 def test_view_without_id_fails(bare_app):
-    with pytest.raises(TypeError, match = r'view\(\) missing 1 required positional argument: \'view_callback_id\''):
+    with pytest.raises(TypeError, match=r'view\(\) missing 1 required positional argument: \'view_callback_id\''):
         @bare_app.view()
         def helper():
             return 0
 
 
 def test_view_without_action_id_fails(bare_app):
-    with pytest.raises(TypeError, match = r'action\(\) missing 1 required positional argument: \'action_id\''):
+    with pytest.raises(TypeError, match=r'action\(\) missing 1 required positional argument: \'action_id\''):
         @bare_app.action()
         def helper():
             return 0
 
 
 def test_slack_event_challenge_is_passed(bare_client):
-    rv = bare_client.post('/slack/events', json = {'challenge': "17"})
+    rv = bare_client.post('/slack/events', json={'challenge': "17"})
     assert rv.data == b"17"
     assert rv.content_type == 'application/json'
 
@@ -251,8 +251,8 @@ def test_override_error_handler(bare_app, bare_client):
         'payload': "Not valid JSON"
         }
     rv = bare_client.post('/',
-                          data = args,
-                          content_type = 'application/x-www-form-urlencoded')
+                          data=args,
+                          content_type='application/x-www-form-urlencoded')
     assert b'Something went wrong..' == rv.data
     
     @bare_app.error
@@ -260,6 +260,6 @@ def test_override_error_handler(bare_app, bare_client):
         return 'Sorry'
     
     rv = bare_client.post('/',
-                          data = args,
-                          content_type = 'application/x-www-form-urlencoded')
+                          data=args,
+                          content_type='application/x-www-form-urlencoded')
     assert b'Sorry' == rv.data

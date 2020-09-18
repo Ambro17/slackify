@@ -1,8 +1,8 @@
 # slack_blueprint.py
 from slackify import Slackify, Blueprint, reply_text
 
-bp = Blueprint('slackify_bp', __name__, url_prefix = '/slack')
-slackify = Slackify(app = bp)
+bp = Blueprint('slackify_bp', __name__, url_prefix='/slack')
+slackify = Slackify(app=bp)
 
 
 @slackify.command

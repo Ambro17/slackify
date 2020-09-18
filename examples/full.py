@@ -8,7 +8,7 @@ from slackify import (
     request, respond, text_block, reply_text, Slack)
 
 app = Flask(__name__)
-slackify = Slackify(app = app)
+slackify = Slackify(app=app)
 cli = Slack(os.getenv('BOT_TOKEN'))
 
 
@@ -126,8 +126,8 @@ def register():
         "blocks": modal_blocks
         }
     cli.views_open(
-        trigger_id = request.form['trigger_id'],
-        view = registration_form
+        trigger_id=request.form['trigger_id'],
+        view=registration_form
         )
     return OK
 
@@ -142,14 +142,14 @@ def register_callback(payload):
 
 @async_task
 def send_message(cli, blocks, user_id):
-    return cli.chat_postMessage(channel = user_id, user_id = user_id, blocks = blocks)
+    return cli.chat_postMessage(channel=user_id, user_id=user_id, blocks=blocks)
 
 
 @slackify.shortcut('dice_roll')
 def dice_roll(payload):
     dice_value = random.randint(1, 6)
     msg = f'🎲 {dice_value}'
-    send_message(cli, blocks = [text_block(msg)], user_id = payload['user']['id'])
+    send_message(cli, blocks=[text_block(msg)], user_id=payload['user']['id'])
     return ACK
 
 
@@ -158,25 +158,25 @@ def echo_reaction(payload):
     event = payload['event']
     reaction = event['reaction']
     cli.reactions_add(
-        name = reaction,
-        channel = event['item']['channel'],
-        timestamp = event['item']['ts']
+        name=reaction,
+        channel=event['item']['channel'],
+        timestamp=event['item']['ts']
         )
 
 
 @slackify.message('hello')
 def say_hi(payload):
     event = payload['event']
-    cli.chat_postMessage(channel = event['channel'], text = 'Hi! 👋')
+    cli.chat_postMessage(channel=event['channel'], text='Hi! 👋')
 
 
 @slackify.message(re.compile(r'python', re.IGNORECASE))
 def reply_python_emoji(payload):
     event = payload['event']
     cli.reactions_add(
-        name = 'snake',
-        channel = event['channel'],
-        timestamp = event['ts']
+        name='snake',
+        channel=event['channel'],
+        timestamp=event['ts']
         )
 
 
@@ -210,8 +210,8 @@ def register():
             ]
         }
     resp = cli.views_publish(
-        user_id = user,
-        view = sample
+        user_id=user,
+        view=sample
         )
     assert resp.get('ok', False), f"Could not build home tab.\nError:\n{resp.data!r}"
     return reply_text(f'You are `{user}`.')
@@ -220,8 +220,8 @@ def register():
 @slackify.action('tell_joke')
 def tell_a_joke(action):
     resp = cli.chat_postMessage(
-        channel = action['user']['id'],  # Send the user a private message through slackbot
-        text = "I can't remember any joke right now 😅"
+        channel=action['user']['id'],  # Send the user a private message through slackbot
+        text="I can't remember any joke right now 😅"
         )
     assert resp.get('ok'), f"Error sending message. {resp.data}"
     return ACK
@@ -229,4 +229,4 @@ def tell_a_joke(action):
 
 if __name__ == '__main__':
     print('Running')
-    app.run('0.0.0.0', port = 3000)
+    app.run('0.0.0.0', port=3000)

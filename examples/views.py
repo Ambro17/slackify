@@ -6,7 +6,7 @@ from slackify.tasks import async_task
 
 # Important! Before running set FLASK_APP=examples.async_task:app
 app = Flask(__name__)
-slackify = Slackify(app = app)
+slackify = Slackify(app=app)
 cli = Slack('xoxb-SECRET-TOKEN')
 
 
@@ -71,8 +71,8 @@ def register():
         "blocks": modal_blocks
         }
     cli.views_open(
-        trigger_id = request.form['trigger_id'],
-        view = registration_form
+        trigger_id=request.form['trigger_id'],
+        view=registration_form
         )
     return ACK
 
@@ -88,4 +88,4 @@ def register_callback():
 
 @async_task
 def send_message(cli, blocks, user_id):
-    return cli.chat_postMessage(channel = user_id, user_id = user_id, blocks = blocks)
+    return cli.chat_postMessage(channel=user_id, user_id=user_id, blocks=blocks)

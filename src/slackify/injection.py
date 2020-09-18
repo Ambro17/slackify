@@ -8,10 +8,10 @@ from flask import request
 
 class Injector:
     """Inject dependencies into functions to avoid repetitive request parsing"""
-
+    
     def __init__(self, injectors: Mapping[str, Callable]):
         self.injectors = injectors
-
+    
     def inject(self, fn: Callable) -> Callable:
         """Inject parameters declared as function dependencies and return the injected function
 
@@ -21,13 +21,13 @@ class Injector:
         """
         parameters = inspect.signature(fn).parameters
         params_to_inject = [p for p in parameters if p in self.injectors]
-
+        
         for param in params_to_inject:
             inject_param = self.injectors[param]
             fn = functools.partial(fn, inject_param())
-
+        
         return fn
-
+    
     def __repr__(self) -> str:
         return f'{type(self).__name__}(injectors={self.injectors})'
 
@@ -57,4 +57,4 @@ BUILTIN_INJECTORS = {
     'response_url': get_response_url,
     }
 
-injector = Injector(injectors = BUILTIN_INJECTORS)
+injector = Injector(injectors=BUILTIN_INJECTORS)

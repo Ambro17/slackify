@@ -4,7 +4,7 @@ from slackify import Slackify, request, reply_text, Slack, ACK
 
 # Initialize App
 app = Flask(__name__)
-slackify = Slackify(app = app)
+slackify = Slackify(app=app)
 cli = Slack(os.getenv('SLACK_BOT_TOKEN'))
 
 
@@ -38,8 +38,8 @@ def register():
             ]
         }
     resp = cli.views_publish(
-        user_id = user,
-        view = sample
+        user_id=user,
+        view=sample
         )
     assert resp.get('ok', False), f"Could not build home tab.\nError:\n{resp.data!r}"
     return reply_text(f'You are `{user}`.')
@@ -48,8 +48,8 @@ def register():
 @slackify.action('tell_joke')
 def tell_a_joke(action):
     resp = cli.chat_postMessage(
-        channel = action['user']['id'],  # Send the user a private message through slackbot
-        text = "I can't remember any joke right now 😅"
+        channel=action['user']['id'],  # Send the user a private message through slackbot
+        text="I can't remember any joke right now 😅"
         )
     assert resp.get('ok'), f"Error sending message. {resp.data}"
     return ACK
@@ -57,4 +57,4 @@ def tell_a_joke(action):
 
 if __name__ == '__main__':
     print('Running')
-    app.run('0.0.0.0', port = 3000)
+    app.run('0.0.0.0', port=3000)

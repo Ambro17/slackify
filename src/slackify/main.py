@@ -17,12 +17,12 @@ class Slackify:
     
     def __init__(
             self,
-            endpoint = '/',
-            events_endpoint = '/slack/events',
-            app = None,
-            emitter = None,
-            dispatcher = None,
-            injector = None,
+            endpoint='/',
+            events_endpoint='/slack/events',
+            app=None,
+            emitter=None,
+            dispatcher=None,
+            injector=None,
             **kwargs
             ):
         self.app = app or Flask(__name__)
@@ -53,10 +53,10 @@ class Slackify:
         return isinstance(self.app, Blueprint)
     
     def _bind_main_entrypoint(self, endpoint):
-        self.app.add_url_rule(endpoint, 'slackify_entrypoint', lambda: '🚀 Slackify Home', methods = ('GET', 'POST'))
+        self.app.add_url_rule(endpoint, 'slackify_entrypoint', lambda: '🚀 Slackify Home', methods=('GET', 'POST'))
     
     def _bind_events_entrypoint(self, events_endpoint):
-        self.app.add_url_rule(events_endpoint, 'slackify_events', self._handle_event, methods = ('POST',))
+        self.app.add_url_rule(events_endpoint, 'slackify_events', self._handle_event, methods=('POST',))
     
     def _handle_event(self):
         """Respond to event request sync and emit event for async event handling"""
@@ -130,7 +130,7 @@ class Slackify:
         
         return register_handler
     
-    def command(self, func = None, **options):
+    def command(self, func=None, **options):
         """A decorator that is used to register a function as a command handler.
     
            It can be used as a plain decorator or as a parametrized decorator factory.
@@ -161,7 +161,7 @@ class Slackify:
             return decorate
 
 
-def action(self, action_id = None, **options):
+def action(self, action_id=None, **options):
     if action_id is None and options.get('block_id') is None or callable(action_id):
         raise TypeError("action() missing 1 required positional argument: 'action_id'")
     
@@ -169,7 +169,7 @@ def action(self, action_id = None, **options):
         block_id = options.pop('block_id', None)
         command = action_id or block_id  # TODO: Handle special characters that make url rule invalid?
         self.app.add_url_rule(f'/{command}', command, func, **options)
-        self.dispatcher.add_matcher(ActionMatcher(command, block_id = block_id))
+        self.dispatcher.add_matcher(ActionMatcher(command, block_id=block_id))
         return func
     
     return decorate
@@ -184,7 +184,7 @@ def view(self, view_callback_id, **options):
     return decorate
 
 
-def event(self, event, func = None):
+def event(self, event, func=None):
     def add_listener(func):
         if len(signature(func).parameters) != 1:
             error = f"Invalid signature for '{func.__name__}'. Must expect one and only one positional argument"
@@ -195,7 +195,7 @@ def event(self, event, func = None):
     return add_listener(func) if func else add_listener
 
 
-def message(self, message, func = None, **kwargs):
+def message(self, message, func=None, **kwargs):
     msg_regex = re.compile(message) if isinstance(message, str) else message
     if not isinstance(msg_regex, RE_PATTERN):
         raise TypeError(f"'message' must be either str or a compiled regex. Not {type(msg_regex)!r}")

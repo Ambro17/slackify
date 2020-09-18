@@ -41,8 +41,8 @@ def test_text_block():
             "text": 'message'
             }
         }
-
-    assert text_block('message', markdown = False) == {
+    
+    assert text_block('message', markdown=False) == {
         "type": "section",
         "text": {
             "type": 'plain_text',
