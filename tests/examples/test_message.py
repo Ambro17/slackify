@@ -21,7 +21,6 @@ def bare_client(test_app):
 
 
 def given_a_cli_with_message_handlers(app, cli):
-
     @app.message('hello')
     def hi(payload):
         return 'Hi!'
@@ -46,10 +45,10 @@ def test_message_is_ignored_if_doesnt_match_regex(test_app, bare_client, mocker)
             "user": "U1234",
             "text": message,
             "ts": "1355517523.000005"
-        },
+            },
         "type": "event_callback",
-    }
-    rv = cli.post('/slack/events', json=data, content_type='application/json')
+        }
+    rv = cli.post('/slack/events', json = data, content_type = 'application/json')
     assert rv.status_code == 200
     # Assert both callbacks were replaced by bare return. Thus the None result.
     assert emitter.results == [None, None]
@@ -86,12 +85,12 @@ def test_message_is_captured_if_it_matches_regex(test_app, bare_client, mocker):
             "user": "U1234",
             "text": message,
             "ts": "1355517523.000005"
-        },
+            },
         "type": "event_callback",
-    }
+        }
     rv = cli.post('/slack/events',
-                  json=data,
-                  content_type='application/json')
+                  json = data,
+                  content_type = 'application/json')
 
     assert rv.data == b''
     assert rv.status == '200 OK'
@@ -111,36 +110,35 @@ def test_message_is_captured_if_it_matches_precompiled_regex(test_app, bare_clie
             "user": "U1234",
             "text": message,
             "ts": "1355517523.000005"
-        },
+            },
         "type": "event_callback",
-    }
-    rv = cli.post('/slack/events', json=data, content_type='application/json')
+        }
+    rv = cli.post('/slack/events', json = data, content_type = 'application/json')
     assert rv.status_code == 200
     assert rv.data == b''
     assert emitter.results == [None, 'Bye!']
 
 
 def test_invalid_message_usage(test_app):
-
-    with pytest.raises(TypeError, match="'message' must be either str or a compiled regex."):
+    with pytest.raises(TypeError, match = "'message' must be either str or a compiled regex."):
         @test_app.message(b'123')
         def try_it(payload):
             pass
 
-    with pytest.raises(TypeError, match="'message' must be either str or a compiled regex."):
+    with pytest.raises(TypeError, match = "'message' must be either str or a compiled regex."):
         @test_app.message(123)
         def try_it_2(payload):
             pass
 
-    with pytest.raises(TypeError, match=r"message\(\) missing 1 required positional argument: 'message'"):
+    with pytest.raises(TypeError, match = r"message\(\) missing 1 required positional argument: 'message'"):
         @test_app.message()
         def try_it_3(payload):
             pass
 
     with pytest.raises(
-        TypeError,
-        match=r"'message' must be either str or a compiled regex. Not <class 'function'>"
-    ):
+            TypeError,
+            match = r"'message' must be either str or a compiled regex. Not <class 'function'>"
+            ):
         @test_app.message
         def try_it_4(payload):
             pass
@@ -148,9 +146,10 @@ def test_invalid_message_usage(test_app):
 
 def test_message_not_expecting_payload_arg_should_fail(test_app):
     with pytest.raises(
-        TypeError,
-        match=f"Invalid signature for 'bad_function_missing_payload_arg'. Must expect one and only one positional argument"  # noqa
-    ):
+            TypeError,
+            match = f"Invalid signature for 'bad_function_missing_payload_arg'. Must expect one and only one positional argument"
+            # noqa
+            ):
         @test_app.message('hi')
         def bad_function_missing_payload_arg():
             pass
@@ -158,9 +157,9 @@ def test_message_not_expecting_payload_arg_should_fail(test_app):
 
 def test_event_handler_not_expecting_payload_arg_should_fail(test_app):
     with pytest.raises(
-        TypeError,
-        match=f"Invalid signature for 'your_func'. Must expect one and only one positional argument"  # noqa
-    ):
+            TypeError,
+            match = f"Invalid signature for 'your_func'. Must expect one and only one positional argument"  # noqa
+            ):
         @test_app.event('bla')
         def your_func():
             pass

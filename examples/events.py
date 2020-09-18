@@ -4,7 +4,7 @@ from slackify import Slackify, Slack
 
 # Important! Before running set FLASK_APP=examples.async_task:app
 app = Flask(__name__)
-slackify = Slackify(app=app)
+slackify = Slackify(app = app)
 
 slack = Slack(os.environ["SLACK_BOT_TOKEN"])
 
@@ -23,7 +23,7 @@ def handle_message(payload):
     event = payload["event"]
     if event.get("subtype") is None and 'python' in event.get('text', ''):
         slack.reactions_add(
-            name='snake',
-            channel=event["channel"],
-            timestamp=event['ts']
-        )
+            name = 'snake',
+            channel = event["channel"],
+            timestamp = event['ts']
+            )

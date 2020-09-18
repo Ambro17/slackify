@@ -5,7 +5,7 @@ from slackify import Slackify, Blueprint
 from slackify.injection import Injector
 
 
-@pytest.fixture(scope='module')
+@pytest.fixture(scope = 'module')
 def injector():
     return Injector(
         {
@@ -13,8 +13,8 @@ def injector():
             'b': lambda: 'B',
             'c': lambda: 'C',
             'd': lambda: 'D',
-        }
-    )
+            }
+        )
 
 
 def test_injector_no_dependencies_injected_returns_function_unmodified(injector):
@@ -31,7 +31,7 @@ def test_injector_one_arg_as_kwarg(injector):
 
     injected = injector.inject(func)
     assert injected is not func
-    assert injected(z='Z') == ('A', 'Z')
+    assert injected(z = 'Z') == ('A', 'Z')
 
 
 def test_injector_one_arg_as_positional(injector):
@@ -98,10 +98,10 @@ def test_injector_with_real_app(bare_app, bare_client):
         'text': 'From Argentina',
         'response_url': 'http://lasmalvinassonargentinas.com.ar',
         'payload': '{}',
-    }
+        }
     rv = client.post('/',
-                     data=form_data,
-                     content_type='application/x-www-form-urlencoded')
+                     data = form_data,
+                     content_type = 'application/x-www-form-urlencoded')
     assert b'/hello From Argentina at http://lasmalvinassonargentinas.com.ar {}' == rv.data
 
 
@@ -110,8 +110,8 @@ def test_injector_repr_copies_instantiation():
 
 
 def test_injector_with_blueprint():
-    bp = Blueprint('TestBlueprint', __name__, url_prefix='/bp_url_prefix')
-    slackify = Slackify(app=bp, endpoint='/slack')
+    bp = Blueprint('TestBlueprint', __name__, url_prefix = '/bp_url_prefix')
+    slackify = Slackify(app = bp, endpoint = '/slack')
 
     @slackify.command
     def greeting(command):
@@ -122,6 +122,6 @@ def test_injector_with_blueprint():
 
     with app.test_client() as client:
         rv = client.post('/bp_url_prefix/slack',
-                         data={'command': '/greeting'},
-                         content_type='application/x-www-form-urlencoded')
+                         data = {'command': '/greeting'},
+                         content_type = 'application/x-www-form-urlencoded')
         assert b'I am /greeting' == rv.data, rv.data

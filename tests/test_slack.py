@@ -6,7 +6,7 @@ def test_block_reply():
         '{"blocks": [1, 2, 3]}',
         200,
         {'Content-Type': 'application/json'}
-    )
+        )
 
 
 def test_reply_text():
@@ -14,7 +14,7 @@ def test_reply_text():
         '{"text": "hello"}',
         200,
         {'Content-Type': 'application/json'}
-    )
+        )
 
 
 def test_reply_works_with_blocks_input():
@@ -22,7 +22,7 @@ def test_reply_works_with_blocks_input():
         '{"text": "hello"}',
         200,
         {'Content-Type': 'application/json'}
-    )
+        )
 
 
 def test_reply_works_with_text_input():
@@ -30,7 +30,7 @@ def test_reply_works_with_text_input():
         '{"blocks": [1, 2]}',
         200,
         {'Content-Type': 'application/json'}
-    )
+        )
 
 
 def test_text_block():
@@ -39,13 +39,13 @@ def test_text_block():
         "text": {
             "type": 'mrkdwn',
             "text": 'message'
+            }
         }
-    }
 
-    assert text_block('message', markdown=False) == {
+    assert text_block('message', markdown = False) == {
         "type": "section",
         "text": {
             "type": 'plain_text',
             "text": 'message'
+            }
         }
-    }

@@ -3,7 +3,7 @@ from slackify import Slackify, request, reply_text
 
 # Important! Before running set FLASK_APP=examples.async_task:app
 app = Flask(__name__)
-slackify = Slackify(app=app)
+slackify = Slackify(app = app)
 
 
 @slackify.command
@@ -13,6 +13,6 @@ def hello():
     return reply_text(f'You called `{form} {text}`')
 
 
-@slackify.command(name='bye')
+@slackify.command(name = 'bye')
 def goodbye():
     return reply_text('Goodbye')

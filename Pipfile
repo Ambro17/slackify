@@ -6,6 +6,12 @@ verify_ssl = true
 [dev-packages]
 
 [packages]
+codecov = "*"
+flake8 = "*"
+pytest = "*"
+pytest-cov = "*"
+pytest-mock = "*"
+flask = "*"
 
 [requires]
 python_version = "3.8"

@@ -8,11 +8,11 @@ def test_async_task_decorator():
         return 17
 
     future = delayed_func()
-    assert future.result(timeout=5) == 17
+    assert future.result(timeout = 5) == 17
 
 
 def test_respond_call_is_async():
     with patch('requests.post') as mock_request:
         mock_request.return_value = 1
         future = respond('https://url.com', 'message')
-        assert future.result(timeout=5) == 1
+        assert future.result(timeout = 5) == 1

@@ -37,8 +37,8 @@ def text_block(text: str, markdown: bool = True) -> Dict[str, Any]:
         "text": {
             "type": "mrkdwn" if markdown else 'plain_text',
             "text": text
+            }
         }
-    }
 
 
 def block_reply(blocks: list) -> Tuple[str, int, Dict]:
@@ -48,4 +48,4 @@ def block_reply(blocks: list) -> Tuple[str, int, Dict]:
 @async_task
 def respond(url: str, message: Dict[str, Any]) -> requests.Response:
     """Respond async to interaction to allow fast acknowledge of interactive message request"""
-    return requests.post(url, json=message, timeout=5)
+    return requests.post(url, json = message, timeout = 5)
