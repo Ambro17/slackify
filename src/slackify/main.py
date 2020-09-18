@@ -132,16 +132,16 @@ class Slackify:
     
     def command(self, func = None, **options):
         """A decorator that is used to register a function as a command handler.
-
+    
            It can be used as a plain decorator or as a parametrized decorator factory.
            This does the same as `add_command_handler`
-
+    
         Usage:
             >>>@command
             >>>def hola():
             >>>    print('hola')
-
-
+    
+    
             >>>@command(name='goodbye')
             >>>def chau():
             >>>    print('chau')
@@ -159,59 +159,62 @@ class Slackify:
             return decorate(func)
         else:
             return decorate
+
+
+def action(self, action_id = None, **options):
+    if action_id is None and options.get('block_id') is None or callable(action_id):
+        raise TypeError("action() missing 1 required positional argument: 'action_id'")
     
-    def action(self, action_id = None, **options):
-        if action_id is None and options.get('block_id') is None or callable(action_id):
-            raise TypeError("action() missing 1 required positional argument: 'action_id'")
-        
-        def decorate(func):
-            block_id = options.pop('block_id', None)
-            command = action_id or block_id  # TODO: Handle special characters that make url rule invalid?
-            self.app.add_url_rule(f'/{command}', command, func, **options)
-            self.dispatcher.add_matcher(ActionMatcher(command, block_id = block_id))
-            return func
-        
-        return decorate
+    def decorate(func):
+        block_id = options.pop('block_id', None)
+        command = action_id or block_id  # TODO: Handle special characters that make url rule invalid?
+        self.app.add_url_rule(f'/{command}', command, func, **options)
+        self.dispatcher.add_matcher(ActionMatcher(command, block_id = block_id))
+        return func
     
-    def view(self, view_callback_id, **options):
-        def decorate(func):
-            self.app.add_url_rule(f'/{view_callback_id}', view_callback_id, func, **options)
-            self.dispatcher.add_matcher(ViewMatcher(view_callback_id))
-            return func
-        
-        return decorate
+    return decorate
+
+
+def view(self, view_callback_id, **options):
+    def decorate(func):
+        self.app.add_url_rule(f'/{view_callback_id}', view_callback_id, func, **options)
+        self.dispatcher.add_matcher(ViewMatcher(view_callback_id))
+        return func
     
-    def event(self, event, func = None):
+    return decorate
+
+
+def event(self, event, func = None):
+    def add_listener(func):
+        if len(signature(func).parameters) != 1:
+            error = f"Invalid signature for '{func.__name__}'. Must expect one and only one positional argument"
+            raise TypeError(error)
         
-        def add_listener(func):
-            if len(signature(func).parameters) != 1:
-                error = f"Invalid signature for '{func.__name__}'. Must expect one and only one positional argument"
-                raise TypeError(error)
-            
-            self.emitter.on(event, func)
-        
-        return add_listener(func) if func else add_listener
+        self.emitter.on(event, func)
     
-    def message(self, message, func = None, **kwargs):
-        msg_regex = re.compile(message) if isinstance(message, str) else message
-        if not isinstance(msg_regex, RE_PATTERN):
-            raise TypeError(f"'message' must be either str or a compiled regex. Not {type(msg_regex)!r}")
+    return add_listener(func) if func else add_listener
+
+
+def message(self, message, func = None, **kwargs):
+    msg_regex = re.compile(message) if isinstance(message, str) else message
+    if not isinstance(msg_regex, RE_PATTERN):
+        raise TypeError(f"'message' must be either str or a compiled regex. Not {type(msg_regex)!r}")
+    
+    def quit_if_no_match(user_handler, regex, event_payload):
+        """Quit listener execution if event text doesn't match the specified regex."""
+        text = event_payload['event'].get('text', '')
+        if not regex.search(text):
+            return
         
-        def quit_if_no_match(user_handler, regex, event_payload):
-            """Quit listener execution if event text doesn't match the specified regex."""
-            text = event_payload['event'].get('text', '')
-            if not regex.search(text):
-                return
-            
-            return user_handler(event_payload)
+        return user_handler(event_payload)
+    
+    def decorate(func):
+        if len(signature(func).parameters) != 1:
+            error = f"Invalid signature for '{func.__name__}'. Must expect one and only one positional argument"
+            raise TypeError(error)
         
-        def decorate(func):
-            if len(signature(func).parameters) != 1:
-                error = f"Invalid signature for '{func.__name__}'. Must expect one and only one positional argument"
-                raise TypeError(error)
-            
-            listener = lambda payload: quit_if_no_match(func, msg_regex, payload)  # noqa: sh!
-            self.event('message', listener)
-            return func
-        
-        return decorate(func) if func else decorate
+        listener = lambda payload: quit_if_no_match(func, msg_regex, payload)  # noqa: sh!
+        self.event('message', listener)
+        return func
+    
+    return decorate(func) if func else decorate

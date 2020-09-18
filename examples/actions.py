@@ -20,7 +20,7 @@ def text_block(text):
 @slackify.command
 def askme():
     """Slack API recommended way of making messages interactive is through blocks
-
+  
     Messages no longer are simple text. Even if you want to send just text, the
     recommended way is to create a section block, with the text property.
     """
@@ -77,7 +77,7 @@ def askme():
 @slackify.action("yes")
 def yes():
     """You may ask here, why do we respond to response_url instead of the request itself?
-
+  
     Well, slack decided you can't respond directly to interaction actions requests.
     So we must use the response_url. If you know why did they decide this please tell
     me. I'm sure they might be a reason but it isn't obvious to me..

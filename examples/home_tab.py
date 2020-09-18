@@ -1,19 +1,11 @@
 import os
-
-from slackify import Slackify, Flask, Slack, reply_text
+from flask import Flask
+from slackify import Slackify, request, reply_text, Slack, ACK
 
 # Initialize App
 app = Flask(__name__)
 slackify = Slackify(app = app)
 cli = Slack(os.getenv('SLACK_BOT_TOKEN'))
-
-import os
-from flask import Flask
-from slackify import Slackify, request, reply_text, Slack, ACK
-
-app = Flask(__name__)
-slackify = Slackify(app = app)
-cli = Slack(os.getenv('BOT_TOKEN'))
 
 
 @slackify.command

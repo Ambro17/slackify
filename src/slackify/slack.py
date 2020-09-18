@@ -22,7 +22,7 @@ def reply_text(text: str) -> Tuple[str, int, Dict]:
 
 def reply(body: dict) -> Tuple[str, int, Dict]:
     """Helper method that returns a complex response to slack
-
+  
     It may contain a blocks payload. A simple text structure or
     whatever slack admits as a valid response to certain action.
     It does nothing fancy. Just transforms dict to json, and
