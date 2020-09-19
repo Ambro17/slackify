@@ -4,16 +4,19 @@ tunnel:
 	ngrok http 3000
 
 build:
-	docker build . -t slackify
+	docker build . -t slackify:$(date +%s)
 
 run:
 	docker run -it --rm -v $(PWD):/app slackify
 
-test:
-	docker run -it --rm -v $(PWD):/app slackify pytest
-
 style:
-	docker run -it --rm -v $(PWD):/app slackify flake8
+	docker run --rm -v $(PWD):/app slackify flake8
+
+test:
+	docker run --rm -v $(PWD):/app slackify pytest
+
+checks: build style test
+	@echo "✔ All CI Checks Passed"
 
 docs:
 	pdoc3 src/slackify \
