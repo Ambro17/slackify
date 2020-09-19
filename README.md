@@ -17,8 +17,11 @@
 
 _Requires python3.6+_
 
+## Documentation
+You can read `Slackify` docs [here](ambro17.github.io/slackify/)
+
 ## Quickstart
-**1. The easy way:**
+**1. 1-Click Deploy**
 
 [![Deploy](https://www.herokucdn.com/deploy/button.svg)](https://heroku.com/deploy?template=https://github.com/Ambro17/slackify/tree/master)
 
@@ -27,14 +30,17 @@ _Requires python3.6+_
 > This setup uses flask builtin server which is NOT suited for production. Replace it by gunicorn or similar when ready to ship
 
 
-**2. The manual way**
+**2. Manual deploy**
 
 Create a file named `quickstart.py` with the following content and then run `python quickstart.py`
 ```python
 from time import sleep
 from flask import Flask
-from slackify import Slackify, async_task, reply_text
-
+from slackify import (
+    Slackify,
+    async_task,
+    reply_text
+)
 
 app = Flask(__name__)
 slackify = Slackify(app=app)
@@ -48,7 +54,7 @@ def hello():
 
 @async_task
 def my_background_job():
-    """A long task that runs on background so the server replies quickly"""
+    """My long background job"""
     sleep(15)
     return
 
@@ -68,21 +74,16 @@ To do so follow these steps:
 > Once your bot is ready for production you should update your commands url to a permanent one.
 > [Heroku](https://duckduckgo.com/?q=flask+on+heroku&t=brave&ia=web) might be a good choice if you are just getting started as it has a generous free tier.
 
-### Does it support new slack Shorcuts?
-Yes, See [examples/shortcuts.py](examples/shortcuts.py) for a self contained example
+### Slackify Features
 
-### And can i use new slack Modals?
-Of course! See [examples/views.py](examples/views.py) for a quick example
-
-### Are interactive actions supported?
-Yes! See [examples/actions.py](examples/actions.py) for a quickstart.
->Note: Legacy actions are unsupported by design as they are discouraged by slack. Nevertheless, if there's popular demand, we could add support for them.
-
-### And slack events?
-As you may have guessed, they are also supported. See [examples/events.py](examples/events.py) for an example.
+- **Slash Commands**. [Quickstart](examples/commands.py)
+- **Global and Message Shortcuts**. [Quickstart](examples/shortcuts.py)
+- **Interactive Actions**. [Quickstart](examples/actions.py)
+- **Modals (a.k.a views)**. [Quickstart](examples/views.py)
+- **Event Hooks**. [Quickstart](examples/events.py)
 
 ## Full example
-Here you have a more complete example showcasing all functionality. It includes:
+If you want a full stack example showcasing all functionality. It includes:
 - A hello command that shows interactive buttons
 - Callbacks for each interactive button click
 - A register command that opens a new slack modal
@@ -99,8 +100,10 @@ import os
 import random
 
 from flask import Flask
-from slackify import (ACK, OK, Slackify, async_task, block_reply, request,
-                      respond, text_block, Slack)
+from slackify import (
+    ACK, OK, Slackify, async_task, block_reply, 
+    request, respond, text_block, Slack
+)
 
 app = Flask(__name__)
 slackify = Slackify(app=app)
@@ -148,7 +151,7 @@ def hello():
 
 @slackify.action("yes")
 def yes(payload):
-    """If a user clicks yes on the message above, execute this callback"""
+    """Run this if a user clicks yes on the message above"""
     text_blok = text_block('Super! I do too :thumbsup:')
     respond(payload['response_url'], {'blocks': [text_blok]})
     return OK
@@ -156,7 +159,7 @@ def yes(payload):
 
 @slackify.action("no")
 def no(payload):
-    """If a user clicks no on the hello message, execute this callback"""
+    """Run this if a user clicks no on the message above"""
     text_blok = text_block('Boo! You are so boring :thumbsdown:')
     respond(payload['response_url'], {'blocks': [text_blok]})
     return OK
@@ -164,7 +167,7 @@ def no(payload):
 
 @slackify.command
 def register():
-    """Open a registration popup that asks for username and password. Don't enter any credentials!"""
+    """Open a registration popup that asks for username and password."""
     username_input_block = {
         "type": "input",
         "block_id": "username_block",
@@ -235,7 +238,10 @@ def register():
 def register_callback(payload):
     """Handle registration form submission."""
     response = payload['view']['state']['values']
-    text_blok = text_block(f':heavy_check_mark: You are now registered.\nForm payload:\n```{response}```')
+    text_blok = text_block(
+        ':heavy_check_mark: You are now registered.\n
+        f'Form payload:\n```{response}```'
+    )
     send_message(cli, [text_blok], payload['user']['id'])
     return ACK
 
@@ -250,13 +256,17 @@ def dice_roll(payload):
     """Roll a virtual dice to give a pseudo-random number"""
     dice_value = random.randint(1, 6)
     msg = f'🎲 {dice_value}'
-    send_message(cli, blocks=[text_block(msg)], user_id=payload['user']['id'])
+    send_message(
+        cli,
+        blocks=[text_block(msg)], 
+        user_id=payload['user']['id']
+    )
     return ACK
 
 
 @slackify.event('reaction_added')
 def echo_reaction(payload):
-    """If any user reacts to a message, also react with that emoji to the message"""
+    """Adds the same reaction as the user"""
     event = payload['event']
     reaction = event['reaction']
     cli.reactions_add(
@@ -269,9 +279,11 @@ def echo_reaction(payload):
 @slackify.message('hello')
 def say_hi(payload):
     event = payload['event']
-    cli.chat_postMessage(channel=event['channel'], text='Hi! 👋')
+    cli.chat_postMessage(
+        channel=event['channel'],
+        text='Hi! 👋'
+    )
 ```
-
 
 
 ## Dependency Injection
@@ -281,7 +293,9 @@ Slackify offers shortcut for this using dependency injection.
 ```python
 @slackify.command
 def hello(command, command_args, response_url):
-    return reply_text(f"You called `{command} {command_args}`. Use {response_url} for delayed responses")
+    return reply_text(
+        f"You called `{command} {command_args}`. Use {response_url} for delayed responses"
+    )
 ```
 
 Your view function will now receive the slash command, the arguments and the response_url upon invocation. Pretty cool, right?
@@ -319,71 +333,5 @@ def create_app():
 ```
 > Note: You must import Blueprint from slackify instead of flask to get it working
 
-## API Reference
-```python
-
-@slackify.command
-or
-@slackify.command(name='custom')
-
-
-@slackify.shortcut('shorcut-id')
-
-
-@slackify.action('action_id')
-or
-@slackify.action(action_id='action_id', block_id='block_id')
-
-
-@slackify.event('event_name') # See https://api.slack.com/events for all available events
-
-
-# Shortcut for `message` events that match certain string or regex
-@slackify.message('Hi!')
-or
-@slackify.message(re.compile(r'Bye|see you|xoxo'))
-
-
-@slackify.view('callback_id')
-
-
-# Specify what to do if a slack request doesn't match any of your handlers.
-# By default it simply ignores the request.
-@slackify.default
-
-# Handle unexpected errors that occur inside handlers.
-# By default returns status 500 and a generic message.
-# The exception will be passed as a positional argument to the decorated function
-@slackify.error
-```
-
-
 ## Dependencies
 This projects uses `Flask` as the web server and `slackclient` (_The official python slack client_) as slack's API wrapper
-
-## How does it work?
-If you are curious you may want to know how the lib works.
-
-In fact there's really little to know and hopefully
-you can understand it by browsing the code and this brief introduction.
-
-The lib exposes a main class called `Slackify` that can either receive a Flask instance
-as `app` argument or creates one on the fly.
-It then binds two routes. One for commands, shortcuts, actions and another one for slack events.
-
-The first route is `/` by default, it inspects the incoming requests and looks for any declared handler that is interested in handling this request to redirect it.
-
-If it finds a handler, it injects any dependency the view may require as a view argument, and then call the view function, passing the return value as the request response.
-
-If there's no match, it ignores the request and it follows the
-normal request lifecycle.
-
-If there's an error, an overridable function through `@slackify.error` is executed to show a friendly message.
-
-The second route the lib adds is the events route at `/slack/events`.
-
-When it receives a post request, it emits an event through `pyee.ExecutorEventEmitter` with the event type and quickly responds with the response acknowledgment slack requires to avoid showing an error to the user. This allows asynchronous execution of the function, while still responding quickly to slack.
-In other words, when you decorate a function with `app.event('event_type')` what you are really doing is setting up a listener for the `event_type` that will receive the event payload. No magic.
-
-If after reading this you have an idea of how we can extend or improve this lib in any way, feel free to open an issue or pull request!
-I feel there's still a gap bewtween developing slack bots with python and doing it with java or javascript as they have [bolt's](https://github.com/slackapi/bolt) beautiful API. This lib attempts to offer a similar API to enjoy writing bots.

@@ -1,10 +1,12 @@
-from slackify.injection import injector as builtin_injector
+from typing import Union
+
+from slackify.injection import Injector, injector as builtin_injector
 from inspect import signature
 import logging
 import re
 
 from flask import Flask, _request_ctx_stack, request, make_response, Blueprint  # type: ignore
-from pyee import ExecutorEventEmitter  # type: ignore
+import pyee  # type: ignore
 
 from .dispatcher import ActionMatcher, Command, Dispatcher, ShortcutMatcher, ViewMatcher
 from .slack import RE_PATTERN
@@ -19,18 +21,18 @@ class Slackify:
 
     def __init__(
         self,
-        endpoint='/',
-        events_endpoint='/slack/events',
-        app=None,
-        emitter=None,
-        dispatcher=None,
-        injector=None,
+        app: Union[Flask, Blueprint, None] = None,
+        endpoint: str = '/',
+        events_endpoint: str = '/slack/events',
+        emitter: pyee.BaseEventEmitter = None,
+        dispatcher: Dispatcher = None,
+        injector: Injector = None,
         **kwargs
     ):
         self.app = app or Flask(__name__)
         self._configure_app(endpoint, events_endpoint)
         self.dispatcher = dispatcher or Dispatcher()
-        self.emitter = emitter or ExecutorEventEmitter()
+        self.emitter = emitter or pyee.ExecutorEventEmitter()
         self.injector = injector or builtin_injector
 
     def _configure_app(self, endpoint, events_endpoint):
@@ -104,6 +106,7 @@ class Slackify:
         return req.method == 'POST' and request.path == self._endpoint
 
     def default(self, func):
+        """Register function to execute when an unknown command is received"""
         self._handle_unknown = func
 
     def _handle_unknown(self):
@@ -111,17 +114,19 @@ class Slackify:
         return None
 
     def error(self, func):
+        """Register function to execute when an exception was raised on any registered handler"""
         self._handle_error = func
 
     def _handle_error(self, e):
         return self.app.make_response(('Something went wrong..', 500))
 
     def shortcut(self, shortcut_id: str, **options):
-        """
-        Usage:
-            >>>@slackify.shortcut('shortcut-id')
-            >>>def hello():
-            >>>    ...
+        """Register a function as a shortcut callback
+
+        Examples:
+            >>> @slackify.shortcut('my-shortcut')
+            >>> def hello():
+            >>>     print('Someone followed `my-shortcut`')
         """
 
         def register_handler(shortcut_handler):
@@ -133,20 +138,20 @@ class Slackify:
         return register_handler
 
     def command(self, func=None, **options):
-        """A decorator that is used to register a function as a command handler.
+        """Register a function as a command handler.
 
            It can be used as a plain decorator or as a parametrized decorator factory.
            This does the same as `add_command_handler`
 
         Usage:
-            >>>@command
-            >>>def hola():
-            >>>    print('hola')
+            >>> @command
+            >>> def hola():
+            >>>     print('hola')
 
 
-            >>>@command(name='goodbye')
-            >>>def chau():
-            >>>    print('chau')
+            >>> @command(name='goodbye')
+            >>> def chau():
+            >>>     print('chau')
         """
         def decorate(func):
             command = options.pop('name', func.__name__)
@@ -162,6 +167,21 @@ class Slackify:
             return decorate
 
     def action(self, action_id=None, **options):
+        """Register a function as an action callback.
+
+        It supports registering actions by just `action_id` and  `action_id` + `block_id`
+
+        Usage:
+
+            >>> @slackify.action('action_id')
+            >>> def action_id_callback():
+            >>>    return 'Hello'
+            >>> 
+            >>> @slackify.action(action_id='action_id', block_id='block_id')
+            >>> def other_callback():
+            >>>     return 'Bye'
+        """
+
         if action_id is None and options.get('block_id') is None or callable(action_id):
             raise TypeError("action() missing 1 required positional argument: 'action_id'")
 
@@ -175,6 +195,16 @@ class Slackify:
         return decorate
 
     def view(self, view_callback_id, **options):
+        """Register a function as a view callback.
+        
+        Usage:
+
+            >>> @slackify.view('my_view')
+            >>> def view_callback():
+            >>>     return 'Hello'
+        
+        """
+
         def decorate(func):
             self.app.add_url_rule(f'/{view_callback_id}', view_callback_id, func, **options)
             self.dispatcher.add_matcher(ViewMatcher(view_callback_id))
@@ -183,7 +213,19 @@ class Slackify:
         return decorate
 
     def event(self, event, func=None):
+        """Register a function as an event callback.
 
+        Note: 
+            All event callbacks *MUST* accept a payload positional argument.
+            The event payload from slack will be sent on that arg
+
+        Usage:
+
+            >>> @slackify.event('reaction_added')
+            >>> def handle_reaction(payload):
+            >>>     print(payload)
+            >>>     return 'Hello'
+        """
         def add_listener(func):
             if len(signature(func).parameters) != 1:
                 error = f"Invalid signature for '{func.__name__}'. Must expect one and only one positional argument"
@@ -194,6 +236,25 @@ class Slackify:
         return add_listener(func) if func else add_listener
 
     def message(self, message, func=None, **kwargs):
+        """Register a function as a callback for when a string matching `message` is found.
+
+        Note:
+            The event callback *MUST* accept a payload positional argument.
+            The event payload from slack will be sent on that arg
+
+        Usage:
+
+            >>> @slackify.message('hello')
+            >>> def handle_reaction(payload):
+            >>>    return 'How are you?'
+            >>>
+            >>> BYE_REGEX = re.compile(r'bye|goodbye|see you|chau')
+            >>> @slackify.message(BYE_REGEX)
+            >>> def say_bye(payload):
+            >>>    return 'Bye!
+
+        """
+
         msg_regex = re.compile(message) if isinstance(message, str) else message
         if not isinstance(msg_regex, RE_PATTERN):
             raise TypeError(f"'message' must be either str or a compiled regex. Not {type(msg_regex)!r}")

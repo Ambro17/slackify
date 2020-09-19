@@ -1,0 +1,957 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1" />
+<meta name="generator" content="pdoc 0.9.1" />
+<title>slackify.main API documentation</title>
+<meta name="description" content="" />
+<link rel="preload stylesheet" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/11.0.1/sanitize.min.css" integrity="sha256-PK9q560IAAa6WVRRh76LtCaI8pjTJ2z11v0miyNNjrs=" crossorigin>
+<link rel="preload stylesheet" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/11.0.1/typography.min.css" integrity="sha256-7l/o7C8jubJiy74VsKTidCy1yBkRtiUGbVkYBylBqUg=" crossorigin>
+<link rel="stylesheet preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.1.1/styles/github.min.css" crossorigin>
+<style>:root{--highlight-color:#fe9}.flex{display:flex !important}body{line-height:1.5em}#content{padding:20px}#sidebar{padding:30px;overflow:hidden}#sidebar > *:last-child{margin-bottom:2cm}.http-server-breadcrumbs{font-size:130%;margin:0 0 15px 0}#footer{font-size:.75em;padding:5px 30px;border-top:1px solid #ddd;text-align:right}#footer p{margin:0 0 0 1em;display:inline-block}#footer p:last-child{margin-right:30px}h1,h2,h3,h4,h5{font-weight:300}h1{font-size:2.5em;line-height:1.1em}h2{font-size:1.75em;margin:1em 0 .50em 0}h3{font-size:1.4em;margin:25px 0 10px 0}h4{margin:0;font-size:105%}h1:target,h2:target,h3:target,h4:target,h5:target,h6:target{background:var(--highlight-color);padding:.2em 0}a{color:#058;text-decoration:none;transition:color .3s ease-in-out}a:hover{color:#e82}.title code{font-weight:bold}h2[id^="header-"]{margin-top:2em}.ident{color:#900}pre code{background:#f8f8f8;font-size:.8em;line-height:1.4em}code{background:#f2f2f1;padding:1px 4px;overflow-wrap:break-word}h1 code{background:transparent}pre{background:#f8f8f8;border:0;border-top:1px solid #ccc;border-bottom:1px solid #ccc;margin:1em 0;padding:1ex}#http-server-module-list{display:flex;flex-flow:column}#http-server-module-list div{display:flex}#http-server-module-list dt{min-width:10%}#http-server-module-list p{margin-top:0}.toc ul,#index{list-style-type:none;margin:0;padding:0}#index code{background:transparent}#index h3{border-bottom:1px solid #ddd}#index ul{padding:0}#index h4{margin-top:.6em;font-weight:bold}@media (min-width:200ex){#index .two-column{column-count:2}}@media (min-width:300ex){#index .two-column{column-count:3}}dl{margin-bottom:2em}dl dl:last-child{margin-bottom:4em}dd{margin:0 0 1em 3em}#header-classes + dl > dd{margin-bottom:3em}dd dd{margin-left:2em}dd p{margin:10px 0}.name{background:#eee;font-weight:bold;font-size:.85em;padding:5px 10px;display:inline-block;min-width:40%}.name:hover{background:#e0e0e0}dt:target .name{background:var(--highlight-color)}.name > span:first-child{white-space:nowrap}.name.class > span:nth-child(2){margin-left:.4em}.inherited{color:#999;border-left:5px solid #eee;padding-left:1em}.inheritance em{font-style:normal;font-weight:bold}.desc h2{font-weight:400;font-size:1.25em}.desc h3{font-size:1em}.desc dt code{background:inherit}.source summary,.git-link-div{color:#666;text-align:right;font-weight:400;font-size:.8em;text-transform:uppercase}.source summary > *{white-space:nowrap;cursor:pointer}.git-link{color:inherit;margin-left:1em}.source pre{max-height:500px;overflow:auto;margin:0}.source pre code{font-size:12px;overflow:visible}.hlist{list-style:none}.hlist li{display:inline}.hlist li:after{content:',\2002'}.hlist li:last-child:after{content:none}.hlist .hlist{display:inline;padding-left:1em}img{max-width:100%}td{padding:0 .5em}.admonition{padding:.1em .5em;margin-bottom:1em}.admonition-title{font-weight:bold}.admonition.note,.admonition.info,.admonition.important{background:#aef}.admonition.todo,.admonition.versionadded,.admonition.tip,.admonition.hint{background:#dfd}.admonition.warning,.admonition.versionchanged,.admonition.deprecated{background:#fd4}.admonition.error,.admonition.danger,.admonition.caution{background:lightpink}</style>
+<style media="screen and (min-width: 700px)">@media screen and (min-width:700px){#sidebar{width:30%;height:100vh;overflow:auto;position:sticky;top:0}#content{width:70%;max-width:100ch;padding:3em 4em;border-left:1px solid #ddd}pre code{font-size:1em}.item .name{font-size:1em}main{display:flex;flex-direction:row-reverse;justify-content:flex-end}.toc ul ul,#index ul{padding-left:1.5em}.toc > ul > li{margin-top:.5em}}</style>
+<style media="print">@media print{#sidebar h1{page-break-before:always}.source{display:none}}@media print{*{background:transparent !important;color:#000 !important;box-shadow:none !important;text-shadow:none !important}a[href]:after{content:" (" attr(href) ")";font-size:90%}a[href][title]:after{content:none}abbr[title]:after{content:" (" attr(title) ")"}.ir a:after,a[href^="javascript:"]:after,a[href^="#"]:after{content:""}pre,blockquote{border:1px solid #999;page-break-inside:avoid}thead{display:table-header-group}tr,img{page-break-inside:avoid}img{max-width:100% !important}@page{margin:0.5cm}p,h2,h3{orphans:3;widows:3}h1,h2,h3,h4,h5,h6{page-break-after:avoid}}</style>
+<link rel="preconnect" href="https://www.google.com">
+<script async src="https://cse.google.com/cse.js?cx=017837193012385208679:pey8ky8gdqw"></script>
+<style>
+.gsc-control-cse {padding:0 !important;margin-top:1em}
+body.gsc-overflow-hidden #sidebar {overflow: visible;}
+</style>
+<script defer src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.1.1/highlight.min.js" integrity="sha256-Uv3H6lx7dJmRfRvH8TH6kJD1TSK1aFcwgx+mdg3epi8=" crossorigin></script>
+<script>window.addEventListener('DOMContentLoaded', () => hljs.initHighlighting())</script>
+<style>.homelink{display:block;font-size:2em;font-weight:bold;color:#555;padding-bottom:.5em;border-bottom:1px solid silver}.homelink:hover{color:inherit}.homelink img{max-width:20%;max-height:5em;margin:auto;margin-bottom:.3em}</style>
+</head>
+<body>
+<main>
+<article id="content">
+<header>
+<h1 class="title">Module <code>slackify.main</code></h1>
+</header>
+<section id="section-intro">
+<details class="source">
+<summary>
+<span>Expand source code</span>
+<a href="https://github.com/Ambro17/slackify/blob/ea24cfc4c5553e7b50fdb56171ce7bfc923e7460/src/slackify/main.py#L0-L278" class="git-link">Browse git</a>
+</summary>
+<pre><code class="python">from typing import Union
+
+from slackify.injection import Injector, injector as builtin_injector
+from inspect import signature
+import logging
+import re
+
+from flask import Flask, _request_ctx_stack, request, make_response, Blueprint  # type: ignore
+import pyee  # type: ignore
+
+from .dispatcher import ActionMatcher, Command, Dispatcher, ShortcutMatcher, ViewMatcher
+from .slack import RE_PATTERN
+
+
+logger = logging.getLogger(__name__)
+
+
+class Slackify:
+
+    _endpoint = &#39;&#39;
+
+    def __init__(
+        self,
+        app: Union[Flask, Blueprint, None] = None,
+        endpoint: str = &#39;/&#39;,
+        events_endpoint: str = &#39;/slack/events&#39;,
+        emitter: pyee.BaseEventEmitter = None,
+        dispatcher: Dispatcher = None,
+        injector: Injector = None,
+        **kwargs
+    ):
+        self.app = app or Flask(__name__)
+        self._configure_app(endpoint, events_endpoint)
+        self.dispatcher = dispatcher or Dispatcher()
+        self.emitter = emitter or pyee.ExecutorEventEmitter()
+        self.injector = injector or builtin_injector
+
+    def _configure_app(self, endpoint, events_endpoint):
+        &#34;&#34;&#34;Configure app to redirect slack requests if they match a registered handler&#34;&#34;&#34;
+        # Listen for each request and redirect it if there&#39;s a matching handler
+        self._endpoint = self._get_final_endpoint(endpoint)
+        self.app.before_request(self._redirect_slack_requests)
+        self._bind_main_entrypoint(endpoint)
+        self._bind_events_entrypoint(events_endpoint)
+
+    def _get_final_endpoint(self, endpoint):
+        &#34;&#34;&#34;Prepend blueprint prefix to endpoint if used as a blueprint&#34;&#34;&#34;
+        if self._is_blueprint() and not self.app.url_prefix:
+            # TODO: Perhaps relax this constraint once we figure out how to know
+            # at which url_prefix the blueprint will be listening on registration.
+            # Probably hooking after Blueprint.register to update with app.bp.url_prefix
+            raise ValueError(f&#34;Missing required &#39;url_prefix&#39; for blueprint {self.app.name}&#34;)
+
+        return f&#39;{self.app.url_prefix}{endpoint}&#39; if self._is_blueprint() else endpoint
+
+    def _is_blueprint(self):
+        return isinstance(self.app, Blueprint)
+
+    def _bind_main_entrypoint(self, endpoint):
+        self.app.add_url_rule(endpoint, &#39;slackify_entrypoint&#39;, lambda: &#39;🚀 Slackify Home&#39;, methods=(&#39;GET&#39;, &#39;POST&#39;))
+
+    def _bind_events_entrypoint(self, events_endpoint):
+        self.app.add_url_rule(events_endpoint, &#39;slackify_events&#39;, self._handle_event, methods=(&#39;POST&#39;,))
+
+    def _handle_event(self):
+        &#34;&#34;&#34;Respond to event request sync and emit event for async event handling&#34;&#34;&#34;
+        event_data = request.get_json()
+        # Respond to slack challenge to enable our endpoint as an event receiver
+        if &#34;challenge&#34; in event_data:
+            return make_response(
+                event_data.get(&#34;challenge&#34;), 200, {&#34;Content-Type&#34;: &#34;application/json&#34;}
+            )
+
+        if &#34;event&#34; in event_data:
+            event_type = event_data[&#34;event&#34;][&#34;type&#34;]
+            self.emitter.emit(event_type, event_data)
+            return make_response(&#34;&#34;, 200)
+
+    def _redirect_slack_requests(self):
+        request = _request_ctx_stack.top.request
+        if request.routing_exception is not None:
+            self.app.raise_routing_exception(request)
+
+        if not self._should_handle_request(request):
+            return
+
+        try:
+            endpoint = self.dispatcher.match(request)
+        except StopIteration:
+            logger.info(&#39;No handler matched this request&#39;)
+            return self._handle_unknown()
+        except Exception as e:
+            logger.exception(&#39;Something bad happened.&#39;)
+            return self._handle_error(e)
+
+        view_func = self._get_endpoint_handler(endpoint)
+        injected_func = self.injector.inject(view_func)
+        return injected_func(**request.view_args)
+
+    def _get_endpoint_handler(self, endpoint):
+        endpoint = f&#39;{self.app.name}.{endpoint}&#39; if self._is_blueprint() else endpoint
+        view_func = self.app.view_functions[endpoint]
+        return view_func
+
+    def _should_handle_request(self, req):
+        return req.method == &#39;POST&#39; and request.path == self._endpoint
+
+    def default(self, func):
+        &#34;&#34;&#34;Register function to execute when an unknown command is received&#34;&#34;&#34;
+        self._handle_unknown = func
+
+    def _handle_unknown(self):
+        &#34;&#34;&#34;Ignore unknown commands by default.&#34;&#34;&#34;
+        return None
+
+    def error(self, func):
+        &#34;&#34;&#34;Register function to execute when an exception was raised on any registered handler&#34;&#34;&#34;
+        self._handle_error = func
+
+    def _handle_error(self, e):
+        return self.app.make_response((&#39;Something went wrong..&#39;, 500))
+
+    def shortcut(self, shortcut_id: str, **options):
+        &#34;&#34;&#34;Register a function as a shortcut callback
+
+        Examples:
+            &gt;&gt;&gt; @slackify.shortcut(&#39;my-shortcut&#39;)
+            &gt;&gt;&gt; def hello():
+            &gt;&gt;&gt;     print(&#39;Someone followed `my-shortcut`&#39;)
+        &#34;&#34;&#34;
+
+        def register_handler(shortcut_handler):
+            command = shortcut_id
+            self.app.add_url_rule(f&#39;/{command}&#39;, command, shortcut_handler, **options)
+            self.dispatcher.add_matcher(ShortcutMatcher(command))
+            return shortcut_handler
+
+        return register_handler
+
+    def command(self, func=None, **options):
+        &#34;&#34;&#34;Register a function as a command handler.
+
+           It can be used as a plain decorator or as a parametrized decorator factory.
+           This does the same as `add_command_handler`
+
+        Usage:
+            &gt;&gt;&gt; @command
+            &gt;&gt;&gt; def hola():
+            &gt;&gt;&gt;     print(&#39;hola&#39;)
+
+
+            &gt;&gt;&gt; @command(name=&#39;goodbye&#39;)
+            &gt;&gt;&gt; def chau():
+            &gt;&gt;&gt;     print(&#39;chau&#39;)
+        &#34;&#34;&#34;
+        def decorate(func):
+            command = options.pop(&#39;name&#39;, func.__name__)
+            rule = f&#39;/{command}&#39; if not command.startswith(&#39;/&#39;) else command
+            self.app.add_url_rule(rule, command, func, **options)
+            self.dispatcher.add_matcher(Command(command))
+            return func
+
+        used_as_plain_decorator = bool(func)
+        if used_as_plain_decorator:
+            return decorate(func)
+        else:
+            return decorate
+
+    def action(self, action_id=None, **options):
+        &#34;&#34;&#34;Register a function as an action callback.
+
+        It supports registering actions by just `action_id` and  `action_id` + `block_id`
+
+        Usage:
+
+            &gt;&gt;&gt; @slackify.action(&#39;action_id&#39;)
+            &gt;&gt;&gt; def action_id_callback():
+            &gt;&gt;&gt;    return &#39;Hello&#39;
+            &gt;&gt;&gt; 
+            &gt;&gt;&gt; @slackify.action(action_id=&#39;action_id&#39;, block_id=&#39;block_id&#39;)
+            &gt;&gt;&gt; def other_callback():
+            &gt;&gt;&gt;     return &#39;Bye&#39;
+        &#34;&#34;&#34;
+
+        if action_id is None and options.get(&#39;block_id&#39;) is None or callable(action_id):
+            raise TypeError(&#34;action() missing 1 required positional argument: &#39;action_id&#39;&#34;)
+
+        def decorate(func):
+            block_id = options.pop(&#39;block_id&#39;, None)
+            command = action_id or block_id  # TODO: Handle special characters that make url rule invalid?
+            self.app.add_url_rule(f&#39;/{command}&#39;, command, func, **options)
+            self.dispatcher.add_matcher(ActionMatcher(command, block_id=block_id))
+            return func
+
+        return decorate
+
+    def view(self, view_callback_id, **options):
+        &#34;&#34;&#34;Register a function as a view callback.
+        
+        Usage:
+
+            &gt;&gt;&gt; @slackify.view(&#39;my_view&#39;)
+            &gt;&gt;&gt; def view_callback():
+            &gt;&gt;&gt;     return &#39;Hello&#39;
+        
+        &#34;&#34;&#34;
+
+        def decorate(func):
+            self.app.add_url_rule(f&#39;/{view_callback_id}&#39;, view_callback_id, func, **options)
+            self.dispatcher.add_matcher(ViewMatcher(view_callback_id))
+            return func
+
+        return decorate
+
+    def event(self, event, func=None):
+        &#34;&#34;&#34;Register a function as an event callback.
+
+        Note: 
+            All event callbacks *MUST* accept a payload positional argument.
+            The event payload from slack will be sent on that arg
+
+        Usage:
+
+            &gt;&gt;&gt; @slackify.event(&#39;reaction_added&#39;)
+            &gt;&gt;&gt; def handle_reaction(payload):
+            &gt;&gt;&gt;     print(payload)
+            &gt;&gt;&gt;     return &#39;Hello&#39;
+        &#34;&#34;&#34;
+        def add_listener(func):
+            if len(signature(func).parameters) != 1:
+                error = f&#34;Invalid signature for &#39;{func.__name__}&#39;. Must expect one and only one positional argument&#34;
+                raise TypeError(error)
+
+            self.emitter.on(event, func)
+
+        return add_listener(func) if func else add_listener
+
+    def message(self, message, func=None, **kwargs):
+        &#34;&#34;&#34;Register a function as a callback for when a string matching `message` is found.
+
+        Note:
+            The event callback *MUST* accept a payload positional argument.
+            The event payload from slack will be sent on that arg
+
+        Usage:
+
+            &gt;&gt;&gt; @slackify.message(&#39;hello&#39;)
+            &gt;&gt;&gt; def handle_reaction(payload):
+            &gt;&gt;&gt;    return &#39;How are you?&#39;
+            &gt;&gt;&gt;
+            &gt;&gt;&gt; BYE_REGEX = re.compile(r&#39;bye|goodbye|see you|chau&#39;)
+            &gt;&gt;&gt; @slackify.message(BYE_REGEX)
+            &gt;&gt;&gt; def say_bye(payload):
+            &gt;&gt;&gt;    return &#39;Bye!
+
+        &#34;&#34;&#34;
+
+        msg_regex = re.compile(message) if isinstance(message, str) else message
+        if not isinstance(msg_regex, RE_PATTERN):
+            raise TypeError(f&#34;&#39;message&#39; must be either str or a compiled regex. Not {type(msg_regex)!r}&#34;)
+
+        def quit_if_no_match(user_handler, regex, event_payload):
+            &#34;&#34;&#34;Quit listener execution if event text doesn&#39;t match the specified regex.&#34;&#34;&#34;
+            text = event_payload[&#39;event&#39;].get(&#39;text&#39;, &#39;&#39;)
+            if not regex.search(text):
+                return
+
+            return user_handler(event_payload)
+
+        def decorate(func):
+            if len(signature(func).parameters) != 1:
+                error = f&#34;Invalid signature for &#39;{func.__name__}&#39;. Must expect one and only one positional argument&#34;
+                raise TypeError(error)
+
+            listener = lambda payload: quit_if_no_match(func, msg_regex, payload)  # noqa: sh!
+            self.event(&#39;message&#39;, listener)
+            return func
+
+        return decorate(func) if func else decorate</code></pre>
+</details>
+</section>
+<section>
+</section>
+<section>
+</section>
+<section>
+<h2 class="section-title" id="header-classes">Classes</h2>
+<dl>
+<dt id="slackify.main.Slackify"><code class="flex name class">
+<span>class <span class="ident">Slackify</span></span>
+<span>(</span><span>app: Union[flask.app.Flask, flask.blueprints.Blueprint, NoneType] = None, endpoint: str = '/', events_endpoint: str = '/slack/events', emitter: pyee._base.BaseEventEmitter = None, dispatcher: <a title="slackify.dispatcher.Dispatcher" href="dispatcher.html#slackify.dispatcher.Dispatcher">Dispatcher</a> = None, injector: <a title="slackify.injection.Injector" href="injection.html#slackify.injection.Injector">Injector</a> = None, **kwargs)</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+<a href="https://github.com/Ambro17/slackify/blob/ea24cfc4c5553e7b50fdb56171ce7bfc923e7460/src/slackify/main.py#L18-L279" class="git-link">Browse git</a>
+</summary>
+<pre><code class="python">class Slackify:
+
+    _endpoint = &#39;&#39;
+
+    def __init__(
+        self,
+        app: Union[Flask, Blueprint, None] = None,
+        endpoint: str = &#39;/&#39;,
+        events_endpoint: str = &#39;/slack/events&#39;,
+        emitter: pyee.BaseEventEmitter = None,
+        dispatcher: Dispatcher = None,
+        injector: Injector = None,
+        **kwargs
+    ):
+        self.app = app or Flask(__name__)
+        self._configure_app(endpoint, events_endpoint)
+        self.dispatcher = dispatcher or Dispatcher()
+        self.emitter = emitter or pyee.ExecutorEventEmitter()
+        self.injector = injector or builtin_injector
+
+    def _configure_app(self, endpoint, events_endpoint):
+        &#34;&#34;&#34;Configure app to redirect slack requests if they match a registered handler&#34;&#34;&#34;
+        # Listen for each request and redirect it if there&#39;s a matching handler
+        self._endpoint = self._get_final_endpoint(endpoint)
+        self.app.before_request(self._redirect_slack_requests)
+        self._bind_main_entrypoint(endpoint)
+        self._bind_events_entrypoint(events_endpoint)
+
+    def _get_final_endpoint(self, endpoint):
+        &#34;&#34;&#34;Prepend blueprint prefix to endpoint if used as a blueprint&#34;&#34;&#34;
+        if self._is_blueprint() and not self.app.url_prefix:
+            # TODO: Perhaps relax this constraint once we figure out how to know
+            # at which url_prefix the blueprint will be listening on registration.
+            # Probably hooking after Blueprint.register to update with app.bp.url_prefix
+            raise ValueError(f&#34;Missing required &#39;url_prefix&#39; for blueprint {self.app.name}&#34;)
+
+        return f&#39;{self.app.url_prefix}{endpoint}&#39; if self._is_blueprint() else endpoint
+
+    def _is_blueprint(self):
+        return isinstance(self.app, Blueprint)
+
+    def _bind_main_entrypoint(self, endpoint):
+        self.app.add_url_rule(endpoint, &#39;slackify_entrypoint&#39;, lambda: &#39;🚀 Slackify Home&#39;, methods=(&#39;GET&#39;, &#39;POST&#39;))
+
+    def _bind_events_entrypoint(self, events_endpoint):
+        self.app.add_url_rule(events_endpoint, &#39;slackify_events&#39;, self._handle_event, methods=(&#39;POST&#39;,))
+
+    def _handle_event(self):
+        &#34;&#34;&#34;Respond to event request sync and emit event for async event handling&#34;&#34;&#34;
+        event_data = request.get_json()
+        # Respond to slack challenge to enable our endpoint as an event receiver
+        if &#34;challenge&#34; in event_data:
+            return make_response(
+                event_data.get(&#34;challenge&#34;), 200, {&#34;Content-Type&#34;: &#34;application/json&#34;}
+            )
+
+        if &#34;event&#34; in event_data:
+            event_type = event_data[&#34;event&#34;][&#34;type&#34;]
+            self.emitter.emit(event_type, event_data)
+            return make_response(&#34;&#34;, 200)
+
+    def _redirect_slack_requests(self):
+        request = _request_ctx_stack.top.request
+        if request.routing_exception is not None:
+            self.app.raise_routing_exception(request)
+
+        if not self._should_handle_request(request):
+            return
+
+        try:
+            endpoint = self.dispatcher.match(request)
+        except StopIteration:
+            logger.info(&#39;No handler matched this request&#39;)
+            return self._handle_unknown()
+        except Exception as e:
+            logger.exception(&#39;Something bad happened.&#39;)
+            return self._handle_error(e)
+
+        view_func = self._get_endpoint_handler(endpoint)
+        injected_func = self.injector.inject(view_func)
+        return injected_func(**request.view_args)
+
+    def _get_endpoint_handler(self, endpoint):
+        endpoint = f&#39;{self.app.name}.{endpoint}&#39; if self._is_blueprint() else endpoint
+        view_func = self.app.view_functions[endpoint]
+        return view_func
+
+    def _should_handle_request(self, req):
+        return req.method == &#39;POST&#39; and request.path == self._endpoint
+
+    def default(self, func):
+        &#34;&#34;&#34;Register function to execute when an unknown command is received&#34;&#34;&#34;
+        self._handle_unknown = func
+
+    def _handle_unknown(self):
+        &#34;&#34;&#34;Ignore unknown commands by default.&#34;&#34;&#34;
+        return None
+
+    def error(self, func):
+        &#34;&#34;&#34;Register function to execute when an exception was raised on any registered handler&#34;&#34;&#34;
+        self._handle_error = func
+
+    def _handle_error(self, e):
+        return self.app.make_response((&#39;Something went wrong..&#39;, 500))
+
+    def shortcut(self, shortcut_id: str, **options):
+        &#34;&#34;&#34;Register a function as a shortcut callback
+
+        Examples:
+            &gt;&gt;&gt; @slackify.shortcut(&#39;my-shortcut&#39;)
+            &gt;&gt;&gt; def hello():
+            &gt;&gt;&gt;     print(&#39;Someone followed `my-shortcut`&#39;)
+        &#34;&#34;&#34;
+
+        def register_handler(shortcut_handler):
+            command = shortcut_id
+            self.app.add_url_rule(f&#39;/{command}&#39;, command, shortcut_handler, **options)
+            self.dispatcher.add_matcher(ShortcutMatcher(command))
+            return shortcut_handler
+
+        return register_handler
+
+    def command(self, func=None, **options):
+        &#34;&#34;&#34;Register a function as a command handler.
+
+           It can be used as a plain decorator or as a parametrized decorator factory.
+           This does the same as `add_command_handler`
+
+        Usage:
+            &gt;&gt;&gt; @command
+            &gt;&gt;&gt; def hola():
+            &gt;&gt;&gt;     print(&#39;hola&#39;)
+
+
+            &gt;&gt;&gt; @command(name=&#39;goodbye&#39;)
+            &gt;&gt;&gt; def chau():
+            &gt;&gt;&gt;     print(&#39;chau&#39;)
+        &#34;&#34;&#34;
+        def decorate(func):
+            command = options.pop(&#39;name&#39;, func.__name__)
+            rule = f&#39;/{command}&#39; if not command.startswith(&#39;/&#39;) else command
+            self.app.add_url_rule(rule, command, func, **options)
+            self.dispatcher.add_matcher(Command(command))
+            return func
+
+        used_as_plain_decorator = bool(func)
+        if used_as_plain_decorator:
+            return decorate(func)
+        else:
+            return decorate
+
+    def action(self, action_id=None, **options):
+        &#34;&#34;&#34;Register a function as an action callback.
+
+        It supports registering actions by just `action_id` and  `action_id` + `block_id`
+
+        Usage:
+
+            &gt;&gt;&gt; @slackify.action(&#39;action_id&#39;)
+            &gt;&gt;&gt; def action_id_callback():
+            &gt;&gt;&gt;    return &#39;Hello&#39;
+            &gt;&gt;&gt; 
+            &gt;&gt;&gt; @slackify.action(action_id=&#39;action_id&#39;, block_id=&#39;block_id&#39;)
+            &gt;&gt;&gt; def other_callback():
+            &gt;&gt;&gt;     return &#39;Bye&#39;
+        &#34;&#34;&#34;
+
+        if action_id is None and options.get(&#39;block_id&#39;) is None or callable(action_id):
+            raise TypeError(&#34;action() missing 1 required positional argument: &#39;action_id&#39;&#34;)
+
+        def decorate(func):
+            block_id = options.pop(&#39;block_id&#39;, None)
+            command = action_id or block_id  # TODO: Handle special characters that make url rule invalid?
+            self.app.add_url_rule(f&#39;/{command}&#39;, command, func, **options)
+            self.dispatcher.add_matcher(ActionMatcher(command, block_id=block_id))
+            return func
+
+        return decorate
+
+    def view(self, view_callback_id, **options):
+        &#34;&#34;&#34;Register a function as a view callback.
+        
+        Usage:
+
+            &gt;&gt;&gt; @slackify.view(&#39;my_view&#39;)
+            &gt;&gt;&gt; def view_callback():
+            &gt;&gt;&gt;     return &#39;Hello&#39;
+        
+        &#34;&#34;&#34;
+
+        def decorate(func):
+            self.app.add_url_rule(f&#39;/{view_callback_id}&#39;, view_callback_id, func, **options)
+            self.dispatcher.add_matcher(ViewMatcher(view_callback_id))
+            return func
+
+        return decorate
+
+    def event(self, event, func=None):
+        &#34;&#34;&#34;Register a function as an event callback.
+
+        Note: 
+            All event callbacks *MUST* accept a payload positional argument.
+            The event payload from slack will be sent on that arg
+
+        Usage:
+
+            &gt;&gt;&gt; @slackify.event(&#39;reaction_added&#39;)
+            &gt;&gt;&gt; def handle_reaction(payload):
+            &gt;&gt;&gt;     print(payload)
+            &gt;&gt;&gt;     return &#39;Hello&#39;
+        &#34;&#34;&#34;
+        def add_listener(func):
+            if len(signature(func).parameters) != 1:
+                error = f&#34;Invalid signature for &#39;{func.__name__}&#39;. Must expect one and only one positional argument&#34;
+                raise TypeError(error)
+
+            self.emitter.on(event, func)
+
+        return add_listener(func) if func else add_listener
+
+    def message(self, message, func=None, **kwargs):
+        &#34;&#34;&#34;Register a function as a callback for when a string matching `message` is found.
+
+        Note:
+            The event callback *MUST* accept a payload positional argument.
+            The event payload from slack will be sent on that arg
+
+        Usage:
+
+            &gt;&gt;&gt; @slackify.message(&#39;hello&#39;)
+            &gt;&gt;&gt; def handle_reaction(payload):
+            &gt;&gt;&gt;    return &#39;How are you?&#39;
+            &gt;&gt;&gt;
+            &gt;&gt;&gt; BYE_REGEX = re.compile(r&#39;bye|goodbye|see you|chau&#39;)
+            &gt;&gt;&gt; @slackify.message(BYE_REGEX)
+            &gt;&gt;&gt; def say_bye(payload):
+            &gt;&gt;&gt;    return &#39;Bye!
+
+        &#34;&#34;&#34;
+
+        msg_regex = re.compile(message) if isinstance(message, str) else message
+        if not isinstance(msg_regex, RE_PATTERN):
+            raise TypeError(f&#34;&#39;message&#39; must be either str or a compiled regex. Not {type(msg_regex)!r}&#34;)
+
+        def quit_if_no_match(user_handler, regex, event_payload):
+            &#34;&#34;&#34;Quit listener execution if event text doesn&#39;t match the specified regex.&#34;&#34;&#34;
+            text = event_payload[&#39;event&#39;].get(&#39;text&#39;, &#39;&#39;)
+            if not regex.search(text):
+                return
+
+            return user_handler(event_payload)
+
+        def decorate(func):
+            if len(signature(func).parameters) != 1:
+                error = f&#34;Invalid signature for &#39;{func.__name__}&#39;. Must expect one and only one positional argument&#34;
+                raise TypeError(error)
+
+            listener = lambda payload: quit_if_no_match(func, msg_regex, payload)  # noqa: sh!
+            self.event(&#39;message&#39;, listener)
+            return func
+
+        return decorate(func) if func else decorate</code></pre>
+</details>
+<h3>Methods</h3>
+<dl>
+<dt id="slackify.main.Slackify.action"><code class="name flex">
+<span>def <span class="ident">action</span></span>(<span>self, action_id=None, **options)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Register a function as an action callback.</p>
+<p>It supports registering actions by just <code>action_id</code> and
+<code>action_id</code> + <code>block_id</code></p>
+<h2 id="usage">Usage</h2>
+<pre><code class="python-repl">&gt;&gt;&gt; @slackify.action('action_id')
+&gt;&gt;&gt; def action_id_callback():
+&gt;&gt;&gt;    return 'Hello'
+&gt;&gt;&gt; 
+&gt;&gt;&gt; @slackify.action(action_id='action_id', block_id='block_id')
+&gt;&gt;&gt; def other_callback():
+&gt;&gt;&gt;     return 'Bye'
+</code></pre></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+<a href="https://github.com/Ambro17/slackify/blob/ea24cfc4c5553e7b50fdb56171ce7bfc923e7460/src/slackify/main.py#L169-L195" class="git-link">Browse git</a>
+</summary>
+<pre><code class="python">def action(self, action_id=None, **options):
+    &#34;&#34;&#34;Register a function as an action callback.
+
+    It supports registering actions by just `action_id` and  `action_id` + `block_id`
+
+    Usage:
+
+        &gt;&gt;&gt; @slackify.action(&#39;action_id&#39;)
+        &gt;&gt;&gt; def action_id_callback():
+        &gt;&gt;&gt;    return &#39;Hello&#39;
+        &gt;&gt;&gt; 
+        &gt;&gt;&gt; @slackify.action(action_id=&#39;action_id&#39;, block_id=&#39;block_id&#39;)
+        &gt;&gt;&gt; def other_callback():
+        &gt;&gt;&gt;     return &#39;Bye&#39;
+    &#34;&#34;&#34;
+
+    if action_id is None and options.get(&#39;block_id&#39;) is None or callable(action_id):
+        raise TypeError(&#34;action() missing 1 required positional argument: &#39;action_id&#39;&#34;)
+
+    def decorate(func):
+        block_id = options.pop(&#39;block_id&#39;, None)
+        command = action_id or block_id  # TODO: Handle special characters that make url rule invalid?
+        self.app.add_url_rule(f&#39;/{command}&#39;, command, func, **options)
+        self.dispatcher.add_matcher(ActionMatcher(command, block_id=block_id))
+        return func
+
+    return decorate</code></pre>
+</details>
+</dd>
+<dt id="slackify.main.Slackify.command"><code class="name flex">
+<span>def <span class="ident">command</span></span>(<span>self, func=None, **options)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Register a function as a command handler.</p>
+<p>It can be used as a plain decorator or as a parametrized decorator factory.
+This does the same as <code>add_command_handler</code></p>
+<h2 id="usage">Usage</h2>
+<pre><code class="python-repl">&gt;&gt;&gt; @command
+&gt;&gt;&gt; def hola():
+&gt;&gt;&gt;     print('hola')
+</code></pre>
+<pre><code class="python-repl">&gt;&gt;&gt; @command(name='goodbye')
+&gt;&gt;&gt; def chau():
+&gt;&gt;&gt;     print('chau')
+</code></pre></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+<a href="https://github.com/Ambro17/slackify/blob/ea24cfc4c5553e7b50fdb56171ce7bfc923e7460/src/slackify/main.py#L140-L167" class="git-link">Browse git</a>
+</summary>
+<pre><code class="python">def command(self, func=None, **options):
+    &#34;&#34;&#34;Register a function as a command handler.
+
+       It can be used as a plain decorator or as a parametrized decorator factory.
+       This does the same as `add_command_handler`
+
+    Usage:
+        &gt;&gt;&gt; @command
+        &gt;&gt;&gt; def hola():
+        &gt;&gt;&gt;     print(&#39;hola&#39;)
+
+
+        &gt;&gt;&gt; @command(name=&#39;goodbye&#39;)
+        &gt;&gt;&gt; def chau():
+        &gt;&gt;&gt;     print(&#39;chau&#39;)
+    &#34;&#34;&#34;
+    def decorate(func):
+        command = options.pop(&#39;name&#39;, func.__name__)
+        rule = f&#39;/{command}&#39; if not command.startswith(&#39;/&#39;) else command
+        self.app.add_url_rule(rule, command, func, **options)
+        self.dispatcher.add_matcher(Command(command))
+        return func
+
+    used_as_plain_decorator = bool(func)
+    if used_as_plain_decorator:
+        return decorate(func)
+    else:
+        return decorate</code></pre>
+</details>
+</dd>
+<dt id="slackify.main.Slackify.default"><code class="name flex">
+<span>def <span class="ident">default</span></span>(<span>self, func)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Register function to execute when an unknown command is received</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+<a href="https://github.com/Ambro17/slackify/blob/ea24cfc4c5553e7b50fdb56171ce7bfc923e7460/src/slackify/main.py#L108-L110" class="git-link">Browse git</a>
+</summary>
+<pre><code class="python">def default(self, func):
+    &#34;&#34;&#34;Register function to execute when an unknown command is received&#34;&#34;&#34;
+    self._handle_unknown = func</code></pre>
+</details>
+</dd>
+<dt id="slackify.main.Slackify.error"><code class="name flex">
+<span>def <span class="ident">error</span></span>(<span>self, func)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Register function to execute when an exception was raised on any registered handler</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+<a href="https://github.com/Ambro17/slackify/blob/ea24cfc4c5553e7b50fdb56171ce7bfc923e7460/src/slackify/main.py#L116-L118" class="git-link">Browse git</a>
+</summary>
+<pre><code class="python">def error(self, func):
+    &#34;&#34;&#34;Register function to execute when an exception was raised on any registered handler&#34;&#34;&#34;
+    self._handle_error = func</code></pre>
+</details>
+</dd>
+<dt id="slackify.main.Slackify.event"><code class="name flex">
+<span>def <span class="ident">event</span></span>(<span>self, event, func=None)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Register a function as an event callback.</p>
+<p>Note:
+All event callbacks <em>MUST</em> accept a payload positional argument.
+The event payload from slack will be sent on that arg</p>
+<h2 id="usage">Usage</h2>
+<pre><code class="python-repl">&gt;&gt;&gt; @slackify.event('reaction_added')
+&gt;&gt;&gt; def handle_reaction(payload):
+&gt;&gt;&gt;     print(payload)
+&gt;&gt;&gt;     return 'Hello'
+</code></pre></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+<a href="https://github.com/Ambro17/slackify/blob/ea24cfc4c5553e7b50fdb56171ce7bfc923e7460/src/slackify/main.py#L215-L236" class="git-link">Browse git</a>
+</summary>
+<pre><code class="python">def event(self, event, func=None):
+    &#34;&#34;&#34;Register a function as an event callback.
+
+    Note: 
+        All event callbacks *MUST* accept a payload positional argument.
+        The event payload from slack will be sent on that arg
+
+    Usage:
+
+        &gt;&gt;&gt; @slackify.event(&#39;reaction_added&#39;)
+        &gt;&gt;&gt; def handle_reaction(payload):
+        &gt;&gt;&gt;     print(payload)
+        &gt;&gt;&gt;     return &#39;Hello&#39;
+    &#34;&#34;&#34;
+    def add_listener(func):
+        if len(signature(func).parameters) != 1:
+            error = f&#34;Invalid signature for &#39;{func.__name__}&#39;. Must expect one and only one positional argument&#34;
+            raise TypeError(error)
+
+        self.emitter.on(event, func)
+
+    return add_listener(func) if func else add_listener</code></pre>
+</details>
+</dd>
+<dt id="slackify.main.Slackify.message"><code class="name flex">
+<span>def <span class="ident">message</span></span>(<span>self, message, func=None, **kwargs)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Register a function as a callback for when a string matching <code>message</code> is found.</p>
+<h2 id="note">Note</h2>
+<p>The event callback <em>MUST</em> accept a payload positional argument.
+The event payload from slack will be sent on that arg</p>
+<h2 id="usage">Usage</h2>
+<pre><code class="python-repl">&gt;&gt;&gt; @slackify.message('hello')
+&gt;&gt;&gt; def handle_reaction(payload):
+&gt;&gt;&gt;    return 'How are you?'
+&gt;&gt;&gt;
+&gt;&gt;&gt; BYE_REGEX = re.compile(r'bye|goodbye|see you|chau')
+&gt;&gt;&gt; @slackify.message(BYE_REGEX)
+&gt;&gt;&gt; def say_bye(payload):
+&gt;&gt;&gt;    return 'Bye!
+</code></pre></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+<a href="https://github.com/Ambro17/slackify/blob/ea24cfc4c5553e7b50fdb56171ce7bfc923e7460/src/slackify/main.py#L238-L279" class="git-link">Browse git</a>
+</summary>
+<pre><code class="python">def message(self, message, func=None, **kwargs):
+    &#34;&#34;&#34;Register a function as a callback for when a string matching `message` is found.
+
+    Note:
+        The event callback *MUST* accept a payload positional argument.
+        The event payload from slack will be sent on that arg
+
+    Usage:
+
+        &gt;&gt;&gt; @slackify.message(&#39;hello&#39;)
+        &gt;&gt;&gt; def handle_reaction(payload):
+        &gt;&gt;&gt;    return &#39;How are you?&#39;
+        &gt;&gt;&gt;
+        &gt;&gt;&gt; BYE_REGEX = re.compile(r&#39;bye|goodbye|see you|chau&#39;)
+        &gt;&gt;&gt; @slackify.message(BYE_REGEX)
+        &gt;&gt;&gt; def say_bye(payload):
+        &gt;&gt;&gt;    return &#39;Bye!
+
+    &#34;&#34;&#34;
+
+    msg_regex = re.compile(message) if isinstance(message, str) else message
+    if not isinstance(msg_regex, RE_PATTERN):
+        raise TypeError(f&#34;&#39;message&#39; must be either str or a compiled regex. Not {type(msg_regex)!r}&#34;)
+
+    def quit_if_no_match(user_handler, regex, event_payload):
+        &#34;&#34;&#34;Quit listener execution if event text doesn&#39;t match the specified regex.&#34;&#34;&#34;
+        text = event_payload[&#39;event&#39;].get(&#39;text&#39;, &#39;&#39;)
+        if not regex.search(text):
+            return
+
+        return user_handler(event_payload)
+
+    def decorate(func):
+        if len(signature(func).parameters) != 1:
+            error = f&#34;Invalid signature for &#39;{func.__name__}&#39;. Must expect one and only one positional argument&#34;
+            raise TypeError(error)
+
+        listener = lambda payload: quit_if_no_match(func, msg_regex, payload)  # noqa: sh!
+        self.event(&#39;message&#39;, listener)
+        return func
+
+    return decorate(func) if func else decorate</code></pre>
+</details>
+</dd>
+<dt id="slackify.main.Slackify.shortcut"><code class="name flex">
+<span>def <span class="ident">shortcut</span></span>(<span>self, shortcut_id: str, **options)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Register a function as a shortcut callback</p>
+<h2 id="examples">Examples</h2>
+<pre><code class="python-repl">&gt;&gt;&gt; @slackify.shortcut('my-shortcut')
+&gt;&gt;&gt; def hello():
+&gt;&gt;&gt;     print('Someone followed `my-shortcut`')
+</code></pre></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+<a href="https://github.com/Ambro17/slackify/blob/ea24cfc4c5553e7b50fdb56171ce7bfc923e7460/src/slackify/main.py#L123-L138" class="git-link">Browse git</a>
+</summary>
+<pre><code class="python">def shortcut(self, shortcut_id: str, **options):
+    &#34;&#34;&#34;Register a function as a shortcut callback
+
+    Examples:
+        &gt;&gt;&gt; @slackify.shortcut(&#39;my-shortcut&#39;)
+        &gt;&gt;&gt; def hello():
+        &gt;&gt;&gt;     print(&#39;Someone followed `my-shortcut`&#39;)
+    &#34;&#34;&#34;
+
+    def register_handler(shortcut_handler):
+        command = shortcut_id
+        self.app.add_url_rule(f&#39;/{command}&#39;, command, shortcut_handler, **options)
+        self.dispatcher.add_matcher(ShortcutMatcher(command))
+        return shortcut_handler
+
+    return register_handler</code></pre>
+</details>
+</dd>
+<dt id="slackify.main.Slackify.view"><code class="name flex">
+<span>def <span class="ident">view</span></span>(<span>self, view_callback_id, **options)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Register a function as a view callback.</p>
+<h2 id="usage">Usage</h2>
+<pre><code class="python-repl">&gt;&gt;&gt; @slackify.view('my_view')
+&gt;&gt;&gt; def view_callback():
+&gt;&gt;&gt;     return 'Hello'
+</code></pre></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+<a href="https://github.com/Ambro17/slackify/blob/ea24cfc4c5553e7b50fdb56171ce7bfc923e7460/src/slackify/main.py#L197-L213" class="git-link">Browse git</a>
+</summary>
+<pre><code class="python">def view(self, view_callback_id, **options):
+    &#34;&#34;&#34;Register a function as a view callback.
+    
+    Usage:
+
+        &gt;&gt;&gt; @slackify.view(&#39;my_view&#39;)
+        &gt;&gt;&gt; def view_callback():
+        &gt;&gt;&gt;     return &#39;Hello&#39;
+    
+    &#34;&#34;&#34;
+
+    def decorate(func):
+        self.app.add_url_rule(f&#39;/{view_callback_id}&#39;, view_callback_id, func, **options)
+        self.dispatcher.add_matcher(ViewMatcher(view_callback_id))
+        return func
+
+    return decorate</code></pre>
+</details>
+</dd>
+</dl>
+</dd>
+</dl>
+</section>
+</article>
+<nav id="sidebar">
+<a class="homelink" rel="home" title="pdoc Home" href="https://pdoc3.github.io/pdoc/">
+<img src="https://i.imgur.com/GwOCbjM_d.webp?maxwidth=728&fidelity=grand" alt="">
+Slackify
+</a>
+<div class="gcse-search" style="height: 70px"
+data-as_oq="inurl:github.com/Ambro17/slackify site:ambro17.github.io/slackify"
+data-gaCategoryParameter="slackify.main">
+</div>
+<h1>Index</h1>
+<div class="toc">
+<ul></ul>
+</div>
+<ul id="index">
+<li><h3>Super-module</h3>
+<ul>
+<li><code><a title="slackify" href="index.html">slackify</a></code></li>
+</ul>
+</li>
+<li><h3><a href="#header-classes">Classes</a></h3>
+<ul>
+<li>
+<h4><code><a title="slackify.main.Slackify" href="#slackify.main.Slackify">Slackify</a></code></h4>
+<ul class="two-column">
+<li><code><a title="slackify.main.Slackify.action" href="#slackify.main.Slackify.action">action</a></code></li>
+<li><code><a title="slackify.main.Slackify.command" href="#slackify.main.Slackify.command">command</a></code></li>
+<li><code><a title="slackify.main.Slackify.default" href="#slackify.main.Slackify.default">default</a></code></li>
+<li><code><a title="slackify.main.Slackify.error" href="#slackify.main.Slackify.error">error</a></code></li>
+<li><code><a title="slackify.main.Slackify.event" href="#slackify.main.Slackify.event">event</a></code></li>
+<li><code><a title="slackify.main.Slackify.message" href="#slackify.main.Slackify.message">message</a></code></li>
+<li><code><a title="slackify.main.Slackify.shortcut" href="#slackify.main.Slackify.shortcut">shortcut</a></code></li>
+<li><code><a title="slackify.main.Slackify.view" href="#slackify.main.Slackify.view">view</a></code></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</nav>
+</main>
+<footer id="footer">
+<p>Generated by <a href="https://pdoc3.github.io/pdoc"><cite>pdoc</cite> 0.9.1</a>.</p>
+</footer>
+</body>
+</html>

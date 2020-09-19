@@ -3,6 +3,7 @@ import re
 from typing import Any, Dict, Tuple
 
 import requests
+from slack import WebClient as Slack  # noqa: Add the import where it makes most sense
 
 from .tasks import async_task
 
@@ -32,6 +33,7 @@ def reply(body: dict) -> Tuple[str, int, Dict]:
 
 
 def text_block(text: str, markdown: bool = True) -> Dict[str, Any]:
+    """Respond to slack with a block including just text with markdown support"""
     return {
         "type": "section",
         "text": {
@@ -42,6 +44,7 @@ def text_block(text: str, markdown: bool = True) -> Dict[str, Any]:
 
 
 def block_reply(blocks: list) -> Tuple[str, int, Dict]:
+    """Respond to slack with a block payload. See https://api.slack.com/block-kit/building for reference"""
     return json.dumps({'blocks': blocks}), 200, JSON_TYPE
 
 
