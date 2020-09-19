@@ -19,8 +19,8 @@ def update_home_view():
                 "text": {
                     "type": "mrkdwn",
                     "text": "A simple stack of blocks for the simple sample Block Kit Home tab."
-                    }
-                },
+                }
+            },
             {
                 "type": "actions",
                 "elements": [
@@ -31,12 +31,12 @@ def update_home_view():
                             "type": "plain_text",
                             "text": "Tell me a Joke",
                             "emoji": True
-                            }
-                        },
-                    ]
-                }
-            ]
-        }
+                        }
+                    },
+                ]
+            }
+        ]
+    }
     resp = cli.views_publish(
         user_id=user,
         view=sample
@@ -57,4 +57,3 @@ def tell_a_joke(action):
 
 if __name__ == '__main__':
     app.run('0.0.0.0', port=3000)
-
