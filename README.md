@@ -74,13 +74,13 @@ To do so follow these steps:
 > Once your bot is ready for production you should update your commands url to a permanent one.
 > [Heroku](https://duckduckgo.com/?q=flask+on+heroku&t=brave&ia=web) might be a good choice if you are just getting started as it has a generous free tier.
 
-### Slackify Features
+### Features
 
-- **Slash Commands**. [Quickstart](examples/commands.py)
-- **Global and Message Shortcuts**. [Quickstart](examples/shortcuts.py)
-- **Interactive Actions**. [Quickstart](examples/actions.py)
-- **Modals (a.k.a views)**. [Quickstart](examples/views.py)
-- **Event Hooks**. [Quickstart](examples/events.py)
+- **Slash Commands**. [Quickstart](https://github.com/Ambro17/slackify/blob/master/examples/commands.py)
+- **Global and Message Shortcuts**. [Quickstart](https://github.com/Ambro17/slackify/blob/master/examples/shortcuts.py)
+- **Interactive Actions**. [Quickstart](https://github.com/Ambro17/slackify/blob/master/examples/actions.py)
+- **Modals (a.k.a views)**. [Quickstart](https://github.com/Ambro17/slackify/blob/master/examples/views.py)
+- **Event Hooks**. [Quickstart](https://github.com/Ambro17/slackify/blob/master/examples/events.py)
 
 ## Full example
 If you want a full stack example showcasing all functionality. It includes:
