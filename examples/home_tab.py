@@ -42,7 +42,7 @@ def update_home_view():
         view=sample
     )
     assert resp.get('ok', False), f"Could not build home tab.\nError:\n{resp.data!r}"
-    return reply_text(f'You are `{user}`.')
+    return reply_text('Home tab updated.')
 
 
 @slackify.action('tell_joke')
