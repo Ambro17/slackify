@@ -136,9 +136,9 @@ def test_invalid_message_usage(test_app):
             pass
     
     with pytest.raises(
-            TypeError,
-            match=r"'message' must be either str or a compiled regex. Not <class 'function'>"
-            ):
+        TypeError,
+        match=r"'message' must be either str or a compiled regex. Not <class 'function'>"
+        ):
         @test_app.message
         def try_it_4(payload):
             pass
@@ -146,10 +146,10 @@ def test_invalid_message_usage(test_app):
 
 def test_message_not_expecting_payload_arg_should_fail(test_app):
     with pytest.raises(
-            TypeError,
-            match=f"Invalid signature for 'bad_function_missing_payload_arg'. Must expect one and only one positional argument"
-            # noqa
-            ):
+        TypeError,
+        match=f"Invalid signature for 'bad_function_missing_payload_arg'. Must expect one and only one positional argument"
+        # noqa
+        ):
         @test_app.message('hi')
         def bad_function_missing_payload_arg():
             pass
@@ -157,9 +157,9 @@ def test_message_not_expecting_payload_arg_should_fail(test_app):
 
 def test_event_handler_not_expecting_payload_arg_should_fail(test_app):
     with pytest.raises(
-            TypeError,
-            match=f"Invalid signature for 'your_func'. Must expect one and only one positional argument"  # noqa
-            ):
+        TypeError,
+        match=f"Invalid signature for 'your_func'. Must expect one and only one positional argument"  # noqa
+        ):
         @test_app.event('bla')
         def your_func():
             pass

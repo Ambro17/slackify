@@ -16,15 +16,15 @@ class Slackify:
     _endpoint = ''
     
     def __init__(
-            self,
-            endpoint='/',
-            events_endpoint='/slack/events',
-            app=None,
-            emitter=None,
-            dispatcher=None,
-            injector=None,
-            **kwargs
-            ):
+        self,
+        endpoint='/',
+        events_endpoint='/slack/events',
+        app=None,
+        emitter=None,
+        dispatcher=None,
+        injector=None,
+        **kwargs
+        ):
         self.app = app or Flask(__name__)
         self._configure_app(endpoint, events_endpoint)
         self.dispatcher = dispatcher or Dispatcher()

@@ -1,7 +1,5 @@
 import os
-
 import Slack as Slack
-
 from slackify import Slackify, Flask, Slack
 
 # Initialize App

@@ -1,7 +1,6 @@
 import os
 import random
 import re
-
 from flask import Flask
 from slackify import (
     ACK, OK, Slackify, async_task, block_reply,
