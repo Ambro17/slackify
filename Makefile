@@ -4,7 +4,7 @@ tunnel:
 	ngrok http 3000
 
 build:
-	docker build . -t slackify:$(shell date +%s)
+	docker build . -t slackify:$(shell date +%Y-%m-%d-%s)
 
 run:
 	docker run -it --rm -v $(PWD):/app slackify
