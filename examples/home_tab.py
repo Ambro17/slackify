@@ -50,7 +50,7 @@ def tell_a_joke(action):
     resp = cli.chat_postMessage(
         channel=action['user']['id'],  # Send the user a private message through slackbot
         text="I can't remember any joke right now 😅"
-        )
+    )
     assert resp.get('ok'), f"Error sending message. {resp.data}"
     return ACK
 
