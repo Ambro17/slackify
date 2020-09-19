@@ -9,7 +9,7 @@ cli = Slack(os.getenv('SLACK_BOT_TOKEN'))
 
 
 @slackify.command
-def register():
+def update_home_view():
     user = request.form['user_id']
     sample = {
         "type": "home",
