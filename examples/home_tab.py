@@ -56,4 +56,10 @@ def tell_a_joke(action):
 
 
 if __name__ == '__main__':
+<<<<<<< Updated upstream
     app.run('0.0.0.0', port=3000)
+=======
+    print('Running')
+    app.run('0.0.0.0', port=3000)
+    
+>>>>>>> Stashed changes
