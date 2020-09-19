@@ -38,7 +38,7 @@ class Dispatcher:
 class FormMatcher(Matcher):
     def match(self, request) -> bool:
         return 'application/x-www-form-urlencoded' in request.headers.get('Content-Type', '')
-    
+
     def get_payload(self, request: flask.Request) -> Optional[Dict[str, Any]]:
         """Extract payload from request.form as dict"""
         if 'payload' not in request.form:

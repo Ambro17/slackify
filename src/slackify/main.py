@@ -3,8 +3,8 @@ from inspect import signature
 import logging
 import re
 
-from flask import Flask, _request_ctx_stack, request, make_response, Blueprint
-from pyee import ExecutorEventEmitter
+from flask import Flask, _request_ctx_stack, request, make_response, Blueprint  # type: ignore
+from pyee import ExecutorEventEmitter  # type: ignore
 
 from .dispatcher import ActionMatcher, Command, Dispatcher, ShortcutMatcher, ViewMatcher
 from .slack import RE_PATTERN

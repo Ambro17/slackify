@@ -29,10 +29,11 @@ _Requires python3.6+_
 
 **2. The manual way**
 
-Create a file named `quickstart.py` with the following content
+Create a file named `quickstart.py` with the following content and then run `python quickstart.py`
 ```python
+from time import sleep
 from flask import Flask
-from slackify import Slackify, async_task
+from slackify import Slackify, async_task, reply_text
 
 
 app = Flask(__name__)
@@ -41,31 +42,27 @@ slackify = Slackify(app=app)
 
 @slackify.command
 def hello():
-    return reply_text('Hello from Slack')
-
-
-# Change the slash command name to /say_bye instead of the default function name
-@slackify.command(name='say_bye')
-def bye():
     my_background_job()
-    return reply_text('Bye')
+    return reply_text('Hello from Slack!')
 
 
 @async_task
 def my_background_job():
-    """Non blocking long task"""
+    """A long task that runs on background so the server replies quickly"""
     sleep(15)
     return
+
+if __name__ == '__main__':
+    app.run(host='0.0.0.0', port=5000)
 ```
 
-To connect it to slack you need to meet this preconditions:
+Now the server is already running, but we need to make it reachable by slack.
+To do so follow these steps:
 
 0. [Create a slack app](https://api.slack.com/apps?new_app=1)
 1. Download [ngrok*](https://ngrok.com/download) and run `ngrok http 5000` to create a https proxy to localhost
-2. [Create a slash command](https://api.slack.com/apps) and set the url to ngrok's https url of step #1
-3. On your terminal export flask app variable `export FLASK_APP='quickstart:app'`
-4. Run your app with `flask run --port=5000` (The port should match the one on step #1)
-5. Write `/hello` to your new slack bot and let the magic begin
+2. [Create a slash command](https://api.slack.com/apps) and set the url to ngrok's https url of step `#1`
+3. Write `/hello` to your new slack bot and let the magic begin ✨
 
 >*This is a development setup so you can quickly see your code changes in slack without the need to redeploy your whole site.
 > Once your bot is ready for production you should update your commands url to a permanent one.
