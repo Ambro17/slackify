@@ -26,7 +26,11 @@ def say_hi(payload):
                 "type": "section",
                 "text": {
                     "type": "mrkdwn",
+<<<<<<< HEAD
                     "text": "<https://example.com|Overlook Hotel> \n :star:\n Doors had too many axe holes, guest in room " +
+=======
+                    "text": "<https://example.com|Overlook Hotel> \n :star: \n Doors had too many axe holes, guest in room " +
+>>>>>>> master
                             "237 was far too rowdy, whole place felt stuck in the 1920s."
                     },
                 "accessory": {
