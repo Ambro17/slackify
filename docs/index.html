@@ -58,19 +58,24 @@ instead of struggling with routing or payload details.</p>
 <h2 id="installation">Installation</h2>
 <p><code>python3 -m pip install slackify</code></p>
 <p><em>Requires python3.6+</em></p>
+<h2 id="documentation">Documentation</h2>
+<p>You can read <code><a title="slackify.Slackify" href="#slackify.Slackify">Slackify</a></code> docs <a href="https://ambro17.github.io/slackify/">here</a></p>
 <h2 id="quickstart">Quickstart</h2>
-<p><strong>1. The easy way:</strong></p>
+<p><strong>1. 1-Click Deploy</strong></p>
 <p><a href="https://heroku.com/deploy?template=https://github.com/Ambro17/slackify/tree/master"><img alt="Deploy" src="https://www.herokucdn.com/deploy/button.svg"></a></p>
 <blockquote>
 <p>The server will listen at <code>&lt;heroku_url&gt;/</code> for commands/actions and <code>&lt;heroku_url&gt;/slack/events</code> for slack events</p>
 <p>This setup uses flask builtin server which is NOT suited for production. Replace it by gunicorn or similar when ready to ship</p>
 </blockquote>
-<p><strong>2. The manual way</strong></p>
+<p><strong>2. Manual deploy</strong></p>
 <p>Create a file named <code>quickstart.py</code> with the following content and then run <code>python quickstart.py</code></p>
 <pre><code class="python">from time import sleep
 from flask import Flask
-from slackify import Slackify, async_task, reply_text
-
+from slackify import (
+    Slackify,
+    async_task,
+    reply_text
+)
 
 app = Flask(__name__)
 slackify = Slackify(app=app)
@@ -84,7 +89,7 @@ def hello():
 
 @async_task
 def my_background_job():
-    &quot;&quot;&quot;A long task that runs on background so the server replies quickly&quot;&quot;&quot;
+    &quot;&quot;&quot;My long background job&quot;&quot;&quot;
     sleep(15)
     return
 
@@ -104,19 +109,16 @@ To do so follow these steps:</p>
 Once your bot is ready for production you should update your commands url to a permanent one.
 <a href="https://duckduckgo.com/?q=flask+on+heroku&amp;t=brave&amp;ia=web">Heroku</a> might be a good choice if you are just getting started as it has a generous free tier.</p>
 </blockquote>
-<h3 id="does-it-support-new-slack-shorcuts">Does it support new slack Shorcuts?</h3>
-<p>Yes, See <a href="examples/shortcuts.py">examples/shortcuts.py</a> for a self contained example</p>
-<h3 id="and-can-i-use-new-slack-modals">And can i use new slack Modals?</h3>
-<p>Of course! See <a href="examples/views.py">examples/views.py</a> for a quick example</p>
-<h3 id="are-interactive-actions-supported">Are interactive actions supported?</h3>
-<p>Yes! See <a href="examples/actions.py">examples/actions.py</a> for a quickstart.</p>
-<blockquote>
-<p>Note: Legacy actions are unsupported by design as they are discouraged by slack. Nevertheless, if there's popular demand, we could add support for them.</p>
-</blockquote>
-<h3 id="and-slack-events">And slack events?</h3>
-<p>As you may have guessed, they are also supported. See <a href="examples/events.py">examples/events.py</a> for an example.</p>
+<h3 id="slackify-features">Slackify Features</h3>
+<ul>
+<li><strong>Slash Commands</strong>. <a href="examples/commands.py">Quickstart</a></li>
+<li><strong>Global and Message Shortcuts</strong>. <a href="examples/shortcuts.py">Quickstart</a></li>
+<li><strong>Interactive Actions</strong>. <a href="examples/actions.py">Quickstart</a></li>
+<li><strong>Modals (a.k.a views)</strong>. <a href="examples/views.py">Quickstart</a></li>
+<li><strong>Event Hooks</strong>. <a href="examples/events.py">Quickstart</a></li>
+</ul>
 <h2 id="full-example">Full example</h2>
-<p>Here you have a more complete example showcasing all functionality. It includes:
+<p>If you want a full stack example showcasing all functionality. It includes:
 - A hello command that shows interactive buttons
 - Callbacks for each interactive button click
 - A register command that opens a new slack modal
@@ -132,8 +134,10 @@ import os
 import random
 
 from flask import Flask
-from slackify import (ACK, OK, Slackify, async_task, block_reply, request,
-                      respond, text_block, Slack)
+from slackify import (
+    ACK, OK, Slackify, async_task, block_reply, 
+    request, respond, text_block, Slack
+)
 
 app = Flask(__name__)
 slackify = Slackify(app=app)
@@ -181,7 +185,7 @@ def hello():
 
 @slackify.action(&quot;yes&quot;)
 def yes(payload):
-    &quot;&quot;&quot;If a user clicks yes on the message above, execute this callback&quot;&quot;&quot;
+    &quot;&quot;&quot;Run this if a user clicks yes on the message above&quot;&quot;&quot;
     text_blok = text_block('Super! I do too :thumbsup:')
     respond(payload['response_url'], {'blocks': [text_blok]})
     return OK
@@ -189,7 +193,7 @@ def yes(payload):
 
 @slackify.action(&quot;no&quot;)
 def no(payload):
-    &quot;&quot;&quot;If a user clicks no on the hello message, execute this callback&quot;&quot;&quot;
+    &quot;&quot;&quot;Run this if a user clicks no on the message above&quot;&quot;&quot;
     text_blok = text_block('Boo! You are so boring :thumbsdown:')
     respond(payload['response_url'], {'blocks': [text_blok]})
     return OK
@@ -197,7 +201,7 @@ def no(payload):
 
 @slackify.command
 def register():
-    &quot;&quot;&quot;Open a registration popup that asks for username and password. Don't enter any credentials!&quot;&quot;&quot;
+    &quot;&quot;&quot;Open a registration popup that asks for username and password.&quot;&quot;&quot;
     username_input_block = {
         &quot;type&quot;: &quot;input&quot;,
         &quot;block_id&quot;: &quot;username_block&quot;,
@@ -268,7 +272,10 @@ def register():
 def register_callback(payload):
     &quot;&quot;&quot;Handle registration form submission.&quot;&quot;&quot;
     response = payload['view']['state']['values']
-    text_blok = text_block(f':heavy_check_mark: You are now registered.\nForm payload:\n```{response}```')
+    text_blok = text_block(
+        ':heavy_check_mark: You are now registered.\n
+        f'Form payload:\n```{response}```'
+    )
     send_message(cli, [text_blok], payload['user']['id'])
     return ACK
 
@@ -283,13 +290,17 @@ def dice_roll(payload):
     &quot;&quot;&quot;Roll a virtual dice to give a pseudo-random number&quot;&quot;&quot;
     dice_value = random.randint(1, 6)
     msg = f'🎲 {dice_value}'
-    send_message(cli, blocks=[text_block(msg)], user_id=payload['user']['id'])
+    send_message(
+        cli,
+        blocks=[text_block(msg)], 
+        user_id=payload['user']['id']
+    )
     return ACK
 
 
 @slackify.event('reaction_added')
 def echo_reaction(payload):
-    &quot;&quot;&quot;If any user reacts to a message, also react with that emoji to the message&quot;&quot;&quot;
+    &quot;&quot;&quot;Adds the same reaction as the user&quot;&quot;&quot;
     event = payload['event']
     reaction = event['reaction']
     cli.reactions_add(
@@ -302,14 +313,19 @@ def echo_reaction(payload):
 @slackify.message('hello')
 def say_hi(payload):
     event = payload['event']
-    cli.chat_postMessage(channel=event['channel'], text='Hi! 👋')
+    cli.chat_postMessage(
+        channel=event['channel'],
+        text='Hi! 👋'
+    )
 </code></pre>
 <h2 id="dependency-injection">Dependency Injection</h2>
 <p>As you add more and more commands you will find yourself parsing slack's request over and over again. </p>
 <p>Slackify offers shortcut for this using dependency injection.</p>
 <pre><code class="python">@slackify.command
 def hello(command, command_args, response_url):
-    return reply_text(f&quot;You called `{command} {command_args}`. Use {response_url} for delayed responses&quot;)
+    return reply_text(
+        f&quot;You called `{command} {command_args}`. Use {response_url} for delayed responses&quot;
+    )
 </code></pre>
 <p>Your view function will now receive the slash command, the arguments and the response_url upon invocation. Pretty cool, right?</p>
 <p>If you are a user of pytest, this idea is similar to pytest fixtures</p>
@@ -342,65 +358,12 @@ def create_app():
 <blockquote>
 <p>Note: You must import Blueprint from slackify instead of flask to get it working</p>
 </blockquote>
-<h2 id="api-reference">API Reference</h2>
-<pre><code class="python">
-@slackify.command
-or
-@slackify.command(name='custom')
-
-
-@slackify.shortcut('shorcut-id')
-
-
-@slackify.action('action_id')
-or
-@slackify.action(action_id='action_id', block_id='block_id')
-
-
-@slackify.event('event_name') # See https://api.slack.com/events for all available events
-
-
-# Shortcut for `message` events that match certain string or regex
-@slackify.message('Hi!')
-or
-@slackify.message(re.compile(r'Bye|see you|xoxo'))
-
-
-@slackify.view('callback_id')
-
-
-# Specify what to do if a slack request doesn't match any of your handlers.
-# By default it simply ignores the request.
-@slackify.default
-
-# Handle unexpected errors that occur inside handlers.
-# By default returns status 500 and a generic message.
-# The exception will be passed as a positional argument to the decorated function
-@slackify.error
-</code></pre>
 <h2 id="dependencies">Dependencies</h2>
 <p>This projects uses <code>Flask</code> as the web server and <code>slackclient</code> (<em>The official python slack client</em>) as slack's API wrapper</p>
-<h2 id="how-does-it-work">How does it work?</h2>
-<p>If you are curious you may want to know how the lib works.</p>
-<p>In fact there's really little to know and hopefully
-you can understand it by browsing the code and this brief introduction.</p>
-<p>The lib exposes a main class called <code><a title="slackify.Slackify" href="#slackify.Slackify">Slackify</a></code> that can either receive a Flask instance
-as <code>app</code> argument or creates one on the fly.
-It then binds two routes. One for commands, shortcuts, actions and another one for slack events.</p>
-<p>The first route is <code>/</code> by default, it inspects the incoming requests and looks for any declared handler that is interested in handling this request to redirect it.</p>
-<p>If it finds a handler, it injects any dependency the view may require as a view argument, and then call the view function, passing the return value as the request response.</p>
-<p>If there's no match, it ignores the request and it follows the
-normal request lifecycle.</p>
-<p>If there's an error, an overridable function through <code>@slackify.error</code> is executed to show a friendly message.</p>
-<p>The second route the lib adds is the events route at <code>/slack/events</code>.</p>
-<p>When it receives a post request, it emits an event through <code>pyee.ExecutorEventEmitter</code> with the event type and quickly responds with the response acknowledgment slack requires to avoid showing an error to the user. This allows asynchronous execution of the function, while still responding quickly to slack.
-In other words, when you decorate a function with <code>app.event('event_type')</code> what you are really doing is setting up a listener for the <code>event_type</code> that will receive the event payload. No magic.</p>
-<p>If after reading this you have an idea of how we can extend or improve this lib in any way, feel free to open an issue or pull request!
-I feel there's still a gap bewtween developing slack bots with python and doing it with java or javascript as they have <a href="https://github.com/slackapi/bolt">bolt's</a> beautiful API. This lib attempts to offer a similar API to enjoy writing bots.</p>
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/Ambro17/slackify/blob/ea24cfc4c5553e7b50fdb56171ce7bfc923e7460/src/slackify/__init__.py#L0-L41" class="git-link">Browse git</a>
+<a href="https://github.com/Ambro17/slackify/blob/a68ab47afc62bf7aa5271e2f228f46cb703aff9f/src/slackify/__init__.py#L0-L41" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">&#34;&#34;&#34;`Slackify` provides a declarative API to register handlers for Slack
 
@@ -462,7 +425,7 @@ See <code>examples.async_task</code> for usage details</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/Ambro17/slackify/blob/ea24cfc4c5553e7b50fdb56171ce7bfc923e7460/src/slackify/tasks.py#L7-L20" class="git-link">Browse git</a>
+<a href="https://github.com/Ambro17/slackify/blob/a68ab47afc62bf7aa5271e2f228f46cb703aff9f/src/slackify/tasks.py#L7-L20" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">def async_task(f):
     &#34;&#34;&#34;Run a `Callable` in a background thread so it doesn&#39;t block main thread
@@ -488,7 +451,7 @@ See <code>examples.async_task</code> for usage details</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/Ambro17/slackify/blob/ea24cfc4c5553e7b50fdb56171ce7bfc923e7460/src/slackify/slack.py#L46-L48" class="git-link">Browse git</a>
+<a href="https://github.com/Ambro17/slackify/blob/a68ab47afc62bf7aa5271e2f228f46cb703aff9f/src/slackify/slack.py#L46-L48" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">def block_reply(blocks: list) -&gt; Tuple[str, int, Dict]:
     &#34;&#34;&#34;Respond to slack with a block payload. See https://api.slack.com/block-kit/building for reference&#34;&#34;&#34;
@@ -507,7 +470,7 @@ passes json as Content-Type as slack requires.</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/Ambro17/slackify/blob/ea24cfc4c5553e7b50fdb56171ce7bfc923e7460/src/slackify/slack.py#L24-L32" class="git-link">Browse git</a>
+<a href="https://github.com/Ambro17/slackify/blob/a68ab47afc62bf7aa5271e2f228f46cb703aff9f/src/slackify/slack.py#L24-L32" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">def reply(body: dict) -&gt; Tuple[str, int, Dict]:
     &#34;&#34;&#34;Helper method that returns a complex response to slack
@@ -528,7 +491,7 @@ passes json as Content-Type as slack requires.</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/Ambro17/slackify/blob/ea24cfc4c5553e7b50fdb56171ce7bfc923e7460/src/slackify/slack.py#L19-L21" class="git-link">Browse git</a>
+<a href="https://github.com/Ambro17/slackify/blob/a68ab47afc62bf7aa5271e2f228f46cb703aff9f/src/slackify/slack.py#L19-L21" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">def reply_text(text: str) -&gt; Tuple[str, int, Dict]:
     &#34;&#34;&#34;Helper method that returns a plain text response to slack&#34;&#34;&#34;
@@ -543,7 +506,7 @@ passes json as Content-Type as slack requires.</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/Ambro17/slackify/blob/ea24cfc4c5553e7b50fdb56171ce7bfc923e7460/src/slackify/slack.py#L51-L54" class="git-link">Browse git</a>
+<a href="https://github.com/Ambro17/slackify/blob/a68ab47afc62bf7aa5271e2f228f46cb703aff9f/src/slackify/slack.py#L51-L54" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">@async_task
 def respond(url: str, message: Dict[str, Any]) -&gt; requests.Response:
@@ -559,7 +522,7 @@ def respond(url: str, message: Dict[str, Any]) -&gt; requests.Response:
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/Ambro17/slackify/blob/ea24cfc4c5553e7b50fdb56171ce7bfc923e7460/src/slackify/slack.py#L35-L43" class="git-link">Browse git</a>
+<a href="https://github.com/Ambro17/slackify/blob/a68ab47afc62bf7aa5271e2f228f46cb703aff9f/src/slackify/slack.py#L35-L43" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">def text_block(text: str, markdown: bool = True) -&gt; Dict[str, Any]:
     &#34;&#34;&#34;Respond to slack with a block including just text with markdown support&#34;&#34;&#34;
@@ -594,7 +557,7 @@ the same blueprint.</p>
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/Ambro17/slackify/blob/ea24cfc4c5553e7b50fdb56171ce7bfc923e7460/src/slackify/blueprint.py#L4-L22" class="git-link">Browse git</a>
+<a href="https://github.com/Ambro17/slackify/blob/a68ab47afc62bf7aa5271e2f228f46cb703aff9f/src/slackify/blueprint.py#L4-L22" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">class Blueprint(BP):
     &#34;&#34;&#34;Slackify `Blueprint` that allows to register slack handlers to later attach to Flask instance 
@@ -632,7 +595,7 @@ the same blueprint.</p>
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/Ambro17/slackify/blob/ea24cfc4c5553e7b50fdb56171ce7bfc923e7460/src/slackify/blueprint.py#L16-L22" class="git-link">Browse git</a>
+<a href="https://github.com/Ambro17/slackify/blob/a68ab47afc62bf7aa5271e2f228f46cb703aff9f/src/slackify/blueprint.py#L16-L22" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">def register(self, app, options, first_registration: bool = False):
     &#34;&#34;&#34;Override to allow polymorphic treatment in Slackify routing logic.
@@ -654,7 +617,7 @@ the same blueprint.</p>
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/Ambro17/slackify/blob/ea24cfc4c5553e7b50fdb56171ce7bfc923e7460/src/slackify/main.py#L18-L279" class="git-link">Browse git</a>
+<a href="https://github.com/Ambro17/slackify/blob/a68ab47afc62bf7aa5271e2f228f46cb703aff9f/src/slackify/main.py#L18-L279" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">class Slackify:
 
@@ -940,7 +903,7 @@ the same blueprint.</p>
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/Ambro17/slackify/blob/ea24cfc4c5553e7b50fdb56171ce7bfc923e7460/src/slackify/main.py#L169-L195" class="git-link">Browse git</a>
+<a href="https://github.com/Ambro17/slackify/blob/a68ab47afc62bf7aa5271e2f228f46cb703aff9f/src/slackify/main.py#L169-L195" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">def action(self, action_id=None, **options):
     &#34;&#34;&#34;Register a function as an action callback.
@@ -990,7 +953,7 @@ This does the same as <code>add_command_handler</code></p>
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/Ambro17/slackify/blob/ea24cfc4c5553e7b50fdb56171ce7bfc923e7460/src/slackify/main.py#L140-L167" class="git-link">Browse git</a>
+<a href="https://github.com/Ambro17/slackify/blob/a68ab47afc62bf7aa5271e2f228f46cb703aff9f/src/slackify/main.py#L140-L167" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">def command(self, func=None, **options):
     &#34;&#34;&#34;Register a function as a command handler.
@@ -1030,7 +993,7 @@ This does the same as <code>add_command_handler</code></p>
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/Ambro17/slackify/blob/ea24cfc4c5553e7b50fdb56171ce7bfc923e7460/src/slackify/main.py#L108-L110" class="git-link">Browse git</a>
+<a href="https://github.com/Ambro17/slackify/blob/a68ab47afc62bf7aa5271e2f228f46cb703aff9f/src/slackify/main.py#L108-L110" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">def default(self, func):
     &#34;&#34;&#34;Register function to execute when an unknown command is received&#34;&#34;&#34;
@@ -1045,7 +1008,7 @@ This does the same as <code>add_command_handler</code></p>
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/Ambro17/slackify/blob/ea24cfc4c5553e7b50fdb56171ce7bfc923e7460/src/slackify/main.py#L116-L118" class="git-link">Browse git</a>
+<a href="https://github.com/Ambro17/slackify/blob/a68ab47afc62bf7aa5271e2f228f46cb703aff9f/src/slackify/main.py#L116-L118" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">def error(self, func):
     &#34;&#34;&#34;Register function to execute when an exception was raised on any registered handler&#34;&#34;&#34;
@@ -1069,7 +1032,7 @@ The event payload from slack will be sent on that arg</p>
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/Ambro17/slackify/blob/ea24cfc4c5553e7b50fdb56171ce7bfc923e7460/src/slackify/main.py#L215-L236" class="git-link">Browse git</a>
+<a href="https://github.com/Ambro17/slackify/blob/a68ab47afc62bf7aa5271e2f228f46cb703aff9f/src/slackify/main.py#L215-L236" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">def event(self, event, func=None):
     &#34;&#34;&#34;Register a function as an event callback.
@@ -1116,7 +1079,7 @@ The event payload from slack will be sent on that arg</p>
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/Ambro17/slackify/blob/ea24cfc4c5553e7b50fdb56171ce7bfc923e7460/src/slackify/main.py#L238-L279" class="git-link">Browse git</a>
+<a href="https://github.com/Ambro17/slackify/blob/a68ab47afc62bf7aa5271e2f228f46cb703aff9f/src/slackify/main.py#L238-L279" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">def message(self, message, func=None, **kwargs):
     &#34;&#34;&#34;Register a function as a callback for when a string matching `message` is found.
@@ -1175,7 +1138,7 @@ The event payload from slack will be sent on that arg</p>
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/Ambro17/slackify/blob/ea24cfc4c5553e7b50fdb56171ce7bfc923e7460/src/slackify/main.py#L123-L138" class="git-link">Browse git</a>
+<a href="https://github.com/Ambro17/slackify/blob/a68ab47afc62bf7aa5271e2f228f46cb703aff9f/src/slackify/main.py#L123-L138" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">def shortcut(self, shortcut_id: str, **options):
     &#34;&#34;&#34;Register a function as a shortcut callback
@@ -1208,7 +1171,7 @@ The event payload from slack will be sent on that arg</p>
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/Ambro17/slackify/blob/ea24cfc4c5553e7b50fdb56171ce7bfc923e7460/src/slackify/main.py#L197-L213" class="git-link">Browse git</a>
+<a href="https://github.com/Ambro17/slackify/blob/a68ab47afc62bf7aa5271e2f228f46cb703aff9f/src/slackify/main.py#L197-L213" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">def view(self, view_callback_id, **options):
     &#34;&#34;&#34;Register a function as a view callback.
@@ -1289,7 +1252,7 @@ removed at anytime.</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/Ambro17/slackify/blob/ea24cfc4c5553e7b50fdb56171ce7bfc923e7460/slack/web/client.py#L12-L2023" class="git-link">Browse git</a>
+<a href="https://github.com/Ambro17/slackify/blob/a68ab47afc62bf7aa5271e2f228f46cb703aff9f/slack/web/client.py#L12-L2023" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">class WebClient(BaseClient):
     &#34;&#34;&#34;A WebClient allows apps to communicate with the Slack Platform&#39;s Web API.
@@ -3333,7 +3296,7 @@ or by the admin.apps.requests.list method.</p>
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/Ambro17/slackify/blob/ea24cfc4c5553e7b50fdb56171ce7bfc923e7460/slack/web/client.py#L68-L92" class="git-link">Browse git</a>
+<a href="https://github.com/Ambro17/slackify/blob/a68ab47afc62bf7aa5271e2f228f46cb703aff9f/slack/web/client.py#L68-L92" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">def admin_apps_approve(
     self, *, app_id: str = None, request_id: str = None, **kwargs
@@ -3370,7 +3333,7 @@ or by the admin.apps.requests.list method.</p>
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/Ambro17/slackify/blob/ea24cfc4c5553e7b50fdb56171ce7bfc923e7460/slack/web/client.py#L94-L96" class="git-link">Browse git</a>
+<a href="https://github.com/Ambro17/slackify/blob/a68ab47afc62bf7aa5271e2f228f46cb703aff9f/slack/web/client.py#L94-L96" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">def admin_apps_approved_list(self, **kwargs) -&gt; Union[Future, SlackResponse]:
     &#34;&#34;&#34;List approved apps for an org or workspace.&#34;&#34;&#34;
@@ -3385,7 +3348,7 @@ or by the admin.apps.requests.list method.</p>
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/Ambro17/slackify/blob/ea24cfc4c5553e7b50fdb56171ce7bfc923e7460/slack/web/client.py#L98-L100" class="git-link">Browse git</a>
+<a href="https://github.com/Ambro17/slackify/blob/a68ab47afc62bf7aa5271e2f228f46cb703aff9f/slack/web/client.py#L98-L100" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">def admin_apps_requests_list(self, **kwargs) -&gt; Union[Future, SlackResponse]:
     &#34;&#34;&#34;List app requests for a team/workspace.&#34;&#34;&#34;
@@ -3400,7 +3363,7 @@ or by the admin.apps.requests.list method.</p>
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/Ambro17/slackify/blob/ea24cfc4c5553e7b50fdb56171ce7bfc923e7460/slack/web/client.py#L102-L104" class="git-link">Browse git</a>
+<a href="https://github.com/Ambro17/slackify/blob/a68ab47afc62bf7aa5271e2f228f46cb703aff9f/slack/web/client.py#L102-L104" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">def admin_apps_restrict(self, **kwargs) -&gt; Union[Future, SlackResponse]:
     &#34;&#34;&#34;Restrict an app for installation on a workspace.&#34;&#34;&#34;
@@ -3415,7 +3378,7 @@ or by the admin.apps.requests.list method.</p>
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/Ambro17/slackify/blob/ea24cfc4c5553e7b50fdb56171ce7bfc923e7460/slack/web/client.py#L106-L110" class="git-link">Browse git</a>
+<a href="https://github.com/Ambro17/slackify/blob/a68ab47afc62bf7aa5271e2f228f46cb703aff9f/slack/web/client.py#L106-L110" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">def admin_apps_restricted_list(self, **kwargs) -&gt; Union[Future, SlackResponse]:
     &#34;&#34;&#34;List restricted apps for an org or workspace.&#34;&#34;&#34;
@@ -3432,7 +3395,7 @@ or by the admin.apps.requests.list method.</p>
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/Ambro17/slackify/blob/ea24cfc4c5553e7b50fdb56171ce7bfc923e7460/slack/web/client.py#L112-L114" class="git-link">Browse git</a>
+<a href="https://github.com/Ambro17/slackify/blob/a68ab47afc62bf7aa5271e2f228f46cb703aff9f/slack/web/client.py#L112-L114" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">def admin_conversations_setTeams(self, **kwargs) -&gt; Union[Future, SlackResponse]:
     &#34;&#34;&#34;Set the workspaces in an Enterprise grid org that connect to a channel.&#34;&#34;&#34;
@@ -3447,7 +3410,7 @@ or by the admin.apps.requests.list method.</p>
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/Ambro17/slackify/blob/ea24cfc4c5553e7b50fdb56171ce7bfc923e7460/slack/web/client.py#L116-L118" class="git-link">Browse git</a>
+<a href="https://github.com/Ambro17/slackify/blob/a68ab47afc62bf7aa5271e2f228f46cb703aff9f/slack/web/client.py#L116-L118" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">def admin_emoji_add(self, **kwargs) -&gt; Union[Future, SlackResponse]:
     &#34;&#34;&#34;Add an emoji.&#34;&#34;&#34;
@@ -3462,7 +3425,7 @@ or by the admin.apps.requests.list method.</p>
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/Ambro17/slackify/blob/ea24cfc4c5553e7b50fdb56171ce7bfc923e7460/slack/web/client.py#L120-L122" class="git-link">Browse git</a>
+<a href="https://github.com/Ambro17/slackify/blob/a68ab47afc62bf7aa5271e2f228f46cb703aff9f/slack/web/client.py#L120-L122" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">def admin_emoji_addAlias(self, **kwargs) -&gt; Union[Future, SlackResponse]:
     &#34;&#34;&#34;Add an emoji alias.&#34;&#34;&#34;
@@ -3477,7 +3440,7 @@ or by the admin.apps.requests.list method.</p>
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/Ambro17/slackify/blob/ea24cfc4c5553e7b50fdb56171ce7bfc923e7460/slack/web/client.py#L124-L126" class="git-link">Browse git</a>
+<a href="https://github.com/Ambro17/slackify/blob/a68ab47afc62bf7aa5271e2f228f46cb703aff9f/slack/web/client.py#L124-L126" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">def admin_emoji_list(self, **kwargs) -&gt; Union[Future, SlackResponse]:
     &#34;&#34;&#34;List emoji for an Enterprise Grid organization.&#34;&#34;&#34;
@@ -3492,7 +3455,7 @@ or by the admin.apps.requests.list method.</p>
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/Ambro17/slackify/blob/ea24cfc4c5553e7b50fdb56171ce7bfc923e7460/slack/web/client.py#L128-L130" class="git-link">Browse git</a>
+<a href="https://github.com/Ambro17/slackify/blob/a68ab47afc62bf7aa5271e2f228f46cb703aff9f/slack/web/client.py#L128-L130" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">def admin_emoji_remove(self, **kwargs) -&gt; Union[Future, SlackResponse]:
     &#34;&#34;&#34;Remove an emoji across an Enterprise Grid organization.&#34;&#34;&#34;
@@ -3507,7 +3470,7 @@ or by the admin.apps.requests.list method.</p>
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/Ambro17/slackify/blob/ea24cfc4c5553e7b50fdb56171ce7bfc923e7460/slack/web/client.py#L132-L134" class="git-link">Browse git</a>
+<a href="https://github.com/Ambro17/slackify/blob/a68ab47afc62bf7aa5271e2f228f46cb703aff9f/slack/web/client.py#L132-L134" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">def admin_emoji_rename(self, **kwargs) -&gt; Union[Future, SlackResponse]:
     &#34;&#34;&#34;Rename an emoji.&#34;&#34;&#34;
@@ -3528,7 +3491,7 @@ or by the admin.apps.requests.list method.</p>
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/Ambro17/slackify/blob/ea24cfc4c5553e7b50fdb56171ce7bfc923e7460/slack/web/client.py#L147-L158" class="git-link">Browse git</a>
+<a href="https://github.com/Ambro17/slackify/blob/a68ab47afc62bf7aa5271e2f228f46cb703aff9f/slack/web/client.py#L147-L158" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">def admin_inviteRequests_approve(
     self, *, invite_request_id: str, **kwargs
@@ -3552,7 +3515,7 @@ or by the admin.apps.requests.list method.</p>
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/Ambro17/slackify/blob/ea24cfc4c5553e7b50fdb56171ce7bfc923e7460/slack/web/client.py#L160-L164" class="git-link">Browse git</a>
+<a href="https://github.com/Ambro17/slackify/blob/a68ab47afc62bf7aa5271e2f228f46cb703aff9f/slack/web/client.py#L160-L164" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">def admin_inviteRequests_approved_list(
     self, **kwargs
@@ -3569,7 +3532,7 @@ or by the admin.apps.requests.list method.</p>
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/Ambro17/slackify/blob/ea24cfc4c5553e7b50fdb56171ce7bfc923e7460/slack/web/client.py#L166-L170" class="git-link">Browse git</a>
+<a href="https://github.com/Ambro17/slackify/blob/a68ab47afc62bf7aa5271e2f228f46cb703aff9f/slack/web/client.py#L166-L170" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">def admin_inviteRequests_denied_list(
     self, **kwargs
@@ -3591,7 +3554,7 @@ or by the admin.apps.requests.list method.</p>
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/Ambro17/slackify/blob/ea24cfc4c5553e7b50fdb56171ce7bfc923e7460/slack/web/client.py#L172-L181" class="git-link">Browse git</a>
+<a href="https://github.com/Ambro17/slackify/blob/a68ab47afc62bf7aa5271e2f228f46cb703aff9f/slack/web/client.py#L172-L181" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">def admin_inviteRequests_deny(
     self, *, invite_request_id: str, **kwargs
@@ -3613,7 +3576,7 @@ or by the admin.apps.requests.list method.</p>
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/Ambro17/slackify/blob/ea24cfc4c5553e7b50fdb56171ce7bfc923e7460/slack/web/client.py#L183-L185" class="git-link">Browse git</a>
+<a href="https://github.com/Ambro17/slackify/blob/a68ab47afc62bf7aa5271e2f228f46cb703aff9f/slack/web/client.py#L183-L185" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">def admin_inviteRequests_list(self, **kwargs) -&gt; Union[Future, SlackResponse]:
     &#34;&#34;&#34;List all pending workspace invite requests.&#34;&#34;&#34;
@@ -3633,7 +3596,7 @@ or by the admin.apps.requests.list method.</p>
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/Ambro17/slackify/blob/ea24cfc4c5553e7b50fdb56171ce7bfc923e7460/slack/web/client.py#L187-L196" class="git-link">Browse git</a>
+<a href="https://github.com/Ambro17/slackify/blob/a68ab47afc62bf7aa5271e2f228f46cb703aff9f/slack/web/client.py#L187-L196" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">def admin_teams_admins_list(
     self, *, team_id: str, **kwargs
@@ -3662,7 +3625,7 @@ or by the admin.apps.requests.list method.</p>
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/Ambro17/slackify/blob/ea24cfc4c5553e7b50fdb56171ce7bfc923e7460/slack/web/client.py#L198-L208" class="git-link">Browse git</a>
+<a href="https://github.com/Ambro17/slackify/blob/a68ab47afc62bf7aa5271e2f228f46cb703aff9f/slack/web/client.py#L198-L208" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">def admin_teams_create(
     self, *, team_domain: str, team_name: str, **kwargs
@@ -3685,7 +3648,7 @@ or by the admin.apps.requests.list method.</p>
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/Ambro17/slackify/blob/ea24cfc4c5553e7b50fdb56171ce7bfc923e7460/slack/web/client.py#L210-L212" class="git-link">Browse git</a>
+<a href="https://github.com/Ambro17/slackify/blob/a68ab47afc62bf7aa5271e2f228f46cb703aff9f/slack/web/client.py#L210-L212" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">def admin_teams_list(self, **kwargs) -&gt; Union[Future, SlackResponse]:
     &#34;&#34;&#34;List all teams on an Enterprise organization.&#34;&#34;&#34;
@@ -3705,7 +3668,7 @@ or by the admin.apps.requests.list method.</p>
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/Ambro17/slackify/blob/ea24cfc4c5553e7b50fdb56171ce7bfc923e7460/slack/web/client.py#L214-L223" class="git-link">Browse git</a>
+<a href="https://github.com/Ambro17/slackify/blob/a68ab47afc62bf7aa5271e2f228f46cb703aff9f/slack/web/client.py#L214-L223" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">def admin_teams_owners_list(
     self, *, team_id: str, **kwargs
@@ -3732,7 +3695,7 @@ or by the admin.apps.requests.list method.</p>
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/Ambro17/slackify/blob/ea24cfc4c5553e7b50fdb56171ce7bfc923e7460/slack/web/client.py#L225-L234" class="git-link">Browse git</a>
+<a href="https://github.com/Ambro17/slackify/blob/a68ab47afc62bf7aa5271e2f228f46cb703aff9f/slack/web/client.py#L225-L234" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">def admin_teams_settings_info(
     self, team_id: str, **kwargs
@@ -3762,7 +3725,7 @@ At least one channel is required. e.g. ['C1A2B3C4D', 'C26Z25Y24']</dd>
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/Ambro17/slackify/blob/ea24cfc4c5553e7b50fdb56171ce7bfc923e7460/slack/web/client.py#L236-L253" class="git-link">Browse git</a>
+<a href="https://github.com/Ambro17/slackify/blob/a68ab47afc62bf7aa5271e2f228f46cb703aff9f/slack/web/client.py#L236-L253" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">def admin_teams_settings_setDefaultChannels(
     self, *, team_id: str, channel_ids: Union[str, List[str]], **kwargs
@@ -3799,7 +3762,7 @@ At least one channel is required. e.g. ['C1A2B3C4D', 'C26Z25Y24']</dd>
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/Ambro17/slackify/blob/ea24cfc4c5553e7b50fdb56171ce7bfc923e7460/slack/web/client.py#L255-L265" class="git-link">Browse git</a>
+<a href="https://github.com/Ambro17/slackify/blob/a68ab47afc62bf7aa5271e2f228f46cb703aff9f/slack/web/client.py#L255-L265" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">def admin_teams_settings_setDescription(
     self, *, team_id: str, description: str, **kwargs
@@ -3830,7 +3793,7 @@ It must be set to one of open, invite_only, closed, or unlisted.</dd>
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/Ambro17/slackify/blob/ea24cfc4c5553e7b50fdb56171ce7bfc923e7460/slack/web/client.py#L267-L278" class="git-link">Browse git</a>
+<a href="https://github.com/Ambro17/slackify/blob/a68ab47afc62bf7aa5271e2f228f46cb703aff9f/slack/web/client.py#L267-L278" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">def admin_teams_settings_setDiscoverability(
     self, *, team_id: str, discoverability: str, **kwargs
@@ -3861,7 +3824,7 @@ It must be set to one of open, invite_only, closed, or unlisted.</dd>
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/Ambro17/slackify/blob/ea24cfc4c5553e7b50fdb56171ce7bfc923e7460/slack/web/client.py#L280-L292" class="git-link">Browse git</a>
+<a href="https://github.com/Ambro17/slackify/blob/a68ab47afc62bf7aa5271e2f228f46cb703aff9f/slack/web/client.py#L280-L292" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">def admin_teams_settings_setIcon(
     self, *, team_id: str, image_url: str, **kwargs
@@ -3893,7 +3856,7 @@ It must be set to one of open, invite_only, closed, or unlisted.</dd>
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/Ambro17/slackify/blob/ea24cfc4c5553e7b50fdb56171ce7bfc923e7460/slack/web/client.py#L294-L304" class="git-link">Browse git</a>
+<a href="https://github.com/Ambro17/slackify/blob/a68ab47afc62bf7aa5271e2f228f46cb703aff9f/slack/web/client.py#L294-L304" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">def admin_teams_settings_setName(
     self, *, team_id: str, name: str, **kwargs
@@ -3925,7 +3888,7 @@ It must be set to one of open, invite_only, closed, or unlisted.</dd>
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/Ambro17/slackify/blob/ea24cfc4c5553e7b50fdb56171ce7bfc923e7460/slack/web/client.py#L306-L326" class="git-link">Browse git</a>
+<a href="https://github.com/Ambro17/slackify/blob/a68ab47afc62bf7aa5271e2f228f46cb703aff9f/slack/web/client.py#L306-L326" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">def admin_usergroups_addChannels(
     self,
@@ -3963,7 +3926,7 @@ It must be set to one of open, invite_only, closed, or unlisted.</dd>
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/Ambro17/slackify/blob/ea24cfc4c5553e7b50fdb56171ce7bfc923e7460/slack/web/client.py#L328-L337" class="git-link">Browse git</a>
+<a href="https://github.com/Ambro17/slackify/blob/a68ab47afc62bf7aa5271e2f228f46cb703aff9f/slack/web/client.py#L328-L337" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">def admin_usergroups_listChannels(
     self, *, usergroup_id: str, **kwargs
@@ -3992,7 +3955,7 @@ It must be set to one of open, invite_only, closed, or unlisted.</dd>
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/Ambro17/slackify/blob/ea24cfc4c5553e7b50fdb56171ce7bfc923e7460/slack/web/client.py#L339-L353" class="git-link">Browse git</a>
+<a href="https://github.com/Ambro17/slackify/blob/a68ab47afc62bf7aa5271e2f228f46cb703aff9f/slack/web/client.py#L339-L353" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">def admin_usergroups_removeChannels(
     self, *, usergroup_id: str, channel_ids: Union[str, List[str]], **kwargs
@@ -4026,7 +3989,7 @@ It must be set to one of open, invite_only, closed, or unlisted.</dd>
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/Ambro17/slackify/blob/ea24cfc4c5553e7b50fdb56171ce7bfc923e7460/slack/web/client.py#L355-L365" class="git-link">Browse git</a>
+<a href="https://github.com/Ambro17/slackify/blob/a68ab47afc62bf7aa5271e2f228f46cb703aff9f/slack/web/client.py#L355-L365" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">def admin_users_assign(
     self, *, team_id: str, user_id: str, **kwargs
@@ -4059,7 +4022,7 @@ At least one channel is required. e.g. ['C1A2B3C4D', 'C26Z25Y24']</dd>
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/Ambro17/slackify/blob/ea24cfc4c5553e7b50fdb56171ce7bfc923e7460/slack/web/client.py#L367-L383" class="git-link">Browse git</a>
+<a href="https://github.com/Ambro17/slackify/blob/a68ab47afc62bf7aa5271e2f228f46cb703aff9f/slack/web/client.py#L367-L383" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">def admin_users_invite(
     self, *, team_id: str, email: str, channel_ids: Union[str, List[str]], **kwargs
@@ -4093,7 +4056,7 @@ At least one channel is required. e.g. ['C1A2B3C4D', 'C26Z25Y24']</dd>
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/Ambro17/slackify/blob/ea24cfc4c5553e7b50fdb56171ce7bfc923e7460/slack/web/client.py#L385-L394" class="git-link">Browse git</a>
+<a href="https://github.com/Ambro17/slackify/blob/a68ab47afc62bf7aa5271e2f228f46cb703aff9f/slack/web/client.py#L385-L394" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">def admin_users_list(
     self, *, team_id: str, **kwargs
@@ -4122,7 +4085,7 @@ At least one channel is required. e.g. ['C1A2B3C4D', 'C26Z25Y24']</dd>
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/Ambro17/slackify/blob/ea24cfc4c5553e7b50fdb56171ce7bfc923e7460/slack/web/client.py#L396-L406" class="git-link">Browse git</a>
+<a href="https://github.com/Ambro17/slackify/blob/a68ab47afc62bf7aa5271e2f228f46cb703aff9f/slack/web/client.py#L396-L406" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">def admin_users_remove(
     self, *, team_id: str, user_id: str, **kwargs
@@ -4150,7 +4113,7 @@ At least one channel is required. e.g. ['C1A2B3C4D', 'C26Z25Y24']</dd>
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/Ambro17/slackify/blob/ea24cfc4c5553e7b50fdb56171ce7bfc923e7460/slack/web/client.py#L136-L145" class="git-link">Browse git</a>
+<a href="https://github.com/Ambro17/slackify/blob/a68ab47afc62bf7aa5271e2f228f46cb703aff9f/slack/web/client.py#L136-L145" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">def admin_users_session_reset(
     self, *, user_id: str, **kwargs
@@ -4179,7 +4142,7 @@ At least one channel is required. e.g. ['C1A2B3C4D', 'C26Z25Y24']</dd>
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/Ambro17/slackify/blob/ea24cfc4c5553e7b50fdb56171ce7bfc923e7460/slack/web/client.py#L408-L418" class="git-link">Browse git</a>
+<a href="https://github.com/Ambro17/slackify/blob/a68ab47afc62bf7aa5271e2f228f46cb703aff9f/slack/web/client.py#L408-L418" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">def admin_users_setAdmin(
     self, *, team_id: str, user_id: str, **kwargs
@@ -4211,7 +4174,7 @@ At least one channel is required. e.g. ['C1A2B3C4D', 'C26Z25Y24']</dd>
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/Ambro17/slackify/blob/ea24cfc4c5553e7b50fdb56171ce7bfc923e7460/slack/web/client.py#L420-L433" class="git-link">Browse git</a>
+<a href="https://github.com/Ambro17/slackify/blob/a68ab47afc62bf7aa5271e2f228f46cb703aff9f/slack/web/client.py#L420-L433" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">def admin_users_setExpiration(
     self, *, expiration_ts: int, team_id: str, user_id: str, **kwargs
@@ -4244,7 +4207,7 @@ At least one channel is required. e.g. ['C1A2B3C4D', 'C26Z25Y24']</dd>
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/Ambro17/slackify/blob/ea24cfc4c5553e7b50fdb56171ce7bfc923e7460/slack/web/client.py#L435-L445" class="git-link">Browse git</a>
+<a href="https://github.com/Ambro17/slackify/blob/a68ab47afc62bf7aa5271e2f228f46cb703aff9f/slack/web/client.py#L435-L445" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">def admin_users_setOwner(
     self, *, team_id: str, user_id: str, **kwargs
@@ -4274,7 +4237,7 @@ At least one channel is required. e.g. ['C1A2B3C4D', 'C26Z25Y24']</dd>
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/Ambro17/slackify/blob/ea24cfc4c5553e7b50fdb56171ce7bfc923e7460/slack/web/client.py#L447-L457" class="git-link">Browse git</a>
+<a href="https://github.com/Ambro17/slackify/blob/a68ab47afc62bf7aa5271e2f228f46cb703aff9f/slack/web/client.py#L447-L457" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">def admin_users_setRegular(
     self, *, team_id: str, user_id: str, **kwargs
@@ -4297,7 +4260,7 @@ At least one channel is required. e.g. ['C1A2B3C4D', 'C26Z25Y24']</dd>
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/Ambro17/slackify/blob/ea24cfc4c5553e7b50fdb56171ce7bfc923e7460/slack/web/client.py#L459-L461" class="git-link">Browse git</a>
+<a href="https://github.com/Ambro17/slackify/blob/a68ab47afc62bf7aa5271e2f228f46cb703aff9f/slack/web/client.py#L459-L461" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">def api_test(self, **kwargs) -&gt; Union[Future, SlackResponse]:
     &#34;&#34;&#34;Checks API calling code.&#34;&#34;&#34;
@@ -4312,7 +4275,7 @@ At least one channel is required. e.g. ['C1A2B3C4D', 'C26Z25Y24']</dd>
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/Ambro17/slackify/blob/ea24cfc4c5553e7b50fdb56171ce7bfc923e7460/slack/web/client.py#L463-L465" class="git-link">Browse git</a>
+<a href="https://github.com/Ambro17/slackify/blob/a68ab47afc62bf7aa5271e2f228f46cb703aff9f/slack/web/client.py#L463-L465" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">def auth_revoke(self, **kwargs) -&gt; Union[Future, SlackResponse]:
     &#34;&#34;&#34;Revokes a token.&#34;&#34;&#34;
@@ -4327,7 +4290,7 @@ At least one channel is required. e.g. ['C1A2B3C4D', 'C26Z25Y24']</dd>
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/Ambro17/slackify/blob/ea24cfc4c5553e7b50fdb56171ce7bfc923e7460/slack/web/client.py#L467-L469" class="git-link">Browse git</a>
+<a href="https://github.com/Ambro17/slackify/blob/a68ab47afc62bf7aa5271e2f228f46cb703aff9f/slack/web/client.py#L467-L469" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">def auth_test(self, **kwargs) -&gt; Union[Future, SlackResponse]:
     &#34;&#34;&#34;Checks authentication &amp; identity.&#34;&#34;&#34;
@@ -4342,7 +4305,7 @@ At least one channel is required. e.g. ['C1A2B3C4D', 'C26Z25Y24']</dd>
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/Ambro17/slackify/blob/ea24cfc4c5553e7b50fdb56171ce7bfc923e7460/slack/web/client.py#L471-L473" class="git-link">Browse git</a>
+<a href="https://github.com/Ambro17/slackify/blob/a68ab47afc62bf7aa5271e2f228f46cb703aff9f/slack/web/client.py#L471-L473" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">def bots_info(self, **kwargs) -&gt; Union[Future, SlackResponse]:
     &#34;&#34;&#34;Gets information about a bot user.&#34;&#34;&#34;
@@ -4367,7 +4330,7 @@ e.g. 'https://example.com/calls/1234567890'</dd>
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/Ambro17/slackify/blob/ea24cfc4c5553e7b50fdb56171ce7bfc923e7460/slack/web/client.py#L475-L489" class="git-link">Browse git</a>
+<a href="https://github.com/Ambro17/slackify/blob/a68ab47afc62bf7aa5271e2f228f46cb703aff9f/slack/web/client.py#L475-L489" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">def calls_add(
     self, *, external_unique_id: str, join_url: str, **kwargs
@@ -4399,7 +4362,7 @@ e.g. 'https://example.com/calls/1234567890'</dd>
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/Ambro17/slackify/blob/ea24cfc4c5553e7b50fdb56171ce7bfc923e7460/slack/web/client.py#L491-L498" class="git-link">Browse git</a>
+<a href="https://github.com/Ambro17/slackify/blob/a68ab47afc62bf7aa5271e2f228f46cb703aff9f/slack/web/client.py#L491-L498" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">def calls_end(self, *, id: str, **kwargs) -&gt; Union[Future, SlackResponse]:
     &#34;&#34;&#34;Ends a Call.
@@ -4424,7 +4387,7 @@ e.g. 'https://example.com/calls/1234567890'</dd>
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/Ambro17/slackify/blob/ea24cfc4c5553e7b50fdb56171ce7bfc923e7460/slack/web/client.py#L500-L507" class="git-link">Browse git</a>
+<a href="https://github.com/Ambro17/slackify/blob/a68ab47afc62bf7aa5271e2f228f46cb703aff9f/slack/web/client.py#L500-L507" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">def calls_info(self, *, id: str, **kwargs) -&gt; Union[Future, SlackResponse]:
     &#34;&#34;&#34;Returns information about a Call.
@@ -4451,7 +4414,7 @@ e.g. 'https://example.com/calls/1234567890'</dd>
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/Ambro17/slackify/blob/ea24cfc4c5553e7b50fdb56171ce7bfc923e7460/slack/web/client.py#L509-L520" class="git-link">Browse git</a>
+<a href="https://github.com/Ambro17/slackify/blob/a68ab47afc62bf7aa5271e2f228f46cb703aff9f/slack/web/client.py#L509-L520" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">def calls_participants_add(
     self, *, id: str, users: Union[str, List[Dict[str, str]]], **kwargs
@@ -4480,7 +4443,7 @@ e.g. 'https://example.com/calls/1234567890'</dd>
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/Ambro17/slackify/blob/ea24cfc4c5553e7b50fdb56171ce7bfc923e7460/slack/web/client.py#L522-L529" class="git-link">Browse git</a>
+<a href="https://github.com/Ambro17/slackify/blob/a68ab47afc62bf7aa5271e2f228f46cb703aff9f/slack/web/client.py#L522-L529" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">def calls_update(self, *, id: str, **kwargs) -&gt; Union[Future, SlackResponse]:
     &#34;&#34;&#34;Updates information about a Call.
@@ -4505,7 +4468,7 @@ e.g. 'https://example.com/calls/1234567890'</dd>
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/Ambro17/slackify/blob/ea24cfc4c5553e7b50fdb56171ce7bfc923e7460/slack/web/client.py#L531-L540" class="git-link">Browse git</a>
+<a href="https://github.com/Ambro17/slackify/blob/a68ab47afc62bf7aa5271e2f228f46cb703aff9f/slack/web/client.py#L531-L540" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">def channels_archive(
     self, *, channel: str, **kwargs
@@ -4532,7 +4495,7 @@ e.g. 'https://example.com/calls/1234567890'</dd>
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/Ambro17/slackify/blob/ea24cfc4c5553e7b50fdb56171ce7bfc923e7460/slack/web/client.py#L542-L549" class="git-link">Browse git</a>
+<a href="https://github.com/Ambro17/slackify/blob/a68ab47afc62bf7aa5271e2f228f46cb703aff9f/slack/web/client.py#L542-L549" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">def channels_create(self, *, name: str, **kwargs) -&gt; Union[Future, SlackResponse]:
     &#34;&#34;&#34;Creates a channel.
@@ -4557,7 +4520,7 @@ e.g. 'https://example.com/calls/1234567890'</dd>
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/Ambro17/slackify/blob/ea24cfc4c5553e7b50fdb56171ce7bfc923e7460/slack/web/client.py#L551-L560" class="git-link">Browse git</a>
+<a href="https://github.com/Ambro17/slackify/blob/a68ab47afc62bf7aa5271e2f228f46cb703aff9f/slack/web/client.py#L551-L560" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">def channels_history(
     self, *, channel: str, **kwargs
@@ -4584,7 +4547,7 @@ e.g. 'https://example.com/calls/1234567890'</dd>
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/Ambro17/slackify/blob/ea24cfc4c5553e7b50fdb56171ce7bfc923e7460/slack/web/client.py#L562-L569" class="git-link">Browse git</a>
+<a href="https://github.com/Ambro17/slackify/blob/a68ab47afc62bf7aa5271e2f228f46cb703aff9f/slack/web/client.py#L562-L569" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">def channels_info(self, *, channel: str, **kwargs) -&gt; Union[Future, SlackResponse]:
     &#34;&#34;&#34;Gets information about a channel.
@@ -4611,7 +4574,7 @@ e.g. 'https://example.com/calls/1234567890'</dd>
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/Ambro17/slackify/blob/ea24cfc4c5553e7b50fdb56171ce7bfc923e7460/slack/web/client.py#L571-L581" class="git-link">Browse git</a>
+<a href="https://github.com/Ambro17/slackify/blob/a68ab47afc62bf7aa5271e2f228f46cb703aff9f/slack/web/client.py#L571-L581" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">def channels_invite(
     self, *, channel: str, user: str, **kwargs
@@ -4639,7 +4602,7 @@ e.g. 'https://example.com/calls/1234567890'</dd>
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/Ambro17/slackify/blob/ea24cfc4c5553e7b50fdb56171ce7bfc923e7460/slack/web/client.py#L583-L590" class="git-link">Browse git</a>
+<a href="https://github.com/Ambro17/slackify/blob/a68ab47afc62bf7aa5271e2f228f46cb703aff9f/slack/web/client.py#L583-L590" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">def channels_join(self, *, name: str, **kwargs) -&gt; Union[Future, SlackResponse]:
     &#34;&#34;&#34;Joins a channel, creating it if needed.
@@ -4666,7 +4629,7 @@ e.g. 'https://example.com/calls/1234567890'</dd>
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/Ambro17/slackify/blob/ea24cfc4c5553e7b50fdb56171ce7bfc923e7460/slack/web/client.py#L592-L602" class="git-link">Browse git</a>
+<a href="https://github.com/Ambro17/slackify/blob/a68ab47afc62bf7aa5271e2f228f46cb703aff9f/slack/web/client.py#L592-L602" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">def channels_kick(
     self, *, channel: str, user: str, **kwargs
@@ -4694,7 +4657,7 @@ e.g. 'https://example.com/calls/1234567890'</dd>
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/Ambro17/slackify/blob/ea24cfc4c5553e7b50fdb56171ce7bfc923e7460/slack/web/client.py#L604-L611" class="git-link">Browse git</a>
+<a href="https://github.com/Ambro17/slackify/blob/a68ab47afc62bf7aa5271e2f228f46cb703aff9f/slack/web/client.py#L604-L611" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">def channels_leave(self, *, channel: str, **kwargs) -&gt; Union[Future, SlackResponse]:
     &#34;&#34;&#34;Leaves a channel.
@@ -4714,7 +4677,7 @@ e.g. 'https://example.com/calls/1234567890'</dd>
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/Ambro17/slackify/blob/ea24cfc4c5553e7b50fdb56171ce7bfc923e7460/slack/web/client.py#L613-L615" class="git-link">Browse git</a>
+<a href="https://github.com/Ambro17/slackify/blob/a68ab47afc62bf7aa5271e2f228f46cb703aff9f/slack/web/client.py#L613-L615" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">def channels_list(self, **kwargs) -&gt; Union[Future, SlackResponse]:
     &#34;&#34;&#34;Lists all channels in a Slack team.&#34;&#34;&#34;
@@ -4736,7 +4699,7 @@ e.g. 'https://example.com/calls/1234567890'</dd>
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/Ambro17/slackify/blob/ea24cfc4c5553e7b50fdb56171ce7bfc923e7460/slack/web/client.py#L617-L627" class="git-link">Browse git</a>
+<a href="https://github.com/Ambro17/slackify/blob/a68ab47afc62bf7aa5271e2f228f46cb703aff9f/slack/web/client.py#L617-L627" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">def channels_mark(
     self, *, channel: str, ts: str, **kwargs
@@ -4766,7 +4729,7 @@ e.g. 'https://example.com/calls/1234567890'</dd>
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/Ambro17/slackify/blob/ea24cfc4c5553e7b50fdb56171ce7bfc923e7460/slack/web/client.py#L629-L639" class="git-link">Browse git</a>
+<a href="https://github.com/Ambro17/slackify/blob/a68ab47afc62bf7aa5271e2f228f46cb703aff9f/slack/web/client.py#L629-L639" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">def channels_rename(
     self, *, channel: str, name: str, **kwargs
@@ -4797,7 +4760,7 @@ e.g. '1234567890.123456'</dd>
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/Ambro17/slackify/blob/ea24cfc4c5553e7b50fdb56171ce7bfc923e7460/slack/web/client.py#L641-L652" class="git-link">Browse git</a>
+<a href="https://github.com/Ambro17/slackify/blob/a68ab47afc62bf7aa5271e2f228f46cb703aff9f/slack/web/client.py#L641-L652" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">def channels_replies(
     self, *, channel: str, thread_ts: str, **kwargs
@@ -4828,7 +4791,7 @@ e.g. '1234567890.123456'</dd>
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/Ambro17/slackify/blob/ea24cfc4c5553e7b50fdb56171ce7bfc923e7460/slack/web/client.py#L654-L664" class="git-link">Browse git</a>
+<a href="https://github.com/Ambro17/slackify/blob/a68ab47afc62bf7aa5271e2f228f46cb703aff9f/slack/web/client.py#L654-L664" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">def channels_setPurpose(
     self, *, channel: str, purpose: str, **kwargs
@@ -4858,7 +4821,7 @@ e.g. '1234567890.123456'</dd>
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/Ambro17/slackify/blob/ea24cfc4c5553e7b50fdb56171ce7bfc923e7460/slack/web/client.py#L666-L676" class="git-link">Browse git</a>
+<a href="https://github.com/Ambro17/slackify/blob/a68ab47afc62bf7aa5271e2f228f46cb703aff9f/slack/web/client.py#L666-L676" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">def channels_setTopic(
     self, *, channel: str, topic: str, **kwargs
@@ -4886,7 +4849,7 @@ e.g. '1234567890.123456'</dd>
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/Ambro17/slackify/blob/ea24cfc4c5553e7b50fdb56171ce7bfc923e7460/slack/web/client.py#L678-L687" class="git-link">Browse git</a>
+<a href="https://github.com/Ambro17/slackify/blob/a68ab47afc62bf7aa5271e2f228f46cb703aff9f/slack/web/client.py#L678-L687" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">def channels_unarchive(
     self, *, channel: str, **kwargs
@@ -4915,7 +4878,7 @@ e.g. '1234567890.123456'</dd>
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/Ambro17/slackify/blob/ea24cfc4c5553e7b50fdb56171ce7bfc923e7460/slack/web/client.py#L689-L699" class="git-link">Browse git</a>
+<a href="https://github.com/Ambro17/slackify/blob/a68ab47afc62bf7aa5271e2f228f46cb703aff9f/slack/web/client.py#L689-L699" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">def chat_delete(
     self, *, channel: str, ts: str, **kwargs
@@ -4945,7 +4908,7 @@ e.g. '1234567890.123456'</dd>
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/Ambro17/slackify/blob/ea24cfc4c5553e7b50fdb56171ce7bfc923e7460/slack/web/client.py#L701-L713" class="git-link">Browse git</a>
+<a href="https://github.com/Ambro17/slackify/blob/a68ab47afc62bf7aa5271e2f228f46cb703aff9f/slack/web/client.py#L701-L713" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">def chat_deleteScheduledMessage(
     self, *, channel: str, scheduled_message_id: str, **kwargs
@@ -4977,7 +4940,7 @@ e.g. '1234567890.123456'</dd>
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/Ambro17/slackify/blob/ea24cfc4c5553e7b50fdb56171ce7bfc923e7460/slack/web/client.py#L715-L725" class="git-link">Browse git</a>
+<a href="https://github.com/Ambro17/slackify/blob/a68ab47afc62bf7aa5271e2f228f46cb703aff9f/slack/web/client.py#L715-L725" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">def chat_getPermalink(
     self, *, channel: str, message_ts: str, **kwargs
@@ -5007,7 +4970,7 @@ e.g. '1234567890.123456'</dd>
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/Ambro17/slackify/blob/ea24cfc4c5553e7b50fdb56171ce7bfc923e7460/slack/web/client.py#L727-L737" class="git-link">Browse git</a>
+<a href="https://github.com/Ambro17/slackify/blob/a68ab47afc62bf7aa5271e2f228f46cb703aff9f/slack/web/client.py#L727-L737" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">def chat_meMessage(
     self, *, channel: str, text: str, **kwargs
@@ -5044,7 +5007,7 @@ e.g. [{"type": "section", "text": {"type": "plain_text", "text": "Hello world"}}
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/Ambro17/slackify/blob/ea24cfc4c5553e7b50fdb56171ce7bfc923e7460/slack/web/client.py#L739-L755" class="git-link">Browse git</a>
+<a href="https://github.com/Ambro17/slackify/blob/a68ab47afc62bf7aa5271e2f228f46cb703aff9f/slack/web/client.py#L739-L755" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">def chat_postEphemeral(
     self, *, channel: str, user: str, **kwargs
@@ -5085,7 +5048,7 @@ e.g. [{"type": "section", "text": {"type": "plain_text", "text": "Hello world"}}
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/Ambro17/slackify/blob/ea24cfc4c5553e7b50fdb56171ce7bfc923e7460/slack/web/client.py#L757-L772" class="git-link">Browse git</a>
+<a href="https://github.com/Ambro17/slackify/blob/a68ab47afc62bf7aa5271e2f228f46cb703aff9f/slack/web/client.py#L757-L772" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">def chat_postMessage(
     self, *, channel: str, **kwargs
@@ -5122,7 +5085,7 @@ e.g. [{"type": "section", "text": {"type": "plain_text", "text": "Hello world"}}
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/Ambro17/slackify/blob/ea24cfc4c5553e7b50fdb56171ce7bfc923e7460/slack/web/client.py#L774-L786" class="git-link">Browse git</a>
+<a href="https://github.com/Ambro17/slackify/blob/a68ab47afc62bf7aa5271e2f228f46cb703aff9f/slack/web/client.py#L774-L786" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">def chat_scheduleMessage(
     self, *, channel: str, post_at: str, text: str, **kwargs
@@ -5147,7 +5110,7 @@ e.g. [{"type": "section", "text": {"type": "plain_text", "text": "Hello world"}}
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/Ambro17/slackify/blob/ea24cfc4c5553e7b50fdb56171ce7bfc923e7460/slack/web/client.py#L820-L822" class="git-link">Browse git</a>
+<a href="https://github.com/Ambro17/slackify/blob/a68ab47afc62bf7aa5271e2f228f46cb703aff9f/slack/web/client.py#L820-L822" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">def chat_scheduledMessages_list(self, **kwargs) -&gt; Union[Future, SlackResponse]:
     &#34;&#34;&#34;Lists all scheduled messages.&#34;&#34;&#34;
@@ -5172,7 +5135,7 @@ e.g. {"https://example.com/": {"text": "Every day is the test."}}</dd>
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/Ambro17/slackify/blob/ea24cfc4c5553e7b50fdb56171ce7bfc923e7460/slack/web/client.py#L788-L800" class="git-link">Browse git</a>
+<a href="https://github.com/Ambro17/slackify/blob/a68ab47afc62bf7aa5271e2f228f46cb703aff9f/slack/web/client.py#L788-L800" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">def chat_unfurl(
     self, *, channel: str, ts: str, unfurls: dict, **kwargs
@@ -5211,7 +5174,7 @@ e.g. [{"type": "section", "text": {"type": "plain_text", "text": "Hello world"}}
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/Ambro17/slackify/blob/ea24cfc4c5553e7b50fdb56171ce7bfc923e7460/slack/web/client.py#L802-L818" class="git-link">Browse git</a>
+<a href="https://github.com/Ambro17/slackify/blob/a68ab47afc62bf7aa5271e2f228f46cb703aff9f/slack/web/client.py#L802-L818" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">def chat_update(
     self, *, channel: str, ts: str, **kwargs
@@ -5245,7 +5208,7 @@ e.g. [{"type": "section", "text": {"type": "plain_text", "text": "Hello world"}}
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/Ambro17/slackify/blob/ea24cfc4c5553e7b50fdb56171ce7bfc923e7460/slack/web/client.py#L824-L833" class="git-link">Browse git</a>
+<a href="https://github.com/Ambro17/slackify/blob/a68ab47afc62bf7aa5271e2f228f46cb703aff9f/slack/web/client.py#L824-L833" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">def conversations_archive(
     self, *, channel: str, **kwargs
@@ -5272,7 +5235,7 @@ e.g. [{"type": "section", "text": {"type": "plain_text", "text": "Hello world"}}
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/Ambro17/slackify/blob/ea24cfc4c5553e7b50fdb56171ce7bfc923e7460/slack/web/client.py#L835-L844" class="git-link">Browse git</a>
+<a href="https://github.com/Ambro17/slackify/blob/a68ab47afc62bf7aa5271e2f228f46cb703aff9f/slack/web/client.py#L835-L844" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">def conversations_close(
     self, *, channel: str, **kwargs
@@ -5299,7 +5262,7 @@ e.g. [{"type": "section", "text": {"type": "plain_text", "text": "Hello world"}}
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/Ambro17/slackify/blob/ea24cfc4c5553e7b50fdb56171ce7bfc923e7460/slack/web/client.py#L846-L855" class="git-link">Browse git</a>
+<a href="https://github.com/Ambro17/slackify/blob/a68ab47afc62bf7aa5271e2f228f46cb703aff9f/slack/web/client.py#L846-L855" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">def conversations_create(
     self, *, name: str, **kwargs
@@ -5326,7 +5289,7 @@ e.g. [{"type": "section", "text": {"type": "plain_text", "text": "Hello world"}}
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/Ambro17/slackify/blob/ea24cfc4c5553e7b50fdb56171ce7bfc923e7460/slack/web/client.py#L857-L866" class="git-link">Browse git</a>
+<a href="https://github.com/Ambro17/slackify/blob/a68ab47afc62bf7aa5271e2f228f46cb703aff9f/slack/web/client.py#L857-L866" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">def conversations_history(
     self, *, channel: str, **kwargs
@@ -5353,7 +5316,7 @@ e.g. [{"type": "section", "text": {"type": "plain_text", "text": "Hello world"}}
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/Ambro17/slackify/blob/ea24cfc4c5553e7b50fdb56171ce7bfc923e7460/slack/web/client.py#L868-L877" class="git-link">Browse git</a>
+<a href="https://github.com/Ambro17/slackify/blob/a68ab47afc62bf7aa5271e2f228f46cb703aff9f/slack/web/client.py#L868-L877" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">def conversations_info(
     self, *, channel: str, **kwargs
@@ -5382,7 +5345,7 @@ e.g. [{"type": "section", "text": {"type": "plain_text", "text": "Hello world"}}
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/Ambro17/slackify/blob/ea24cfc4c5553e7b50fdb56171ce7bfc923e7460/slack/web/client.py#L879-L893" class="git-link">Browse git</a>
+<a href="https://github.com/Ambro17/slackify/blob/a68ab47afc62bf7aa5271e2f228f46cb703aff9f/slack/web/client.py#L879-L893" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">def conversations_invite(
     self, *, channel: str, users: Union[str, List[str]], **kwargs
@@ -5414,7 +5377,7 @@ e.g. [{"type": "section", "text": {"type": "plain_text", "text": "Hello world"}}
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/Ambro17/slackify/blob/ea24cfc4c5553e7b50fdb56171ce7bfc923e7460/slack/web/client.py#L895-L904" class="git-link">Browse git</a>
+<a href="https://github.com/Ambro17/slackify/blob/a68ab47afc62bf7aa5271e2f228f46cb703aff9f/slack/web/client.py#L895-L904" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">def conversations_join(
     self, *, channel: str, **kwargs
@@ -5443,7 +5406,7 @@ e.g. [{"type": "section", "text": {"type": "plain_text", "text": "Hello world"}}
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/Ambro17/slackify/blob/ea24cfc4c5553e7b50fdb56171ce7bfc923e7460/slack/web/client.py#L906-L916" class="git-link">Browse git</a>
+<a href="https://github.com/Ambro17/slackify/blob/a68ab47afc62bf7aa5271e2f228f46cb703aff9f/slack/web/client.py#L906-L916" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">def conversations_kick(
     self, *, channel: str, user: str, **kwargs
@@ -5471,7 +5434,7 @@ e.g. [{"type": "section", "text": {"type": "plain_text", "text": "Hello world"}}
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/Ambro17/slackify/blob/ea24cfc4c5553e7b50fdb56171ce7bfc923e7460/slack/web/client.py#L918-L927" class="git-link">Browse git</a>
+<a href="https://github.com/Ambro17/slackify/blob/a68ab47afc62bf7aa5271e2f228f46cb703aff9f/slack/web/client.py#L918-L927" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">def conversations_leave(
     self, *, channel: str, **kwargs
@@ -5493,7 +5456,7 @@ e.g. [{"type": "section", "text": {"type": "plain_text", "text": "Hello world"}}
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/Ambro17/slackify/blob/ea24cfc4c5553e7b50fdb56171ce7bfc923e7460/slack/web/client.py#L929-L931" class="git-link">Browse git</a>
+<a href="https://github.com/Ambro17/slackify/blob/a68ab47afc62bf7aa5271e2f228f46cb703aff9f/slack/web/client.py#L929-L931" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">def conversations_list(self, **kwargs) -&gt; Union[Future, SlackResponse]:
     &#34;&#34;&#34;Lists all channels in a Slack team.&#34;&#34;&#34;
@@ -5513,7 +5476,7 @@ e.g. [{"type": "section", "text": {"type": "plain_text", "text": "Hello world"}}
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/Ambro17/slackify/blob/ea24cfc4c5553e7b50fdb56171ce7bfc923e7460/slack/web/client.py#L933-L942" class="git-link">Browse git</a>
+<a href="https://github.com/Ambro17/slackify/blob/a68ab47afc62bf7aa5271e2f228f46cb703aff9f/slack/web/client.py#L933-L942" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">def conversations_members(
     self, *, channel: str, **kwargs
@@ -5535,7 +5498,7 @@ e.g. [{"type": "section", "text": {"type": "plain_text", "text": "Hello world"}}
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/Ambro17/slackify/blob/ea24cfc4c5553e7b50fdb56171ce7bfc923e7460/slack/web/client.py#L944-L946" class="git-link">Browse git</a>
+<a href="https://github.com/Ambro17/slackify/blob/a68ab47afc62bf7aa5271e2f228f46cb703aff9f/slack/web/client.py#L944-L946" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">def conversations_open(self, **kwargs) -&gt; Union[Future, SlackResponse]:
     &#34;&#34;&#34;Opens or resumes a direct message or multi-person direct message.&#34;&#34;&#34;
@@ -5557,7 +5520,7 @@ e.g. [{"type": "section", "text": {"type": "plain_text", "text": "Hello world"}}
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/Ambro17/slackify/blob/ea24cfc4c5553e7b50fdb56171ce7bfc923e7460/slack/web/client.py#L948-L958" class="git-link">Browse git</a>
+<a href="https://github.com/Ambro17/slackify/blob/a68ab47afc62bf7aa5271e2f228f46cb703aff9f/slack/web/client.py#L948-L958" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">def conversations_rename(
     self, *, channel: str, name: str, **kwargs
@@ -5587,7 +5550,7 @@ e.g. [{"type": "section", "text": {"type": "plain_text", "text": "Hello world"}}
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/Ambro17/slackify/blob/ea24cfc4c5553e7b50fdb56171ce7bfc923e7460/slack/web/client.py#L960-L970" class="git-link">Browse git</a>
+<a href="https://github.com/Ambro17/slackify/blob/a68ab47afc62bf7aa5271e2f228f46cb703aff9f/slack/web/client.py#L960-L970" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">def conversations_replies(
     self, *, channel: str, ts: str, **kwargs
@@ -5617,7 +5580,7 @@ e.g. [{"type": "section", "text": {"type": "plain_text", "text": "Hello world"}}
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/Ambro17/slackify/blob/ea24cfc4c5553e7b50fdb56171ce7bfc923e7460/slack/web/client.py#L972-L982" class="git-link">Browse git</a>
+<a href="https://github.com/Ambro17/slackify/blob/a68ab47afc62bf7aa5271e2f228f46cb703aff9f/slack/web/client.py#L972-L982" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">def conversations_setPurpose(
     self, *, channel: str, purpose: str, **kwargs
@@ -5647,7 +5610,7 @@ e.g. [{"type": "section", "text": {"type": "plain_text", "text": "Hello world"}}
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/Ambro17/slackify/blob/ea24cfc4c5553e7b50fdb56171ce7bfc923e7460/slack/web/client.py#L984-L994" class="git-link">Browse git</a>
+<a href="https://github.com/Ambro17/slackify/blob/a68ab47afc62bf7aa5271e2f228f46cb703aff9f/slack/web/client.py#L984-L994" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">def conversations_setTopic(
     self, *, channel: str, topic: str, **kwargs
@@ -5675,7 +5638,7 @@ e.g. [{"type": "section", "text": {"type": "plain_text", "text": "Hello world"}}
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/Ambro17/slackify/blob/ea24cfc4c5553e7b50fdb56171ce7bfc923e7460/slack/web/client.py#L996-L1005" class="git-link">Browse git</a>
+<a href="https://github.com/Ambro17/slackify/blob/a68ab47afc62bf7aa5271e2f228f46cb703aff9f/slack/web/client.py#L996-L1005" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">def conversations_unarchive(
     self, *, channel: str, **kwargs
@@ -5723,7 +5686,7 @@ e.g. '12345.98765.abcd2358fdea'</dd>
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/Ambro17/slackify/blob/ea24cfc4c5553e7b50fdb56171ce7bfc923e7460/slack/web/client.py#L1007-L1036" class="git-link">Browse git</a>
+<a href="https://github.com/Ambro17/slackify/blob/a68ab47afc62bf7aa5271e2f228f46cb703aff9f/slack/web/client.py#L1007-L1036" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">def dialog_open(
     self, *, dialog: dict, trigger_id: str, **kwargs
@@ -5765,7 +5728,7 @@ e.g. '12345.98765.abcd2358fdea'</dd>
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/Ambro17/slackify/blob/ea24cfc4c5553e7b50fdb56171ce7bfc923e7460/slack/web/client.py#L1038-L1040" class="git-link">Browse git</a>
+<a href="https://github.com/Ambro17/slackify/blob/a68ab47afc62bf7aa5271e2f228f46cb703aff9f/slack/web/client.py#L1038-L1040" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">def dnd_endDnd(self, **kwargs) -&gt; Union[Future, SlackResponse]:
     &#34;&#34;&#34;Ends the current user&#39;s Do Not Disturb session immediately.&#34;&#34;&#34;
@@ -5780,7 +5743,7 @@ e.g. '12345.98765.abcd2358fdea'</dd>
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/Ambro17/slackify/blob/ea24cfc4c5553e7b50fdb56171ce7bfc923e7460/slack/web/client.py#L1042-L1044" class="git-link">Browse git</a>
+<a href="https://github.com/Ambro17/slackify/blob/a68ab47afc62bf7aa5271e2f228f46cb703aff9f/slack/web/client.py#L1042-L1044" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">def dnd_endSnooze(self, **kwargs) -&gt; Union[Future, SlackResponse]:
     &#34;&#34;&#34;Ends the current user&#39;s snooze mode immediately.&#34;&#34;&#34;
@@ -5795,7 +5758,7 @@ e.g. '12345.98765.abcd2358fdea'</dd>
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/Ambro17/slackify/blob/ea24cfc4c5553e7b50fdb56171ce7bfc923e7460/slack/web/client.py#L1046-L1048" class="git-link">Browse git</a>
+<a href="https://github.com/Ambro17/slackify/blob/a68ab47afc62bf7aa5271e2f228f46cb703aff9f/slack/web/client.py#L1046-L1048" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">def dnd_info(self, **kwargs) -&gt; Union[Future, SlackResponse]:
     &#34;&#34;&#34;Retrieves a user&#39;s current Do Not Disturb status.&#34;&#34;&#34;
@@ -5815,7 +5778,7 @@ e.g. '12345.98765.abcd2358fdea'</dd>
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/Ambro17/slackify/blob/ea24cfc4c5553e7b50fdb56171ce7bfc923e7460/slack/web/client.py#L1050-L1059" class="git-link">Browse git</a>
+<a href="https://github.com/Ambro17/slackify/blob/a68ab47afc62bf7aa5271e2f228f46cb703aff9f/slack/web/client.py#L1050-L1059" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">def dnd_setSnooze(
     self, *, num_minutes: int, **kwargs
@@ -5842,7 +5805,7 @@ e.g. '12345.98765.abcd2358fdea'</dd>
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/Ambro17/slackify/blob/ea24cfc4c5553e7b50fdb56171ce7bfc923e7460/slack/web/client.py#L1061-L1073" class="git-link">Browse git</a>
+<a href="https://github.com/Ambro17/slackify/blob/a68ab47afc62bf7aa5271e2f228f46cb703aff9f/slack/web/client.py#L1061-L1073" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">def dnd_teamInfo(
     self, users: Union[str, List[str]], **kwargs
@@ -5867,7 +5830,7 @@ e.g. '12345.98765.abcd2358fdea'</dd>
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/Ambro17/slackify/blob/ea24cfc4c5553e7b50fdb56171ce7bfc923e7460/slack/web/client.py#L1075-L1077" class="git-link">Browse git</a>
+<a href="https://github.com/Ambro17/slackify/blob/a68ab47afc62bf7aa5271e2f228f46cb703aff9f/slack/web/client.py#L1075-L1077" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">def emoji_list(self, **kwargs) -&gt; Union[Future, SlackResponse]:
     &#34;&#34;&#34;Lists custom emoji for a team.&#34;&#34;&#34;
@@ -5889,7 +5852,7 @@ e.g. '12345.98765.abcd2358fdea'</dd>
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/Ambro17/slackify/blob/ea24cfc4c5553e7b50fdb56171ce7bfc923e7460/slack/web/client.py#L1079-L1089" class="git-link">Browse git</a>
+<a href="https://github.com/Ambro17/slackify/blob/a68ab47afc62bf7aa5271e2f228f46cb703aff9f/slack/web/client.py#L1079-L1089" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">def files_comments_delete(
     self, *, file: str, id: str, **kwargs
@@ -5917,7 +5880,7 @@ e.g. '12345.98765.abcd2358fdea'</dd>
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/Ambro17/slackify/blob/ea24cfc4c5553e7b50fdb56171ce7bfc923e7460/slack/web/client.py#L1091-L1098" class="git-link">Browse git</a>
+<a href="https://github.com/Ambro17/slackify/blob/a68ab47afc62bf7aa5271e2f228f46cb703aff9f/slack/web/client.py#L1091-L1098" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">def files_delete(self, *, file: str, **kwargs) -&gt; Union[Future, SlackResponse]:
     &#34;&#34;&#34;Deletes a file.
@@ -5942,7 +5905,7 @@ e.g. '12345.98765.abcd2358fdea'</dd>
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/Ambro17/slackify/blob/ea24cfc4c5553e7b50fdb56171ce7bfc923e7460/slack/web/client.py#L1100-L1107" class="git-link">Browse git</a>
+<a href="https://github.com/Ambro17/slackify/blob/a68ab47afc62bf7aa5271e2f228f46cb703aff9f/slack/web/client.py#L1100-L1107" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">def files_info(self, *, file: str, **kwargs) -&gt; Union[Future, SlackResponse]:
     &#34;&#34;&#34;Gets information about a team file.
@@ -5962,7 +5925,7 @@ e.g. '12345.98765.abcd2358fdea'</dd>
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/Ambro17/slackify/blob/ea24cfc4c5553e7b50fdb56171ce7bfc923e7460/slack/web/client.py#L1109-L1111" class="git-link">Browse git</a>
+<a href="https://github.com/Ambro17/slackify/blob/a68ab47afc62bf7aa5271e2f228f46cb703aff9f/slack/web/client.py#L1109-L1111" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">def files_list(self, **kwargs) -&gt; Union[Future, SlackResponse]:
     &#34;&#34;&#34;Lists &amp; filters team files.&#34;&#34;&#34;
@@ -5986,7 +5949,7 @@ e.g. '12345.98765.abcd2358fdea'</dd>
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/Ambro17/slackify/blob/ea24cfc4c5553e7b50fdb56171ce7bfc923e7460/slack/web/client.py#L1121-L1145" class="git-link">Browse git</a>
+<a href="https://github.com/Ambro17/slackify/blob/a68ab47afc62bf7aa5271e2f228f46cb703aff9f/slack/web/client.py#L1121-L1145" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">def files_remote_add(
     self, *, external_id: str, external_url: str, title: str, **kwargs
@@ -6023,7 +5986,7 @@ e.g. '12345.98765.abcd2358fdea'</dd>
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/Ambro17/slackify/blob/ea24cfc4c5553e7b50fdb56171ce7bfc923e7460/slack/web/client.py#L1113-L1115" class="git-link">Browse git</a>
+<a href="https://github.com/Ambro17/slackify/blob/a68ab47afc62bf7aa5271e2f228f46cb703aff9f/slack/web/client.py#L1113-L1115" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">def files_remote_info(self, **kwargs) -&gt; Union[Future, SlackResponse]:
     &#34;&#34;&#34;Retrieve information about a remote file added to Slack.&#34;&#34;&#34;
@@ -6038,7 +6001,7 @@ e.g. '12345.98765.abcd2358fdea'</dd>
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/Ambro17/slackify/blob/ea24cfc4c5553e7b50fdb56171ce7bfc923e7460/slack/web/client.py#L1117-L1119" class="git-link">Browse git</a>
+<a href="https://github.com/Ambro17/slackify/blob/a68ab47afc62bf7aa5271e2f228f46cb703aff9f/slack/web/client.py#L1117-L1119" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">def files_remote_list(self, **kwargs) -&gt; Union[Future, SlackResponse]:
     &#34;&#34;&#34;Retrieve information about a remote file added to Slack.&#34;&#34;&#34;
@@ -6053,7 +6016,7 @@ e.g. '12345.98765.abcd2358fdea'</dd>
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/Ambro17/slackify/blob/ea24cfc4c5553e7b50fdb56171ce7bfc923e7460/slack/web/client.py#L1151-L1153" class="git-link">Browse git</a>
+<a href="https://github.com/Ambro17/slackify/blob/a68ab47afc62bf7aa5271e2f228f46cb703aff9f/slack/web/client.py#L1151-L1153" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">def files_remote_remove(self, **kwargs) -&gt; Union[Future, SlackResponse]:
     &#34;&#34;&#34;Remove a remote file.&#34;&#34;&#34;
@@ -6074,7 +6037,7 @@ e.g. ['C1234567890', 'C2345678901']</dd>
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/Ambro17/slackify/blob/ea24cfc4c5553e7b50fdb56171ce7bfc923e7460/slack/web/client.py#L1155-L1168" class="git-link">Browse git</a>
+<a href="https://github.com/Ambro17/slackify/blob/a68ab47afc62bf7aa5271e2f228f46cb703aff9f/slack/web/client.py#L1155-L1168" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">def files_remote_share(
     self, *, channels: Union[str, List[str]], **kwargs
@@ -6100,7 +6063,7 @@ e.g. ['C1234567890', 'C2345678901']</dd>
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/Ambro17/slackify/blob/ea24cfc4c5553e7b50fdb56171ce7bfc923e7460/slack/web/client.py#L1147-L1149" class="git-link">Browse git</a>
+<a href="https://github.com/Ambro17/slackify/blob/a68ab47afc62bf7aa5271e2f228f46cb703aff9f/slack/web/client.py#L1147-L1149" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">def files_remote_update(self, **kwargs) -&gt; Union[Future, SlackResponse]:
     &#34;&#34;&#34;Updates an existing remote file.&#34;&#34;&#34;
@@ -6120,7 +6083,7 @@ e.g. ['C1234567890', 'C2345678901']</dd>
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/Ambro17/slackify/blob/ea24cfc4c5553e7b50fdb56171ce7bfc923e7460/slack/web/client.py#L1170-L1179" class="git-link">Browse git</a>
+<a href="https://github.com/Ambro17/slackify/blob/a68ab47afc62bf7aa5271e2f228f46cb703aff9f/slack/web/client.py#L1170-L1179" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">def files_revokePublicURL(
     self, *, file: str, **kwargs
@@ -6147,7 +6110,7 @@ e.g. ['C1234567890', 'C2345678901']</dd>
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/Ambro17/slackify/blob/ea24cfc4c5553e7b50fdb56171ce7bfc923e7460/slack/web/client.py#L1181-L1190" class="git-link">Browse git</a>
+<a href="https://github.com/Ambro17/slackify/blob/a68ab47afc62bf7aa5271e2f228f46cb703aff9f/slack/web/client.py#L1181-L1190" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">def files_sharedPublicURL(
     self, *, file: str, **kwargs
@@ -6183,7 +6146,7 @@ editable text file containing the specified text. e.g. 'launch plan'</dd>
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/Ambro17/slackify/blob/ea24cfc4c5553e7b50fdb56171ce7bfc923e7460/slack/web/client.py#L1192-L1219" class="git-link">Browse git</a>
+<a href="https://github.com/Ambro17/slackify/blob/a68ab47afc62bf7aa5271e2f228f46cb703aff9f/slack/web/client.py#L1192-L1219" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">def files_upload(
     self, *, file: Union[str, IOBase] = None, content: str = None, **kwargs
@@ -6228,7 +6191,7 @@ editable text file containing the specified text. e.g. 'launch plan'</dd>
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/Ambro17/slackify/blob/ea24cfc4c5553e7b50fdb56171ce7bfc923e7460/slack/web/client.py#L1221-L1228" class="git-link">Browse git</a>
+<a href="https://github.com/Ambro17/slackify/blob/a68ab47afc62bf7aa5271e2f228f46cb703aff9f/slack/web/client.py#L1221-L1228" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">def groups_archive(self, *, channel: str, **kwargs) -&gt; Union[Future, SlackResponse]:
     &#34;&#34;&#34;Archives a private channel.
@@ -6253,7 +6216,7 @@ editable text file containing the specified text. e.g. 'launch plan'</dd>
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/Ambro17/slackify/blob/ea24cfc4c5553e7b50fdb56171ce7bfc923e7460/slack/web/client.py#L1230-L1237" class="git-link">Browse git</a>
+<a href="https://github.com/Ambro17/slackify/blob/a68ab47afc62bf7aa5271e2f228f46cb703aff9f/slack/web/client.py#L1230-L1237" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">def groups_create(self, *, name: str, **kwargs) -&gt; Union[Future, SlackResponse]:
     &#34;&#34;&#34;Creates a private channel.
@@ -6278,7 +6241,7 @@ editable text file containing the specified text. e.g. 'launch plan'</dd>
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/Ambro17/slackify/blob/ea24cfc4c5553e7b50fdb56171ce7bfc923e7460/slack/web/client.py#L1239-L1248" class="git-link">Browse git</a>
+<a href="https://github.com/Ambro17/slackify/blob/a68ab47afc62bf7aa5271e2f228f46cb703aff9f/slack/web/client.py#L1239-L1248" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">def groups_createChild(
     self, *, channel: str, **kwargs
@@ -6305,7 +6268,7 @@ editable text file containing the specified text. e.g. 'launch plan'</dd>
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/Ambro17/slackify/blob/ea24cfc4c5553e7b50fdb56171ce7bfc923e7460/slack/web/client.py#L1250-L1257" class="git-link">Browse git</a>
+<a href="https://github.com/Ambro17/slackify/blob/a68ab47afc62bf7aa5271e2f228f46cb703aff9f/slack/web/client.py#L1250-L1257" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">def groups_history(self, *, channel: str, **kwargs) -&gt; Union[Future, SlackResponse]:
     &#34;&#34;&#34;Fetches history of messages and events from a private channel.
@@ -6330,7 +6293,7 @@ editable text file containing the specified text. e.g. 'launch plan'</dd>
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/Ambro17/slackify/blob/ea24cfc4c5553e7b50fdb56171ce7bfc923e7460/slack/web/client.py#L1259-L1266" class="git-link">Browse git</a>
+<a href="https://github.com/Ambro17/slackify/blob/a68ab47afc62bf7aa5271e2f228f46cb703aff9f/slack/web/client.py#L1259-L1266" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">def groups_info(self, *, channel: str, **kwargs) -&gt; Union[Future, SlackResponse]:
     &#34;&#34;&#34;Gets information about a private channel.
@@ -6357,7 +6320,7 @@ editable text file containing the specified text. e.g. 'launch plan'</dd>
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/Ambro17/slackify/blob/ea24cfc4c5553e7b50fdb56171ce7bfc923e7460/slack/web/client.py#L1268-L1278" class="git-link">Browse git</a>
+<a href="https://github.com/Ambro17/slackify/blob/a68ab47afc62bf7aa5271e2f228f46cb703aff9f/slack/web/client.py#L1268-L1278" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">def groups_invite(
     self, *, channel: str, user: str, **kwargs
@@ -6387,7 +6350,7 @@ editable text file containing the specified text. e.g. 'launch plan'</dd>
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/Ambro17/slackify/blob/ea24cfc4c5553e7b50fdb56171ce7bfc923e7460/slack/web/client.py#L1280-L1290" class="git-link">Browse git</a>
+<a href="https://github.com/Ambro17/slackify/blob/a68ab47afc62bf7aa5271e2f228f46cb703aff9f/slack/web/client.py#L1280-L1290" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">def groups_kick(
     self, *, channel: str, user: str, **kwargs
@@ -6415,7 +6378,7 @@ editable text file containing the specified text. e.g. 'launch plan'</dd>
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/Ambro17/slackify/blob/ea24cfc4c5553e7b50fdb56171ce7bfc923e7460/slack/web/client.py#L1292-L1299" class="git-link">Browse git</a>
+<a href="https://github.com/Ambro17/slackify/blob/a68ab47afc62bf7aa5271e2f228f46cb703aff9f/slack/web/client.py#L1292-L1299" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">def groups_leave(self, *, channel: str, **kwargs) -&gt; Union[Future, SlackResponse]:
     &#34;&#34;&#34;Leaves a private channel.
@@ -6435,7 +6398,7 @@ editable text file containing the specified text. e.g. 'launch plan'</dd>
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/Ambro17/slackify/blob/ea24cfc4c5553e7b50fdb56171ce7bfc923e7460/slack/web/client.py#L1301-L1303" class="git-link">Browse git</a>
+<a href="https://github.com/Ambro17/slackify/blob/a68ab47afc62bf7aa5271e2f228f46cb703aff9f/slack/web/client.py#L1301-L1303" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">def groups_list(self, **kwargs) -&gt; Union[Future, SlackResponse]:
     &#34;&#34;&#34;Lists private channels that the calling user has access to.&#34;&#34;&#34;
@@ -6457,7 +6420,7 @@ editable text file containing the specified text. e.g. 'launch plan'</dd>
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/Ambro17/slackify/blob/ea24cfc4c5553e7b50fdb56171ce7bfc923e7460/slack/web/client.py#L1305-L1315" class="git-link">Browse git</a>
+<a href="https://github.com/Ambro17/slackify/blob/a68ab47afc62bf7aa5271e2f228f46cb703aff9f/slack/web/client.py#L1305-L1315" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">def groups_mark(
     self, *, channel: str, ts: str, **kwargs
@@ -6485,7 +6448,7 @@ editable text file containing the specified text. e.g. 'launch plan'</dd>
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/Ambro17/slackify/blob/ea24cfc4c5553e7b50fdb56171ce7bfc923e7460/slack/web/client.py#L1317-L1324" class="git-link">Browse git</a>
+<a href="https://github.com/Ambro17/slackify/blob/a68ab47afc62bf7aa5271e2f228f46cb703aff9f/slack/web/client.py#L1317-L1324" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">def groups_open(self, *, channel: str, **kwargs) -&gt; Union[Future, SlackResponse]:
     &#34;&#34;&#34;Opens a private channel.
@@ -6512,7 +6475,7 @@ editable text file containing the specified text. e.g. 'launch plan'</dd>
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/Ambro17/slackify/blob/ea24cfc4c5553e7b50fdb56171ce7bfc923e7460/slack/web/client.py#L1326-L1336" class="git-link">Browse git</a>
+<a href="https://github.com/Ambro17/slackify/blob/a68ab47afc62bf7aa5271e2f228f46cb703aff9f/slack/web/client.py#L1326-L1336" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">def groups_rename(
     self, *, channel: str, name: str, **kwargs
@@ -6543,7 +6506,7 @@ e.g. '1234567890.123456'</dd>
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/Ambro17/slackify/blob/ea24cfc4c5553e7b50fdb56171ce7bfc923e7460/slack/web/client.py#L1338-L1349" class="git-link">Browse git</a>
+<a href="https://github.com/Ambro17/slackify/blob/a68ab47afc62bf7aa5271e2f228f46cb703aff9f/slack/web/client.py#L1338-L1349" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">def groups_replies(
     self, *, channel: str, thread_ts: str, **kwargs
@@ -6574,7 +6537,7 @@ e.g. '1234567890.123456'</dd>
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/Ambro17/slackify/blob/ea24cfc4c5553e7b50fdb56171ce7bfc923e7460/slack/web/client.py#L1351-L1361" class="git-link">Browse git</a>
+<a href="https://github.com/Ambro17/slackify/blob/a68ab47afc62bf7aa5271e2f228f46cb703aff9f/slack/web/client.py#L1351-L1361" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">def groups_setPurpose(
     self, *, channel: str, purpose: str, **kwargs
@@ -6604,7 +6567,7 @@ e.g. '1234567890.123456'</dd>
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/Ambro17/slackify/blob/ea24cfc4c5553e7b50fdb56171ce7bfc923e7460/slack/web/client.py#L1363-L1373" class="git-link">Browse git</a>
+<a href="https://github.com/Ambro17/slackify/blob/a68ab47afc62bf7aa5271e2f228f46cb703aff9f/slack/web/client.py#L1363-L1373" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">def groups_setTopic(
     self, *, channel: str, topic: str, **kwargs
@@ -6632,7 +6595,7 @@ e.g. '1234567890.123456'</dd>
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/Ambro17/slackify/blob/ea24cfc4c5553e7b50fdb56171ce7bfc923e7460/slack/web/client.py#L1375-L1384" class="git-link">Browse git</a>
+<a href="https://github.com/Ambro17/slackify/blob/a68ab47afc62bf7aa5271e2f228f46cb703aff9f/slack/web/client.py#L1375-L1384" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">def groups_unarchive(
     self, *, channel: str, **kwargs
@@ -6659,7 +6622,7 @@ e.g. '1234567890.123456'</dd>
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/Ambro17/slackify/blob/ea24cfc4c5553e7b50fdb56171ce7bfc923e7460/slack/web/client.py#L1386-L1393" class="git-link">Browse git</a>
+<a href="https://github.com/Ambro17/slackify/blob/a68ab47afc62bf7aa5271e2f228f46cb703aff9f/slack/web/client.py#L1386-L1393" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">def im_close(self, *, channel: str, **kwargs) -&gt; Union[Future, SlackResponse]:
     &#34;&#34;&#34;Close a direct message channel.
@@ -6684,7 +6647,7 @@ e.g. '1234567890.123456'</dd>
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/Ambro17/slackify/blob/ea24cfc4c5553e7b50fdb56171ce7bfc923e7460/slack/web/client.py#L1395-L1402" class="git-link">Browse git</a>
+<a href="https://github.com/Ambro17/slackify/blob/a68ab47afc62bf7aa5271e2f228f46cb703aff9f/slack/web/client.py#L1395-L1402" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">def im_history(self, *, channel: str, **kwargs) -&gt; Union[Future, SlackResponse]:
     &#34;&#34;&#34;Fetches history of messages and events from direct message channel.
@@ -6704,7 +6667,7 @@ e.g. '1234567890.123456'</dd>
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/Ambro17/slackify/blob/ea24cfc4c5553e7b50fdb56171ce7bfc923e7460/slack/web/client.py#L1404-L1406" class="git-link">Browse git</a>
+<a href="https://github.com/Ambro17/slackify/blob/a68ab47afc62bf7aa5271e2f228f46cb703aff9f/slack/web/client.py#L1404-L1406" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">def im_list(self, **kwargs) -&gt; Union[Future, SlackResponse]:
     &#34;&#34;&#34;Lists direct message channels for the calling user.&#34;&#34;&#34;
@@ -6726,7 +6689,7 @@ e.g. '1234567890.123456'</dd>
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/Ambro17/slackify/blob/ea24cfc4c5553e7b50fdb56171ce7bfc923e7460/slack/web/client.py#L1408-L1418" class="git-link">Browse git</a>
+<a href="https://github.com/Ambro17/slackify/blob/a68ab47afc62bf7aa5271e2f228f46cb703aff9f/slack/web/client.py#L1408-L1418" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">def im_mark(
     self, *, channel: str, ts: str, **kwargs
@@ -6754,7 +6717,7 @@ e.g. '1234567890.123456'</dd>
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/Ambro17/slackify/blob/ea24cfc4c5553e7b50fdb56171ce7bfc923e7460/slack/web/client.py#L1420-L1427" class="git-link">Browse git</a>
+<a href="https://github.com/Ambro17/slackify/blob/a68ab47afc62bf7aa5271e2f228f46cb703aff9f/slack/web/client.py#L1420-L1427" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">def im_open(self, *, user: str, **kwargs) -&gt; Union[Future, SlackResponse]:
     &#34;&#34;&#34;Opens a direct message channel.
@@ -6782,7 +6745,7 @@ e.g. '1234567890.123456'</dd>
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/Ambro17/slackify/blob/ea24cfc4c5553e7b50fdb56171ce7bfc923e7460/slack/web/client.py#L1429-L1440" class="git-link">Browse git</a>
+<a href="https://github.com/Ambro17/slackify/blob/a68ab47afc62bf7aa5271e2f228f46cb703aff9f/slack/web/client.py#L1429-L1440" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">def im_replies(
     self, *, channel: str, thread_ts: str, **kwargs
@@ -6812,7 +6775,7 @@ e.g. ['W1234567890', 'U2345678901', 'U3456789012']</dd>
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/Ambro17/slackify/blob/ea24cfc4c5553e7b50fdb56171ce7bfc923e7460/slack/web/client.py#L1442-L1455" class="git-link">Browse git</a>
+<a href="https://github.com/Ambro17/slackify/blob/a68ab47afc62bf7aa5271e2f228f46cb703aff9f/slack/web/client.py#L1442-L1455" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">def migration_exchange(
     self, *, users: Union[str, List[str]], **kwargs
@@ -6843,7 +6806,7 @@ e.g. ['W1234567890', 'U2345678901', 'U3456789012']</dd>
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/Ambro17/slackify/blob/ea24cfc4c5553e7b50fdb56171ce7bfc923e7460/slack/web/client.py#L1457-L1464" class="git-link">Browse git</a>
+<a href="https://github.com/Ambro17/slackify/blob/a68ab47afc62bf7aa5271e2f228f46cb703aff9f/slack/web/client.py#L1457-L1464" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">def mpim_close(self, *, channel: str, **kwargs) -&gt; Union[Future, SlackResponse]:
     &#34;&#34;&#34;Closes a multiparty direct message channel.
@@ -6868,7 +6831,7 @@ e.g. ['W1234567890', 'U2345678901', 'U3456789012']</dd>
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/Ambro17/slackify/blob/ea24cfc4c5553e7b50fdb56171ce7bfc923e7460/slack/web/client.py#L1466-L1473" class="git-link">Browse git</a>
+<a href="https://github.com/Ambro17/slackify/blob/a68ab47afc62bf7aa5271e2f228f46cb703aff9f/slack/web/client.py#L1466-L1473" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">def mpim_history(self, *, channel: str, **kwargs) -&gt; Union[Future, SlackResponse]:
     &#34;&#34;&#34;Fetches history of messages and events from a multiparty direct message.
@@ -6888,7 +6851,7 @@ e.g. ['W1234567890', 'U2345678901', 'U3456789012']</dd>
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/Ambro17/slackify/blob/ea24cfc4c5553e7b50fdb56171ce7bfc923e7460/slack/web/client.py#L1475-L1477" class="git-link">Browse git</a>
+<a href="https://github.com/Ambro17/slackify/blob/a68ab47afc62bf7aa5271e2f228f46cb703aff9f/slack/web/client.py#L1475-L1477" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">def mpim_list(self, **kwargs) -&gt; Union[Future, SlackResponse]:
     &#34;&#34;&#34;Lists multiparty direct message channels for the calling user.&#34;&#34;&#34;
@@ -6912,7 +6875,7 @@ e.g. '1234567890.123456'</dd>
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/Ambro17/slackify/blob/ea24cfc4c5553e7b50fdb56171ce7bfc923e7460/slack/web/client.py#L1479-L1491" class="git-link">Browse git</a>
+<a href="https://github.com/Ambro17/slackify/blob/a68ab47afc62bf7aa5271e2f228f46cb703aff9f/slack/web/client.py#L1479-L1491" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">def mpim_mark(
     self, *, channel: str, ts: str, **kwargs
@@ -6944,7 +6907,7 @@ e.g. ['W1234567890', 'U2345678901', 'U3456789012']</dd>
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/Ambro17/slackify/blob/ea24cfc4c5553e7b50fdb56171ce7bfc923e7460/slack/web/client.py#L1493-L1507" class="git-link">Browse git</a>
+<a href="https://github.com/Ambro17/slackify/blob/a68ab47afc62bf7aa5271e2f228f46cb703aff9f/slack/web/client.py#L1493-L1507" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">def mpim_open(
     self, *, users: Union[str, List[str]], **kwargs
@@ -6981,7 +6944,7 @@ e.g. '1234567890.123456'</dd>
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/Ambro17/slackify/blob/ea24cfc4c5553e7b50fdb56171ce7bfc923e7460/slack/web/client.py#L1509-L1522" class="git-link">Browse git</a>
+<a href="https://github.com/Ambro17/slackify/blob/a68ab47afc62bf7aa5271e2f228f46cb703aff9f/slack/web/client.py#L1509-L1522" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">def mpim_replies(
     self, *, channel: str, thread_ts: str, **kwargs
@@ -7019,7 +6982,7 @@ e.g. '1234567890.123456'</dd>
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/Ambro17/slackify/blob/ea24cfc4c5553e7b50fdb56171ce7bfc923e7460/slack/web/client.py#L1551-L1576" class="git-link">Browse git</a>
+<a href="https://github.com/Ambro17/slackify/blob/a68ab47afc62bf7aa5271e2f228f46cb703aff9f/slack/web/client.py#L1551-L1576" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">def oauth_access(
     self,
@@ -7069,7 +7032,7 @@ e.g. '1234567890.123456'</dd>
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/Ambro17/slackify/blob/ea24cfc4c5553e7b50fdb56171ce7bfc923e7460/slack/web/client.py#L1524-L1549" class="git-link">Browse git</a>
+<a href="https://github.com/Ambro17/slackify/blob/a68ab47afc62bf7aa5271e2f228f46cb703aff9f/slack/web/client.py#L1524-L1549" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">def oauth_v2_access(
     self,
@@ -7118,7 +7081,7 @@ e.g. '1234567890.123456'</dd>
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/Ambro17/slackify/blob/ea24cfc4c5553e7b50fdb56171ce7bfc923e7460/slack/web/client.py#L1578-L1588" class="git-link">Browse git</a>
+<a href="https://github.com/Ambro17/slackify/blob/a68ab47afc62bf7aa5271e2f228f46cb703aff9f/slack/web/client.py#L1578-L1588" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">def pins_add(self, *, channel: str, **kwargs) -&gt; Union[Future, SlackResponse]:
     &#34;&#34;&#34;Pins an item to a channel.
@@ -7146,7 +7109,7 @@ e.g. '1234567890.123456'</dd>
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/Ambro17/slackify/blob/ea24cfc4c5553e7b50fdb56171ce7bfc923e7460/slack/web/client.py#L1590-L1597" class="git-link">Browse git</a>
+<a href="https://github.com/Ambro17/slackify/blob/a68ab47afc62bf7aa5271e2f228f46cb703aff9f/slack/web/client.py#L1590-L1597" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">def pins_list(self, *, channel: str, **kwargs) -&gt; Union[Future, SlackResponse]:
     &#34;&#34;&#34;Lists items pinned to a channel.
@@ -7177,7 +7140,7 @@ e.g. '1234567890.123456'</dd>
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/Ambro17/slackify/blob/ea24cfc4c5553e7b50fdb56171ce7bfc923e7460/slack/web/client.py#L1599-L1609" class="git-link">Browse git</a>
+<a href="https://github.com/Ambro17/slackify/blob/a68ab47afc62bf7aa5271e2f228f46cb703aff9f/slack/web/client.py#L1599-L1609" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">def pins_remove(self, *, channel: str, **kwargs) -&gt; Union[Future, SlackResponse]:
     &#34;&#34;&#34;Un-pins an item from a channel.
@@ -7210,7 +7173,7 @@ e.g. 'C1234567890'</dd>
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/Ambro17/slackify/blob/ea24cfc4c5553e7b50fdb56171ce7bfc923e7460/slack/web/client.py#L1611-L1621" class="git-link">Browse git</a>
+<a href="https://github.com/Ambro17/slackify/blob/a68ab47afc62bf7aa5271e2f228f46cb703aff9f/slack/web/client.py#L1611-L1621" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">def reactions_add(self, *, name: str, **kwargs) -&gt; Union[Future, SlackResponse]:
     &#34;&#34;&#34;Adds a reaction to an item.
@@ -7233,7 +7196,7 @@ e.g. 'C1234567890'</dd>
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/Ambro17/slackify/blob/ea24cfc4c5553e7b50fdb56171ce7bfc923e7460/slack/web/client.py#L1623-L1625" class="git-link">Browse git</a>
+<a href="https://github.com/Ambro17/slackify/blob/a68ab47afc62bf7aa5271e2f228f46cb703aff9f/slack/web/client.py#L1623-L1625" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">def reactions_get(self, **kwargs) -&gt; Union[Future, SlackResponse]:
     &#34;&#34;&#34;Gets reactions for an item.&#34;&#34;&#34;
@@ -7248,7 +7211,7 @@ e.g. 'C1234567890'</dd>
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/Ambro17/slackify/blob/ea24cfc4c5553e7b50fdb56171ce7bfc923e7460/slack/web/client.py#L1627-L1629" class="git-link">Browse git</a>
+<a href="https://github.com/Ambro17/slackify/blob/a68ab47afc62bf7aa5271e2f228f46cb703aff9f/slack/web/client.py#L1627-L1629" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">def reactions_list(self, **kwargs) -&gt; Union[Future, SlackResponse]:
     &#34;&#34;&#34;Lists reactions made by a user.&#34;&#34;&#34;
@@ -7268,7 +7231,7 @@ e.g. 'C1234567890'</dd>
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/Ambro17/slackify/blob/ea24cfc4c5553e7b50fdb56171ce7bfc923e7460/slack/web/client.py#L1631-L1638" class="git-link">Browse git</a>
+<a href="https://github.com/Ambro17/slackify/blob/a68ab47afc62bf7aa5271e2f228f46cb703aff9f/slack/web/client.py#L1631-L1638" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">def reactions_remove(self, *, name: str, **kwargs) -&gt; Union[Future, SlackResponse]:
     &#34;&#34;&#34;Removes a reaction from an item.
@@ -7298,7 +7261,7 @@ or a natural language description (Ex. 'in 15 minutes' or 'every Thursday')</dd>
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/Ambro17/slackify/blob/ea24cfc4c5553e7b50fdb56171ce7bfc923e7460/slack/web/client.py#L1640-L1653" class="git-link">Browse git</a>
+<a href="https://github.com/Ambro17/slackify/blob/a68ab47afc62bf7aa5271e2f228f46cb703aff9f/slack/web/client.py#L1640-L1653" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">def reminders_add(
     self, *, text: str, time: str, **kwargs
@@ -7330,7 +7293,7 @@ e.g. 'Rm12345678'</dd>
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/Ambro17/slackify/blob/ea24cfc4c5553e7b50fdb56171ce7bfc923e7460/slack/web/client.py#L1655-L1665" class="git-link">Browse git</a>
+<a href="https://github.com/Ambro17/slackify/blob/a68ab47afc62bf7aa5271e2f228f46cb703aff9f/slack/web/client.py#L1655-L1665" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">def reminders_complete(
     self, *, reminder: str, **kwargs
@@ -7358,7 +7321,7 @@ e.g. 'Rm12345678'</dd>
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/Ambro17/slackify/blob/ea24cfc4c5553e7b50fdb56171ce7bfc923e7460/slack/web/client.py#L1667-L1676" class="git-link">Browse git</a>
+<a href="https://github.com/Ambro17/slackify/blob/a68ab47afc62bf7aa5271e2f228f46cb703aff9f/slack/web/client.py#L1667-L1676" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">def reminders_delete(
     self, *, reminder: str, **kwargs
@@ -7385,7 +7348,7 @@ e.g. 'Rm12345678'</dd>
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/Ambro17/slackify/blob/ea24cfc4c5553e7b50fdb56171ce7bfc923e7460/slack/web/client.py#L1678-L1687" class="git-link">Browse git</a>
+<a href="https://github.com/Ambro17/slackify/blob/a68ab47afc62bf7aa5271e2f228f46cb703aff9f/slack/web/client.py#L1678-L1687" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">def reminders_info(
     self, *, reminder: str, **kwargs
@@ -7407,7 +7370,7 @@ e.g. 'Rm12345678'</dd>
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/Ambro17/slackify/blob/ea24cfc4c5553e7b50fdb56171ce7bfc923e7460/slack/web/client.py#L1689-L1691" class="git-link">Browse git</a>
+<a href="https://github.com/Ambro17/slackify/blob/a68ab47afc62bf7aa5271e2f228f46cb703aff9f/slack/web/client.py#L1689-L1691" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">def reminders_list(self, **kwargs) -&gt; Union[Future, SlackResponse]:
     &#34;&#34;&#34;Lists all reminders created by or for a given user.&#34;&#34;&#34;
@@ -7422,7 +7385,7 @@ e.g. 'Rm12345678'</dd>
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/Ambro17/slackify/blob/ea24cfc4c5553e7b50fdb56171ce7bfc923e7460/slack/web/client.py#L1693-L1695" class="git-link">Browse git</a>
+<a href="https://github.com/Ambro17/slackify/blob/a68ab47afc62bf7aa5271e2f228f46cb703aff9f/slack/web/client.py#L1693-L1695" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">def rtm_connect(self, **kwargs) -&gt; Union[Future, SlackResponse]:
     &#34;&#34;&#34;Starts a Real Time Messaging session.&#34;&#34;&#34;
@@ -7437,7 +7400,7 @@ e.g. 'Rm12345678'</dd>
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/Ambro17/slackify/blob/ea24cfc4c5553e7b50fdb56171ce7bfc923e7460/slack/web/client.py#L1697-L1699" class="git-link">Browse git</a>
+<a href="https://github.com/Ambro17/slackify/blob/a68ab47afc62bf7aa5271e2f228f46cb703aff9f/slack/web/client.py#L1697-L1699" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">def rtm_start(self, **kwargs) -&gt; Union[Future, SlackResponse]:
     &#34;&#34;&#34;Starts a Real Time Messaging session.&#34;&#34;&#34;
@@ -7458,7 +7421,7 @@ e.g. 'pickleface'</dd>
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/Ambro17/slackify/blob/ea24cfc4c5553e7b50fdb56171ce7bfc923e7460/slack/web/client.py#L1701-L1709" class="git-link">Browse git</a>
+<a href="https://github.com/Ambro17/slackify/blob/a68ab47afc62bf7aa5271e2f228f46cb703aff9f/slack/web/client.py#L1701-L1709" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">def search_all(self, *, query: str, **kwargs) -&gt; Union[Future, SlackResponse]:
     &#34;&#34;&#34;Searches for messages and files matching a query.
@@ -7485,7 +7448,7 @@ e.g. 'pickleface'</dd>
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/Ambro17/slackify/blob/ea24cfc4c5553e7b50fdb56171ce7bfc923e7460/slack/web/client.py#L1711-L1719" class="git-link">Browse git</a>
+<a href="https://github.com/Ambro17/slackify/blob/a68ab47afc62bf7aa5271e2f228f46cb703aff9f/slack/web/client.py#L1711-L1719" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">def search_files(self, *, query: str, **kwargs) -&gt; Union[Future, SlackResponse]:
     &#34;&#34;&#34;Searches for files matching a query.
@@ -7512,7 +7475,7 @@ e.g. 'pickleface'</dd>
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/Ambro17/slackify/blob/ea24cfc4c5553e7b50fdb56171ce7bfc923e7460/slack/web/client.py#L1721-L1729" class="git-link">Browse git</a>
+<a href="https://github.com/Ambro17/slackify/blob/a68ab47afc62bf7aa5271e2f228f46cb703aff9f/slack/web/client.py#L1721-L1729" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">def search_messages(self, *, query: str, **kwargs) -&gt; Union[Future, SlackResponse]:
     &#34;&#34;&#34;Searches for messages matching a query.
@@ -7545,7 +7508,7 @@ star to was posted (used with timestamp). e.g. 'C1234567890'</dd>
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/Ambro17/slackify/blob/ea24cfc4c5553e7b50fdb56171ce7bfc923e7460/slack/web/client.py#L1731-L1741" class="git-link">Browse git</a>
+<a href="https://github.com/Ambro17/slackify/blob/a68ab47afc62bf7aa5271e2f228f46cb703aff9f/slack/web/client.py#L1731-L1741" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">def stars_add(self, **kwargs) -&gt; Union[Future, SlackResponse]:
     &#34;&#34;&#34;Adds a star to an item.
@@ -7568,7 +7531,7 @@ star to was posted (used with timestamp). e.g. 'C1234567890'</dd>
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/Ambro17/slackify/blob/ea24cfc4c5553e7b50fdb56171ce7bfc923e7460/slack/web/client.py#L1743-L1745" class="git-link">Browse git</a>
+<a href="https://github.com/Ambro17/slackify/blob/a68ab47afc62bf7aa5271e2f228f46cb703aff9f/slack/web/client.py#L1743-L1745" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">def stars_list(self, **kwargs) -&gt; Union[Future, SlackResponse]:
     &#34;&#34;&#34;Lists stars for a user.&#34;&#34;&#34;
@@ -7595,7 +7558,7 @@ the message to remove star from was posted (used with timestamp). e.g. 'C1234567
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/Ambro17/slackify/blob/ea24cfc4c5553e7b50fdb56171ce7bfc923e7460/slack/web/client.py#L1747-L1757" class="git-link">Browse git</a>
+<a href="https://github.com/Ambro17/slackify/blob/a68ab47afc62bf7aa5271e2f228f46cb703aff9f/slack/web/client.py#L1747-L1757" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">def stars_remove(self, **kwargs) -&gt; Union[Future, SlackResponse]:
     &#34;&#34;&#34;Removes a star from an item.
@@ -7618,7 +7581,7 @@ the message to remove star from was posted (used with timestamp). e.g. 'C1234567
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/Ambro17/slackify/blob/ea24cfc4c5553e7b50fdb56171ce7bfc923e7460/slack/web/client.py#L1759-L1761" class="git-link">Browse git</a>
+<a href="https://github.com/Ambro17/slackify/blob/a68ab47afc62bf7aa5271e2f228f46cb703aff9f/slack/web/client.py#L1759-L1761" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">def team_accessLogs(self, **kwargs) -&gt; Union[Future, SlackResponse]:
     &#34;&#34;&#34;Gets the access logs for the current team.&#34;&#34;&#34;
@@ -7633,7 +7596,7 @@ the message to remove star from was posted (used with timestamp). e.g. 'C1234567
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/Ambro17/slackify/blob/ea24cfc4c5553e7b50fdb56171ce7bfc923e7460/slack/web/client.py#L1763-L1765" class="git-link">Browse git</a>
+<a href="https://github.com/Ambro17/slackify/blob/a68ab47afc62bf7aa5271e2f228f46cb703aff9f/slack/web/client.py#L1763-L1765" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">def team_billableInfo(self, **kwargs) -&gt; Union[Future, SlackResponse]:
     &#34;&#34;&#34;Gets billable users information for the current team.&#34;&#34;&#34;
@@ -7648,7 +7611,7 @@ the message to remove star from was posted (used with timestamp). e.g. 'C1234567
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/Ambro17/slackify/blob/ea24cfc4c5553e7b50fdb56171ce7bfc923e7460/slack/web/client.py#L1767-L1769" class="git-link">Browse git</a>
+<a href="https://github.com/Ambro17/slackify/blob/a68ab47afc62bf7aa5271e2f228f46cb703aff9f/slack/web/client.py#L1767-L1769" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">def team_info(self, **kwargs) -&gt; Union[Future, SlackResponse]:
     &#34;&#34;&#34;Gets information about the current team.&#34;&#34;&#34;
@@ -7663,7 +7626,7 @@ the message to remove star from was posted (used with timestamp). e.g. 'C1234567
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/Ambro17/slackify/blob/ea24cfc4c5553e7b50fdb56171ce7bfc923e7460/slack/web/client.py#L1771-L1773" class="git-link">Browse git</a>
+<a href="https://github.com/Ambro17/slackify/blob/a68ab47afc62bf7aa5271e2f228f46cb703aff9f/slack/web/client.py#L1771-L1773" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">def team_integrationLogs(self, **kwargs) -&gt; Union[Future, SlackResponse]:
     &#34;&#34;&#34;Gets the integration logs for the current team.&#34;&#34;&#34;
@@ -7678,7 +7641,7 @@ the message to remove star from was posted (used with timestamp). e.g. 'C1234567
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/Ambro17/slackify/blob/ea24cfc4c5553e7b50fdb56171ce7bfc923e7460/slack/web/client.py#L1775-L1777" class="git-link">Browse git</a>
+<a href="https://github.com/Ambro17/slackify/blob/a68ab47afc62bf7aa5271e2f228f46cb703aff9f/slack/web/client.py#L1775-L1777" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">def team_profile_get(self, **kwargs) -&gt; Union[Future, SlackResponse]:
     &#34;&#34;&#34;Retrieve a team&#39;s profile.&#34;&#34;&#34;
@@ -7699,7 +7662,7 @@ e.g. 'My Test Team'</dd>
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/Ambro17/slackify/blob/ea24cfc4c5553e7b50fdb56171ce7bfc923e7460/slack/web/client.py#L1779-L1787" class="git-link">Browse git</a>
+<a href="https://github.com/Ambro17/slackify/blob/a68ab47afc62bf7aa5271e2f228f46cb703aff9f/slack/web/client.py#L1779-L1787" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">def usergroups_create(self, *, name: str, **kwargs) -&gt; Union[Future, SlackResponse]:
     &#34;&#34;&#34;Create a User Group
@@ -7726,7 +7689,7 @@ e.g. 'S0604QSJC'</dd>
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/Ambro17/slackify/blob/ea24cfc4c5553e7b50fdb56171ce7bfc923e7460/slack/web/client.py#L1789-L1799" class="git-link">Browse git</a>
+<a href="https://github.com/Ambro17/slackify/blob/a68ab47afc62bf7aa5271e2f228f46cb703aff9f/slack/web/client.py#L1789-L1799" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">def usergroups_disable(
     self, *, usergroup: str, **kwargs
@@ -7755,7 +7718,7 @@ e.g. 'S0604QSJC'</dd>
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/Ambro17/slackify/blob/ea24cfc4c5553e7b50fdb56171ce7bfc923e7460/slack/web/client.py#L1801-L1811" class="git-link">Browse git</a>
+<a href="https://github.com/Ambro17/slackify/blob/a68ab47afc62bf7aa5271e2f228f46cb703aff9f/slack/web/client.py#L1801-L1811" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">def usergroups_enable(
     self, *, usergroup: str, **kwargs
@@ -7778,7 +7741,7 @@ e.g. 'S0604QSJC'</dd>
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/Ambro17/slackify/blob/ea24cfc4c5553e7b50fdb56171ce7bfc923e7460/slack/web/client.py#L1813-L1815" class="git-link">Browse git</a>
+<a href="https://github.com/Ambro17/slackify/blob/a68ab47afc62bf7aa5271e2f228f46cb703aff9f/slack/web/client.py#L1813-L1815" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">def usergroups_list(self, **kwargs) -&gt; Union[Future, SlackResponse]:
     &#34;&#34;&#34;List all User Groups for a team&#34;&#34;&#34;
@@ -7799,7 +7762,7 @@ e.g. 'S0604QSJC'</dd>
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/Ambro17/slackify/blob/ea24cfc4c5553e7b50fdb56171ce7bfc923e7460/slack/web/client.py#L1817-L1827" class="git-link">Browse git</a>
+<a href="https://github.com/Ambro17/slackify/blob/a68ab47afc62bf7aa5271e2f228f46cb703aff9f/slack/web/client.py#L1817-L1827" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">def usergroups_update(
     self, *, usergroup: str, **kwargs
@@ -7828,7 +7791,7 @@ e.g. 'S0604QSJC'</dd>
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/Ambro17/slackify/blob/ea24cfc4c5553e7b50fdb56171ce7bfc923e7460/slack/web/client.py#L1829-L1839" class="git-link">Browse git</a>
+<a href="https://github.com/Ambro17/slackify/blob/a68ab47afc62bf7aa5271e2f228f46cb703aff9f/slack/web/client.py#L1829-L1839" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">def usergroups_users_list(
     self, *, usergroup: str, **kwargs
@@ -7860,7 +7823,7 @@ users for the User Group. e.g. ['U060R4BJ4', 'U060RNRCZ']</dd>
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/Ambro17/slackify/blob/ea24cfc4c5553e7b50fdb56171ce7bfc923e7460/slack/web/client.py#L1841-L1857" class="git-link">Browse git</a>
+<a href="https://github.com/Ambro17/slackify/blob/a68ab47afc62bf7aa5271e2f228f46cb703aff9f/slack/web/client.py#L1841-L1857" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">def usergroups_users_update(
     self, *, usergroup: str, users: Union[str, List[str]], **kwargs
@@ -7889,7 +7852,7 @@ users for the User Group. e.g. ['U060R4BJ4', 'U060RNRCZ']</dd>
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/Ambro17/slackify/blob/ea24cfc4c5553e7b50fdb56171ce7bfc923e7460/slack/web/client.py#L1859-L1861" class="git-link">Browse git</a>
+<a href="https://github.com/Ambro17/slackify/blob/a68ab47afc62bf7aa5271e2f228f46cb703aff9f/slack/web/client.py#L1859-L1861" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">def users_conversations(self, **kwargs) -&gt; Union[Future, SlackResponse]:
     &#34;&#34;&#34;List conversations the calling user may access.&#34;&#34;&#34;
@@ -7904,7 +7867,7 @@ users for the User Group. e.g. ['U060R4BJ4', 'U060RNRCZ']</dd>
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/Ambro17/slackify/blob/ea24cfc4c5553e7b50fdb56171ce7bfc923e7460/slack/web/client.py#L1863-L1865" class="git-link">Browse git</a>
+<a href="https://github.com/Ambro17/slackify/blob/a68ab47afc62bf7aa5271e2f228f46cb703aff9f/slack/web/client.py#L1863-L1865" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">def users_deletePhoto(self, **kwargs) -&gt; Union[Future, SlackResponse]:
     &#34;&#34;&#34;Delete the user profile photo&#34;&#34;&#34;
@@ -7925,7 +7888,7 @@ e.g. 'W1234567890'</dd>
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/Ambro17/slackify/blob/ea24cfc4c5553e7b50fdb56171ce7bfc923e7460/slack/web/client.py#L1867-L1875" class="git-link">Browse git</a>
+<a href="https://github.com/Ambro17/slackify/blob/a68ab47afc62bf7aa5271e2f228f46cb703aff9f/slack/web/client.py#L1867-L1875" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">def users_getPresence(self, *, user: str, **kwargs) -&gt; Union[Future, SlackResponse]:
     &#34;&#34;&#34;Gets user presence information.
@@ -7946,7 +7909,7 @@ e.g. 'W1234567890'</dd>
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/Ambro17/slackify/blob/ea24cfc4c5553e7b50fdb56171ce7bfc923e7460/slack/web/client.py#L1877-L1879" class="git-link">Browse git</a>
+<a href="https://github.com/Ambro17/slackify/blob/a68ab47afc62bf7aa5271e2f228f46cb703aff9f/slack/web/client.py#L1877-L1879" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">def users_identity(self, **kwargs) -&gt; Union[Future, SlackResponse]:
     &#34;&#34;&#34;Get a user&#39;s identity.&#34;&#34;&#34;
@@ -7967,7 +7930,7 @@ e.g. 'W1234567890'</dd>
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/Ambro17/slackify/blob/ea24cfc4c5553e7b50fdb56171ce7bfc923e7460/slack/web/client.py#L1881-L1889" class="git-link">Browse git</a>
+<a href="https://github.com/Ambro17/slackify/blob/a68ab47afc62bf7aa5271e2f228f46cb703aff9f/slack/web/client.py#L1881-L1889" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">def users_info(self, *, user: str, **kwargs) -&gt; Union[Future, SlackResponse]:
     &#34;&#34;&#34;Gets information about a user.
@@ -7988,7 +7951,7 @@ e.g. 'W1234567890'</dd>
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/Ambro17/slackify/blob/ea24cfc4c5553e7b50fdb56171ce7bfc923e7460/slack/web/client.py#L1891-L1893" class="git-link">Browse git</a>
+<a href="https://github.com/Ambro17/slackify/blob/a68ab47afc62bf7aa5271e2f228f46cb703aff9f/slack/web/client.py#L1891-L1893" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">def users_list(self, **kwargs) -&gt; Union[Future, SlackResponse]:
     &#34;&#34;&#34;Lists all users in a Slack team.&#34;&#34;&#34;
@@ -8009,7 +7972,7 @@ e.g. 'spengler@ghostbusters.example.com'</dd>
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/Ambro17/slackify/blob/ea24cfc4c5553e7b50fdb56171ce7bfc923e7460/slack/web/client.py#L1895-L1905" class="git-link">Browse git</a>
+<a href="https://github.com/Ambro17/slackify/blob/a68ab47afc62bf7aa5271e2f228f46cb703aff9f/slack/web/client.py#L1895-L1905" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">def users_lookupByEmail(
     self, *, email: str, **kwargs
@@ -8032,7 +7995,7 @@ e.g. 'spengler@ghostbusters.example.com'</dd>
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/Ambro17/slackify/blob/ea24cfc4c5553e7b50fdb56171ce7bfc923e7460/slack/web/client.py#L1929-L1931" class="git-link">Browse git</a>
+<a href="https://github.com/Ambro17/slackify/blob/a68ab47afc62bf7aa5271e2f228f46cb703aff9f/slack/web/client.py#L1929-L1931" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">def users_profile_get(self, **kwargs) -&gt; Union[Future, SlackResponse]:
     &#34;&#34;&#34;Retrieves a user&#39;s profile information.&#34;&#34;&#34;
@@ -8047,7 +8010,7 @@ e.g. 'spengler@ghostbusters.example.com'</dd>
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/Ambro17/slackify/blob/ea24cfc4c5553e7b50fdb56171ce7bfc923e7460/slack/web/client.py#L1933-L1935" class="git-link">Browse git</a>
+<a href="https://github.com/Ambro17/slackify/blob/a68ab47afc62bf7aa5271e2f228f46cb703aff9f/slack/web/client.py#L1933-L1935" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">def users_profile_set(self, **kwargs) -&gt; Union[Future, SlackResponse]:
     &#34;&#34;&#34;Set the profile information for a user.&#34;&#34;&#34;
@@ -8068,7 +8031,7 @@ e.g. 'myimage.png'</dd>
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/Ambro17/slackify/blob/ea24cfc4c5553e7b50fdb56171ce7bfc923e7460/slack/web/client.py#L1907-L1916" class="git-link">Browse git</a>
+<a href="https://github.com/Ambro17/slackify/blob/a68ab47afc62bf7aa5271e2f228f46cb703aff9f/slack/web/client.py#L1907-L1916" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">def users_setPhoto(
     self, *, image: Union[str, IOBase], **kwargs
@@ -8095,7 +8058,7 @@ e.g. 'myimage.png'</dd>
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/Ambro17/slackify/blob/ea24cfc4c5553e7b50fdb56171ce7bfc923e7460/slack/web/client.py#L1918-L1927" class="git-link">Browse git</a>
+<a href="https://github.com/Ambro17/slackify/blob/a68ab47afc62bf7aa5271e2f228f46cb703aff9f/slack/web/client.py#L1918-L1927" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">def users_setPresence(
     self, *, presence: str, **kwargs
@@ -8128,7 +8091,7 @@ documentation to learn how to obtain triggers from interactive components.</p>
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/Ambro17/slackify/blob/ea24cfc4c5553e7b50fdb56171ce7bfc923e7460/slack/web/client.py#L1937-L1958" class="git-link">Browse git</a>
+<a href="https://github.com/Ambro17/slackify/blob/a68ab47afc62bf7aa5271e2f228f46cb703aff9f/slack/web/client.py#L1937-L1958" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">    def views_open(
         self, *, trigger_id: str, view: Union[dict, View], **kwargs
@@ -8173,7 +8136,7 @@ e.g. 'U0BPQUNTA'</dd>
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/Ambro17/slackify/blob/ea24cfc4c5553e7b50fdb56171ce7bfc923e7460/slack/web/client.py#L2010-L2023" class="git-link">Browse git</a>
+<a href="https://github.com/Ambro17/slackify/blob/a68ab47afc62bf7aa5271e2f228f46cb703aff9f/slack/web/client.py#L2010-L2023" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">def views_publish(
     self, *, user_id: str, view: dict, **kwargs
@@ -8212,7 +8175,7 @@ e.g. '12345.98765.abcd2358fdea'</dd>
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/Ambro17/slackify/blob/ea24cfc4c5553e7b50fdb56171ce7bfc923e7460/slack/web/client.py#L1960-L1978" class="git-link">Browse git</a>
+<a href="https://github.com/Ambro17/slackify/blob/a68ab47afc62bf7aa5271e2f228f46cb703aff9f/slack/web/client.py#L1960-L1978" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">def views_push(
     self, *, trigger_id: str, view: dict, **kwargs
@@ -8263,7 +8226,7 @@ e.g. 'VMM512F2U'</dd>
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/Ambro17/slackify/blob/ea24cfc4c5553e7b50fdb56171ce7bfc923e7460/slack/web/client.py#L1980-L2008" class="git-link">Browse git</a>
+<a href="https://github.com/Ambro17/slackify/blob/a68ab47afc62bf7aa5271e2f228f46cb703aff9f/slack/web/client.py#L1980-L2008" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">def views_update(
     self, *, view: dict, external_id: str = None, view_id: str = None, **kwargs
@@ -8315,19 +8278,15 @@ data-gaCategoryParameter="slackify">
 <ul>
 <li><a href="#slackify">Slackify</a><ul>
 <li><a href="#installation">Installation</a></li>
+<li><a href="#documentation">Documentation</a></li>
 <li><a href="#quickstart">Quickstart</a><ul>
-<li><a href="#does-it-support-new-slack-shorcuts">Does it support new slack Shorcuts?</a></li>
-<li><a href="#and-can-i-use-new-slack-modals">And can i use new slack Modals?</a></li>
-<li><a href="#are-interactive-actions-supported">Are interactive actions supported?</a></li>
-<li><a href="#and-slack-events">And slack events?</a></li>
+<li><a href="#slackify-features">Slackify Features</a></li>
 </ul>
 </li>
 <li><a href="#full-example">Full example</a></li>
 <li><a href="#dependency-injection">Dependency Injection</a></li>
 <li><a href="#usage-as-a-blueprint">Usage as a Blueprint</a></li>
-<li><a href="#api-reference">API Reference</a></li>
 <li><a href="#dependencies">Dependencies</a></li>
-<li><a href="#how-does-it-work">How does it work?</a></li>
 </ul>
 </li>
 </ul>
