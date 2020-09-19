@@ -17,6 +17,9 @@
 
 _Requires python3.6+_
 
+## Documentation
+You can read `Slackify` docs [here](ambro17.github.io/slackify/)
+
 ## Quickstart
 **1. 1-Click Deploy**
 
