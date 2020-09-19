@@ -40,7 +40,7 @@ def update_home_view():
     resp = cli.views_publish(
         user_id=user,
         view=sample
-        )
+    )
     assert resp.get('ok', False), f"Could not build home tab.\nError:\n{resp.data!r}"
     return reply_text(f'You are `{user}`.')
 
