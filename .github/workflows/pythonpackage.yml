@@ -29,8 +29,6 @@ jobs:
 
     - name: Check Code Style
       uses: pre-commit/action@v2.0.0
-      with:
-        extra_args: '--files $(git diff --diff-filter=d --name-only'
 
     - name: Install Slackify
       run: pip install -e .
