@@ -2,6 +2,7 @@ codecov
 flake8
 mypy
 pdoc3
+pre-commit
 pytest
 pytest-cov
 pytest-mock

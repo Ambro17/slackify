@@ -9,11 +9,14 @@ build:
 run:
 	docker run -it --rm -v $(PWD):/app slackify
 
-test:
-	docker run -it --rm -v $(PWD):/app slackify pytest
-
 style:
-	docker run -it --rm -v $(PWD):/app slackify flake8
+	docker run --rm slackify pre-commit
+
+test:
+	docker run --rm slackify pytest
+
+checks: build style test
+	@echo "✔ All CI Checks Passed"
 
 docs:
 	pdoc3 src/slackify \
