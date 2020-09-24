@@ -1,7 +1,7 @@
 codecov
 flake8
+mypy
+pdoc3
 pytest
 pytest-cov
 pytest-mock
-mypy
-pdoc3

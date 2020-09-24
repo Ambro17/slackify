@@ -175,11 +175,11 @@ class Slackify:
 
             >>> @slackify.action('action_id')
             >>> def action_id_callback():
-            >>>    return 'Hello'
-            >>> 
+            ...    return 'Hello'
+            ...
             >>> @slackify.action(action_id='action_id', block_id='block_id')
             >>> def other_callback():
-            >>>     return 'Bye'
+            ...     return 'Bye'
         """
 
         if action_id is None and options.get('block_id') is None or callable(action_id):
@@ -196,13 +196,13 @@ class Slackify:
 
     def view(self, view_callback_id, **options):
         """Register a function as a view callback.
-        
+
         Usage:
 
             >>> @slackify.view('my_view')
             >>> def view_callback():
             >>>     return 'Hello'
-        
+
         """
 
         def decorate(func):
@@ -215,7 +215,7 @@ class Slackify:
     def event(self, event, func=None):
         """Register a function as an event callback.
 
-        Note: 
+        Note:
             All event callbacks *MUST* accept a payload positional argument.
             The event payload from slack will be sent on that arg
 
