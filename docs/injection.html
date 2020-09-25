@@ -31,8 +31,8 @@ body.gsc-overflow-hidden #sidebar {overflow: visible;}
 <section id="section-intro">
 <details class="source">
 <summary>
-<span>Expand source code</span>
-<a href="https://github.com/Ambro17/slackify/blob/a68ab47afc62bf7aa5271e2f228f46cb703aff9f/src/slackify/injection.py#L0-L57" class="git-link">Browse git</a>
+<span>📜 See code</span>
+<a href="https://github.com/Ambro17/slackify/blob/master/src/slackify/injection.py#L0-L57" class="git-link">🔎 See on github</a>
 </summary>
 <pre><code class="python">import functools
 import inspect
@@ -106,8 +106,8 @@ injector = Injector(injectors=BUILTIN_INJECTORS)</code></pre>
 <div class="desc"></div>
 <details class="source">
 <summary>
-<span>Expand source code</span>
-<a href="https://github.com/Ambro17/slackify/blob/a68ab47afc62bf7aa5271e2f228f46cb703aff9f/src/slackify/injection.py#L42-L43" class="git-link">Browse git</a>
+<span>📜 See code</span>
+<a href="https://github.com/Ambro17/slackify/blob/master/src/slackify/injection.py#L42-L43" class="git-link">🔎 See on github</a>
 </summary>
 <pre><code class="python">def get_command() -&gt; str:
     return request.form[&#34;command&#34;]</code></pre>
@@ -120,8 +120,8 @@ injector = Injector(injectors=BUILTIN_INJECTORS)</code></pre>
 <div class="desc"></div>
 <details class="source">
 <summary>
-<span>Expand source code</span>
-<a href="https://github.com/Ambro17/slackify/blob/a68ab47afc62bf7aa5271e2f228f46cb703aff9f/src/slackify/injection.py#L39-L40" class="git-link">Browse git</a>
+<span>📜 See code</span>
+<a href="https://github.com/Ambro17/slackify/blob/master/src/slackify/injection.py#L39-L40" class="git-link">🔎 See on github</a>
 </summary>
 <pre><code class="python">def get_command_args() -&gt; str:
     return request.form[&#34;text&#34;]</code></pre>
@@ -134,8 +134,8 @@ injector = Injector(injectors=BUILTIN_INJECTORS)</code></pre>
 <div class="desc"><p>Interactive actions have form content type, but contain json inside the payload key</p></div>
 <details class="source">
 <summary>
-<span>Expand source code</span>
-<a href="https://github.com/Ambro17/slackify/blob/a68ab47afc62bf7aa5271e2f228f46cb703aff9f/src/slackify/injection.py#L35-L37" class="git-link">Browse git</a>
+<span>📜 See code</span>
+<a href="https://github.com/Ambro17/slackify/blob/master/src/slackify/injection.py#L35-L37" class="git-link">🔎 See on github</a>
 </summary>
 <pre><code class="python">def get_payload() -&gt; Dict[str, Any]:
     &#34;&#34;&#34;Interactive actions have form content type, but contain json inside the payload key&#34;&#34;&#34;
@@ -149,8 +149,8 @@ injector = Injector(injectors=BUILTIN_INJECTORS)</code></pre>
 <div class="desc"></div>
 <details class="source">
 <summary>
-<span>Expand source code</span>
-<a href="https://github.com/Ambro17/slackify/blob/a68ab47afc62bf7aa5271e2f228f46cb703aff9f/src/slackify/injection.py#L45-L46" class="git-link">Browse git</a>
+<span>📜 See code</span>
+<a href="https://github.com/Ambro17/slackify/blob/master/src/slackify/injection.py#L45-L46" class="git-link">🔎 See on github</a>
 </summary>
 <pre><code class="python">def get_response_url() -&gt; str:
     return request.form[&#34;response_url&#34;]</code></pre>
@@ -169,8 +169,8 @@ injector = Injector(injectors=BUILTIN_INJECTORS)</code></pre>
 <div class="desc"><p>Inject dependencies into functions to avoid repetitive request parsing</p></div>
 <details class="source">
 <summary>
-<span>Expand source code</span>
-<a href="https://github.com/Ambro17/slackify/blob/a68ab47afc62bf7aa5271e2f228f46cb703aff9f/src/slackify/injection.py#L9-L32" class="git-link">Browse git</a>
+<span>📜 See code</span>
+<a href="https://github.com/Ambro17/slackify/blob/master/src/slackify/injection.py#L9-L32" class="git-link">🔎 See on github</a>
 </summary>
 <pre><code class="python">class Injector:
     &#34;&#34;&#34;Inject dependencies into functions to avoid repetitive request parsing&#34;&#34;&#34;
@@ -209,8 +209,8 @@ injector = Injector(injectors=BUILTIN_INJECTORS)</code></pre>
 as injectors might need flask request context that's only available at call timec</p></div>
 <details class="source">
 <summary>
-<span>Expand source code</span>
-<a href="https://github.com/Ambro17/slackify/blob/a68ab47afc62bf7aa5271e2f228f46cb703aff9f/src/slackify/injection.py#L15-L29" class="git-link">Browse git</a>
+<span>📜 See code</span>
+<a href="https://github.com/Ambro17/slackify/blob/master/src/slackify/injection.py#L15-L29" class="git-link">🔎 See on github</a>
 </summary>
 <pre><code class="python">def inject(self, fn: Callable) -&gt; Callable:
     &#34;&#34;&#34;Inject parameters declared as function dependencies and return the injected function

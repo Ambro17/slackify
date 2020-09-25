@@ -33,15 +33,15 @@
     % if show_source_code:
       <details class="source">
         <summary>
-            <span>Expand source code</span>
+            <span>📜 See code</span>
             % if git_link:
-              <a href="${git_link}" class="git-link">Browse git</a>
+              <a href="${git_link}" class="git-link">🔎 See on github</a>
             %endif
         </summary>
         <pre><code class="python">${d.source | h}</code></pre>
       </details>
     % elif git_link:
-      <div class="git-link-div"><a href="${git_link}" class="git-link">Browse git</a></div>
+      <div class="git-link-div"><a href="${git_link}" class="git-link">🔎 See on github</a></div>
     %endif
   %endif
 </%def>

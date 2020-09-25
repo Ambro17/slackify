@@ -126,7 +126,7 @@ class Slackify:
         Examples:
             >>> @slackify.shortcut('my-shortcut')
             >>> def hello():
-            >>>     print('Someone followed `my-shortcut`')
+            ...     print('Someone followed `my-shortcut`')
         """
 
         def register_handler(shortcut_handler):
@@ -141,14 +141,12 @@ class Slackify:
         """Register a function as a command handler.
 
            It can be used as a plain decorator or as a parametrized decorator factory.
-           This does the same as `add_command_handler`
 
         Usage:
             >>> @command
             >>> def hola():
             >>>     print('hola')
-
-
+            >>>
             >>> @command(name='goodbye')
             >>> def chau():
             >>>     print('chau')
@@ -175,11 +173,11 @@ class Slackify:
 
             >>> @slackify.action('action_id')
             >>> def action_id_callback():
-            >>>    return 'Hello'
-            >>>
+            ...    return 'Hello'
+            ...
             >>> @slackify.action(action_id='action_id', block_id='block_id')
             >>> def other_callback():
-            >>>     return 'Bye'
+            ...     return 'Bye'
         """
 
         if action_id is None and options.get('block_id') is None or callable(action_id):
@@ -201,7 +199,7 @@ class Slackify:
 
             >>> @slackify.view('my_view')
             >>> def view_callback():
-            >>>     return 'Hello'
+            ...     return 'Hello'
 
         """
 
@@ -223,8 +221,8 @@ class Slackify:
 
             >>> @slackify.event('reaction_added')
             >>> def handle_reaction(payload):
-            >>>     print(payload)
-            >>>     return 'Hello'
+            ...     print(payload)
+            ...     return 'Hello'
         """
         def add_listener(func):
             if len(signature(func).parameters) != 1:
@@ -246,12 +244,12 @@ class Slackify:
 
             >>> @slackify.message('hello')
             >>> def handle_reaction(payload):
-            >>>    return 'How are you?'
+            ...    return 'How are you?'
             >>>
             >>> BYE_REGEX = re.compile(r'bye|goodbye|see you|chau')
             >>> @slackify.message(BYE_REGEX)
             >>> def say_bye(payload):
-            >>>    return 'Bye!
+            ...    return 'Bye!
 
         """
 

@@ -101,7 +101,7 @@ import random
 
 from flask import Flask
 from slackify import (
-    ACK, OK, Slackify, async_task, block_reply, 
+    ACK, OK, Slackify, async_task, block_reply,
     request, respond, text_block, Slack
 )
 
@@ -258,7 +258,7 @@ def dice_roll(payload):
     msg = f'🎲 {dice_value}'
     send_message(
         cli,
-        blocks=[text_block(msg)], 
+        blocks=[text_block(msg)],
         user_id=payload['user']['id']
     )
     return ACK
@@ -287,7 +287,7 @@ def say_hi(payload):
 
 
 ## Dependency Injection
-As you add more and more commands you will find yourself parsing slack's request over and over again. 
+As you add more and more commands you will find yourself parsing slack's request over and over again.
 
 Slackify offers shortcut for this using dependency injection.
 ```python

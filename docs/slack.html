@@ -31,8 +31,8 @@ body.gsc-overflow-hidden #sidebar {overflow: visible;}
 <section id="section-intro">
 <details class="source">
 <summary>
-<span>Expand source code</span>
-<a href="https://github.com/Ambro17/slackify/blob/a68ab47afc62bf7aa5271e2f228f46cb703aff9f/src/slackify/slack.py#L0-L53" class="git-link">Browse git</a>
+<span>📜 See code</span>
+<a href="https://github.com/Ambro17/slackify/blob/master/src/slackify/slack.py#L0-L53" class="git-link">🔎 See on github</a>
 </summary>
 <pre><code class="python">import json
 import re
@@ -102,8 +102,8 @@ def respond(url: str, message: Dict[str, Any]) -&gt; requests.Response:
 <div class="desc"><p>Respond to slack with a block payload. See <a href="https://api.slack.com/block-kit/building">https://api.slack.com/block-kit/building</a> for reference</p></div>
 <details class="source">
 <summary>
-<span>Expand source code</span>
-<a href="https://github.com/Ambro17/slackify/blob/a68ab47afc62bf7aa5271e2f228f46cb703aff9f/src/slackify/slack.py#L46-L48" class="git-link">Browse git</a>
+<span>📜 See code</span>
+<a href="https://github.com/Ambro17/slackify/blob/master/src/slackify/slack.py#L46-L48" class="git-link">🔎 See on github</a>
 </summary>
 <pre><code class="python">def block_reply(blocks: list) -&gt; Tuple[str, int, Dict]:
     &#34;&#34;&#34;Respond to slack with a block payload. See https://api.slack.com/block-kit/building for reference&#34;&#34;&#34;
@@ -121,8 +121,8 @@ It does nothing fancy. Just transforms dict to json, and
 passes json as Content-Type as slack requires.</p></div>
 <details class="source">
 <summary>
-<span>Expand source code</span>
-<a href="https://github.com/Ambro17/slackify/blob/a68ab47afc62bf7aa5271e2f228f46cb703aff9f/src/slackify/slack.py#L24-L32" class="git-link">Browse git</a>
+<span>📜 See code</span>
+<a href="https://github.com/Ambro17/slackify/blob/master/src/slackify/slack.py#L24-L32" class="git-link">🔎 See on github</a>
 </summary>
 <pre><code class="python">def reply(body: dict) -&gt; Tuple[str, int, Dict]:
     &#34;&#34;&#34;Helper method that returns a complex response to slack
@@ -142,8 +142,8 @@ passes json as Content-Type as slack requires.</p></div>
 <div class="desc"><p>Helper method that returns a plain text response to slack</p></div>
 <details class="source">
 <summary>
-<span>Expand source code</span>
-<a href="https://github.com/Ambro17/slackify/blob/a68ab47afc62bf7aa5271e2f228f46cb703aff9f/src/slackify/slack.py#L19-L21" class="git-link">Browse git</a>
+<span>📜 See code</span>
+<a href="https://github.com/Ambro17/slackify/blob/master/src/slackify/slack.py#L19-L21" class="git-link">🔎 See on github</a>
 </summary>
 <pre><code class="python">def reply_text(text: str) -&gt; Tuple[str, int, Dict]:
     &#34;&#34;&#34;Helper method that returns a plain text response to slack&#34;&#34;&#34;
@@ -157,8 +157,8 @@ passes json as Content-Type as slack requires.</p></div>
 <div class="desc"><p>Respond async to interaction to allow fast acknowledge of interactive message request</p></div>
 <details class="source">
 <summary>
-<span>Expand source code</span>
-<a href="https://github.com/Ambro17/slackify/blob/a68ab47afc62bf7aa5271e2f228f46cb703aff9f/src/slackify/slack.py#L51-L54" class="git-link">Browse git</a>
+<span>📜 See code</span>
+<a href="https://github.com/Ambro17/slackify/blob/master/src/slackify/slack.py#L51-L54" class="git-link">🔎 See on github</a>
 </summary>
 <pre><code class="python">@async_task
 def respond(url: str, message: Dict[str, Any]) -&gt; requests.Response:
@@ -173,8 +173,8 @@ def respond(url: str, message: Dict[str, Any]) -&gt; requests.Response:
 <div class="desc"><p>Respond to slack with a block including just text with markdown support</p></div>
 <details class="source">
 <summary>
-<span>Expand source code</span>
-<a href="https://github.com/Ambro17/slackify/blob/a68ab47afc62bf7aa5271e2f228f46cb703aff9f/src/slackify/slack.py#L35-L43" class="git-link">Browse git</a>
+<span>📜 See code</span>
+<a href="https://github.com/Ambro17/slackify/blob/master/src/slackify/slack.py#L35-L43" class="git-link">🔎 See on github</a>
 </summary>
 <pre><code class="python">def text_block(text: str, markdown: bool = True) -&gt; Dict[str, Any]:
     &#34;&#34;&#34;Respond to slack with a block including just text with markdown support&#34;&#34;&#34;

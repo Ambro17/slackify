@@ -31,8 +31,8 @@ body.gsc-overflow-hidden #sidebar {overflow: visible;}
 <section id="section-intro">
 <details class="source">
 <summary>
-<span>Expand source code</span>
-<a href="https://github.com/Ambro17/slackify/blob/a68ab47afc62bf7aa5271e2f228f46cb703aff9f/src/slackify/main.py#L0-L278" class="git-link">Browse git</a>
+<span>📜 See code</span>
+<a href="https://github.com/Ambro17/slackify/blob/master/src/slackify/main.py#L0-L276" class="git-link">🔎 See on github</a>
 </summary>
 <pre><code class="python">from typing import Union
 
@@ -162,7 +162,7 @@ class Slackify:
         Examples:
             &gt;&gt;&gt; @slackify.shortcut(&#39;my-shortcut&#39;)
             &gt;&gt;&gt; def hello():
-            &gt;&gt;&gt;     print(&#39;Someone followed `my-shortcut`&#39;)
+            ...     print(&#39;Someone followed `my-shortcut`&#39;)
         &#34;&#34;&#34;
 
         def register_handler(shortcut_handler):
@@ -177,14 +177,12 @@ class Slackify:
         &#34;&#34;&#34;Register a function as a command handler.
 
            It can be used as a plain decorator or as a parametrized decorator factory.
-           This does the same as `add_command_handler`
 
         Usage:
             &gt;&gt;&gt; @command
             &gt;&gt;&gt; def hola():
             &gt;&gt;&gt;     print(&#39;hola&#39;)
-
-
+            &gt;&gt;&gt;
             &gt;&gt;&gt; @command(name=&#39;goodbye&#39;)
             &gt;&gt;&gt; def chau():
             &gt;&gt;&gt;     print(&#39;chau&#39;)
@@ -211,11 +209,11 @@ class Slackify:
 
             &gt;&gt;&gt; @slackify.action(&#39;action_id&#39;)
             &gt;&gt;&gt; def action_id_callback():
-            &gt;&gt;&gt;    return &#39;Hello&#39;
-            &gt;&gt;&gt; 
+            ...    return &#39;Hello&#39;
+            ...
             &gt;&gt;&gt; @slackify.action(action_id=&#39;action_id&#39;, block_id=&#39;block_id&#39;)
             &gt;&gt;&gt; def other_callback():
-            &gt;&gt;&gt;     return &#39;Bye&#39;
+            ...     return &#39;Bye&#39;
         &#34;&#34;&#34;
 
         if action_id is None and options.get(&#39;block_id&#39;) is None or callable(action_id):
@@ -232,13 +230,13 @@ class Slackify:
 
     def view(self, view_callback_id, **options):
         &#34;&#34;&#34;Register a function as a view callback.
-        
+
         Usage:
 
             &gt;&gt;&gt; @slackify.view(&#39;my_view&#39;)
             &gt;&gt;&gt; def view_callback():
-            &gt;&gt;&gt;     return &#39;Hello&#39;
-        
+            ...     return &#39;Hello&#39;
+
         &#34;&#34;&#34;
 
         def decorate(func):
@@ -251,7 +249,7 @@ class Slackify:
     def event(self, event, func=None):
         &#34;&#34;&#34;Register a function as an event callback.
 
-        Note: 
+        Note:
             All event callbacks *MUST* accept a payload positional argument.
             The event payload from slack will be sent on that arg
 
@@ -259,8 +257,8 @@ class Slackify:
 
             &gt;&gt;&gt; @slackify.event(&#39;reaction_added&#39;)
             &gt;&gt;&gt; def handle_reaction(payload):
-            &gt;&gt;&gt;     print(payload)
-            &gt;&gt;&gt;     return &#39;Hello&#39;
+            ...     print(payload)
+            ...     return &#39;Hello&#39;
         &#34;&#34;&#34;
         def add_listener(func):
             if len(signature(func).parameters) != 1:
@@ -282,12 +280,12 @@ class Slackify:
 
             &gt;&gt;&gt; @slackify.message(&#39;hello&#39;)
             &gt;&gt;&gt; def handle_reaction(payload):
-            &gt;&gt;&gt;    return &#39;How are you?&#39;
+            ...    return &#39;How are you?&#39;
             &gt;&gt;&gt;
             &gt;&gt;&gt; BYE_REGEX = re.compile(r&#39;bye|goodbye|see you|chau&#39;)
             &gt;&gt;&gt; @slackify.message(BYE_REGEX)
             &gt;&gt;&gt; def say_bye(payload):
-            &gt;&gt;&gt;    return &#39;Bye!
+            ...    return &#39;Bye!
 
         &#34;&#34;&#34;
 
@@ -324,14 +322,14 @@ class Slackify:
 <dl>
 <dt id="slackify.main.Slackify"><code class="flex name class">
 <span>class <span class="ident">Slackify</span></span>
-<span>(</span><span>app: Union[flask.app.Flask, flask.blueprints.Blueprint, NoneType] = None, endpoint: str = '/', events_endpoint: str = '/slack/events', emitter: pyee._base.BaseEventEmitter = None, dispatcher: <a title="slackify.dispatcher.Dispatcher" href="dispatcher.html#slackify.dispatcher.Dispatcher">Dispatcher</a> = None, injector: <a title="slackify.injection.Injector" href="injection.html#slackify.injection.Injector">Injector</a> = None, **kwargs)</span>
+<span>(</span><span>app: Union[flask.app.Flask, flask.blueprints.Blueprint, NoneType] = None, endpoint: str = '/', events_endpoint: str = '/slack/events', emitter: pyee.BaseEventEmitter = None, dispatcher: <a title="slackify.dispatcher.Dispatcher" href="dispatcher.html#slackify.dispatcher.Dispatcher">Dispatcher</a> = None, injector: <a title="slackify.injection.Injector" href="injection.html#slackify.injection.Injector">Injector</a> = None, **kwargs)</span>
 </code></dt>
 <dd>
 <div class="desc"></div>
 <details class="source">
 <summary>
-<span>Expand source code</span>
-<a href="https://github.com/Ambro17/slackify/blob/a68ab47afc62bf7aa5271e2f228f46cb703aff9f/src/slackify/main.py#L18-L279" class="git-link">Browse git</a>
+<span>📜 See code</span>
+<a href="https://github.com/Ambro17/slackify/blob/master/src/slackify/main.py#L18-L277" class="git-link">🔎 See on github</a>
 </summary>
 <pre><code class="python">class Slackify:
 
@@ -444,7 +442,7 @@ class Slackify:
         Examples:
             &gt;&gt;&gt; @slackify.shortcut(&#39;my-shortcut&#39;)
             &gt;&gt;&gt; def hello():
-            &gt;&gt;&gt;     print(&#39;Someone followed `my-shortcut`&#39;)
+            ...     print(&#39;Someone followed `my-shortcut`&#39;)
         &#34;&#34;&#34;
 
         def register_handler(shortcut_handler):
@@ -459,14 +457,12 @@ class Slackify:
         &#34;&#34;&#34;Register a function as a command handler.
 
            It can be used as a plain decorator or as a parametrized decorator factory.
-           This does the same as `add_command_handler`
 
         Usage:
             &gt;&gt;&gt; @command
             &gt;&gt;&gt; def hola():
             &gt;&gt;&gt;     print(&#39;hola&#39;)
-
-
+            &gt;&gt;&gt;
             &gt;&gt;&gt; @command(name=&#39;goodbye&#39;)
             &gt;&gt;&gt; def chau():
             &gt;&gt;&gt;     print(&#39;chau&#39;)
@@ -493,11 +489,11 @@ class Slackify:
 
             &gt;&gt;&gt; @slackify.action(&#39;action_id&#39;)
             &gt;&gt;&gt; def action_id_callback():
-            &gt;&gt;&gt;    return &#39;Hello&#39;
-            &gt;&gt;&gt; 
+            ...    return &#39;Hello&#39;
+            ...
             &gt;&gt;&gt; @slackify.action(action_id=&#39;action_id&#39;, block_id=&#39;block_id&#39;)
             &gt;&gt;&gt; def other_callback():
-            &gt;&gt;&gt;     return &#39;Bye&#39;
+            ...     return &#39;Bye&#39;
         &#34;&#34;&#34;
 
         if action_id is None and options.get(&#39;block_id&#39;) is None or callable(action_id):
@@ -514,13 +510,13 @@ class Slackify:
 
     def view(self, view_callback_id, **options):
         &#34;&#34;&#34;Register a function as a view callback.
-        
+
         Usage:
 
             &gt;&gt;&gt; @slackify.view(&#39;my_view&#39;)
             &gt;&gt;&gt; def view_callback():
-            &gt;&gt;&gt;     return &#39;Hello&#39;
-        
+            ...     return &#39;Hello&#39;
+
         &#34;&#34;&#34;
 
         def decorate(func):
@@ -533,7 +529,7 @@ class Slackify:
     def event(self, event, func=None):
         &#34;&#34;&#34;Register a function as an event callback.
 
-        Note: 
+        Note:
             All event callbacks *MUST* accept a payload positional argument.
             The event payload from slack will be sent on that arg
 
@@ -541,8 +537,8 @@ class Slackify:
 
             &gt;&gt;&gt; @slackify.event(&#39;reaction_added&#39;)
             &gt;&gt;&gt; def handle_reaction(payload):
-            &gt;&gt;&gt;     print(payload)
-            &gt;&gt;&gt;     return &#39;Hello&#39;
+            ...     print(payload)
+            ...     return &#39;Hello&#39;
         &#34;&#34;&#34;
         def add_listener(func):
             if len(signature(func).parameters) != 1:
@@ -564,12 +560,12 @@ class Slackify:
 
             &gt;&gt;&gt; @slackify.message(&#39;hello&#39;)
             &gt;&gt;&gt; def handle_reaction(payload):
-            &gt;&gt;&gt;    return &#39;How are you?&#39;
+            ...    return &#39;How are you?&#39;
             &gt;&gt;&gt;
             &gt;&gt;&gt; BYE_REGEX = re.compile(r&#39;bye|goodbye|see you|chau&#39;)
             &gt;&gt;&gt; @slackify.message(BYE_REGEX)
             &gt;&gt;&gt; def say_bye(payload):
-            &gt;&gt;&gt;    return &#39;Bye!
+            ...    return &#39;Bye!
 
         &#34;&#34;&#34;
 
@@ -608,16 +604,16 @@ class Slackify:
 <h2 id="usage">Usage</h2>
 <pre><code class="python-repl">&gt;&gt;&gt; @slackify.action('action_id')
 &gt;&gt;&gt; def action_id_callback():
-&gt;&gt;&gt;    return 'Hello'
-&gt;&gt;&gt; 
+...    return 'Hello'
+...
 &gt;&gt;&gt; @slackify.action(action_id='action_id', block_id='block_id')
 &gt;&gt;&gt; def other_callback():
-&gt;&gt;&gt;     return 'Bye'
+...     return 'Bye'
 </code></pre></div>
 <details class="source">
 <summary>
-<span>Expand source code</span>
-<a href="https://github.com/Ambro17/slackify/blob/a68ab47afc62bf7aa5271e2f228f46cb703aff9f/src/slackify/main.py#L169-L195" class="git-link">Browse git</a>
+<span>📜 See code</span>
+<a href="https://github.com/Ambro17/slackify/blob/master/src/slackify/main.py#L167-L193" class="git-link">🔎 See on github</a>
 </summary>
 <pre><code class="python">def action(self, action_id=None, **options):
     &#34;&#34;&#34;Register a function as an action callback.
@@ -628,11 +624,11 @@ class Slackify:
 
         &gt;&gt;&gt; @slackify.action(&#39;action_id&#39;)
         &gt;&gt;&gt; def action_id_callback():
-        &gt;&gt;&gt;    return &#39;Hello&#39;
-        &gt;&gt;&gt; 
+        ...    return &#39;Hello&#39;
+        ...
         &gt;&gt;&gt; @slackify.action(action_id=&#39;action_id&#39;, block_id=&#39;block_id&#39;)
         &gt;&gt;&gt; def other_callback():
-        &gt;&gt;&gt;     return &#39;Bye&#39;
+        ...     return &#39;Bye&#39;
     &#34;&#34;&#34;
 
     if action_id is None and options.get(&#39;block_id&#39;) is None or callable(action_id):
@@ -653,34 +649,31 @@ class Slackify:
 </code></dt>
 <dd>
 <div class="desc"><p>Register a function as a command handler.</p>
-<p>It can be used as a plain decorator or as a parametrized decorator factory.
-This does the same as <code>add_command_handler</code></p>
+<p>It can be used as a plain decorator or as a parametrized decorator factory.</p>
 <h2 id="usage">Usage</h2>
 <pre><code class="python-repl">&gt;&gt;&gt; @command
 &gt;&gt;&gt; def hola():
 &gt;&gt;&gt;     print('hola')
-</code></pre>
-<pre><code class="python-repl">&gt;&gt;&gt; @command(name='goodbye')
+&gt;&gt;&gt;
+&gt;&gt;&gt; @command(name='goodbye')
 &gt;&gt;&gt; def chau():
 &gt;&gt;&gt;     print('chau')
 </code></pre></div>
 <details class="source">
 <summary>
-<span>Expand source code</span>
-<a href="https://github.com/Ambro17/slackify/blob/a68ab47afc62bf7aa5271e2f228f46cb703aff9f/src/slackify/main.py#L140-L167" class="git-link">Browse git</a>
+<span>📜 See code</span>
+<a href="https://github.com/Ambro17/slackify/blob/master/src/slackify/main.py#L140-L165" class="git-link">🔎 See on github</a>
 </summary>
 <pre><code class="python">def command(self, func=None, **options):
     &#34;&#34;&#34;Register a function as a command handler.
 
        It can be used as a plain decorator or as a parametrized decorator factory.
-       This does the same as `add_command_handler`
 
     Usage:
         &gt;&gt;&gt; @command
         &gt;&gt;&gt; def hola():
         &gt;&gt;&gt;     print(&#39;hola&#39;)
-
-
+        &gt;&gt;&gt;
         &gt;&gt;&gt; @command(name=&#39;goodbye&#39;)
         &gt;&gt;&gt; def chau():
         &gt;&gt;&gt;     print(&#39;chau&#39;)
@@ -706,8 +699,8 @@ This does the same as <code>add_command_handler</code></p>
 <div class="desc"><p>Register function to execute when an unknown command is received</p></div>
 <details class="source">
 <summary>
-<span>Expand source code</span>
-<a href="https://github.com/Ambro17/slackify/blob/a68ab47afc62bf7aa5271e2f228f46cb703aff9f/src/slackify/main.py#L108-L110" class="git-link">Browse git</a>
+<span>📜 See code</span>
+<a href="https://github.com/Ambro17/slackify/blob/master/src/slackify/main.py#L108-L110" class="git-link">🔎 See on github</a>
 </summary>
 <pre><code class="python">def default(self, func):
     &#34;&#34;&#34;Register function to execute when an unknown command is received&#34;&#34;&#34;
@@ -721,8 +714,8 @@ This does the same as <code>add_command_handler</code></p>
 <div class="desc"><p>Register function to execute when an exception was raised on any registered handler</p></div>
 <details class="source">
 <summary>
-<span>Expand source code</span>
-<a href="https://github.com/Ambro17/slackify/blob/a68ab47afc62bf7aa5271e2f228f46cb703aff9f/src/slackify/main.py#L116-L118" class="git-link">Browse git</a>
+<span>📜 See code</span>
+<a href="https://github.com/Ambro17/slackify/blob/master/src/slackify/main.py#L116-L118" class="git-link">🔎 See on github</a>
 </summary>
 <pre><code class="python">def error(self, func):
     &#34;&#34;&#34;Register function to execute when an exception was raised on any registered handler&#34;&#34;&#34;
@@ -734,24 +727,24 @@ This does the same as <code>add_command_handler</code></p>
 </code></dt>
 <dd>
 <div class="desc"><p>Register a function as an event callback.</p>
-<p>Note:
-All event callbacks <em>MUST</em> accept a payload positional argument.
+<h2 id="note">Note</h2>
+<p>All event callbacks <em>MUST</em> accept a payload positional argument.
 The event payload from slack will be sent on that arg</p>
 <h2 id="usage">Usage</h2>
 <pre><code class="python-repl">&gt;&gt;&gt; @slackify.event('reaction_added')
 &gt;&gt;&gt; def handle_reaction(payload):
-&gt;&gt;&gt;     print(payload)
-&gt;&gt;&gt;     return 'Hello'
+...     print(payload)
+...     return 'Hello'
 </code></pre></div>
 <details class="source">
 <summary>
-<span>Expand source code</span>
-<a href="https://github.com/Ambro17/slackify/blob/a68ab47afc62bf7aa5271e2f228f46cb703aff9f/src/slackify/main.py#L215-L236" class="git-link">Browse git</a>
+<span>📜 See code</span>
+<a href="https://github.com/Ambro17/slackify/blob/master/src/slackify/main.py#L213-L234" class="git-link">🔎 See on github</a>
 </summary>
 <pre><code class="python">def event(self, event, func=None):
     &#34;&#34;&#34;Register a function as an event callback.
 
-    Note: 
+    Note:
         All event callbacks *MUST* accept a payload positional argument.
         The event payload from slack will be sent on that arg
 
@@ -759,8 +752,8 @@ The event payload from slack will be sent on that arg</p>
 
         &gt;&gt;&gt; @slackify.event(&#39;reaction_added&#39;)
         &gt;&gt;&gt; def handle_reaction(payload):
-        &gt;&gt;&gt;     print(payload)
-        &gt;&gt;&gt;     return &#39;Hello&#39;
+        ...     print(payload)
+        ...     return &#39;Hello&#39;
     &#34;&#34;&#34;
     def add_listener(func):
         if len(signature(func).parameters) != 1:
@@ -783,17 +776,17 @@ The event payload from slack will be sent on that arg</p>
 <h2 id="usage">Usage</h2>
 <pre><code class="python-repl">&gt;&gt;&gt; @slackify.message('hello')
 &gt;&gt;&gt; def handle_reaction(payload):
-&gt;&gt;&gt;    return 'How are you?'
+...    return 'How are you?'
 &gt;&gt;&gt;
 &gt;&gt;&gt; BYE_REGEX = re.compile(r'bye|goodbye|see you|chau')
 &gt;&gt;&gt; @slackify.message(BYE_REGEX)
 &gt;&gt;&gt; def say_bye(payload):
-&gt;&gt;&gt;    return 'Bye!
+...    return 'Bye!
 </code></pre></div>
 <details class="source">
 <summary>
-<span>Expand source code</span>
-<a href="https://github.com/Ambro17/slackify/blob/a68ab47afc62bf7aa5271e2f228f46cb703aff9f/src/slackify/main.py#L238-L279" class="git-link">Browse git</a>
+<span>📜 See code</span>
+<a href="https://github.com/Ambro17/slackify/blob/master/src/slackify/main.py#L236-L277" class="git-link">🔎 See on github</a>
 </summary>
 <pre><code class="python">def message(self, message, func=None, **kwargs):
     &#34;&#34;&#34;Register a function as a callback for when a string matching `message` is found.
@@ -806,12 +799,12 @@ The event payload from slack will be sent on that arg</p>
 
         &gt;&gt;&gt; @slackify.message(&#39;hello&#39;)
         &gt;&gt;&gt; def handle_reaction(payload):
-        &gt;&gt;&gt;    return &#39;How are you?&#39;
+        ...    return &#39;How are you?&#39;
         &gt;&gt;&gt;
         &gt;&gt;&gt; BYE_REGEX = re.compile(r&#39;bye|goodbye|see you|chau&#39;)
         &gt;&gt;&gt; @slackify.message(BYE_REGEX)
         &gt;&gt;&gt; def say_bye(payload):
-        &gt;&gt;&gt;    return &#39;Bye!
+        ...    return &#39;Bye!
 
     &#34;&#34;&#34;
 
@@ -847,12 +840,12 @@ The event payload from slack will be sent on that arg</p>
 <h2 id="examples">Examples</h2>
 <pre><code class="python-repl">&gt;&gt;&gt; @slackify.shortcut('my-shortcut')
 &gt;&gt;&gt; def hello():
-&gt;&gt;&gt;     print('Someone followed `my-shortcut`')
+...     print('Someone followed `my-shortcut`')
 </code></pre></div>
 <details class="source">
 <summary>
-<span>Expand source code</span>
-<a href="https://github.com/Ambro17/slackify/blob/a68ab47afc62bf7aa5271e2f228f46cb703aff9f/src/slackify/main.py#L123-L138" class="git-link">Browse git</a>
+<span>📜 See code</span>
+<a href="https://github.com/Ambro17/slackify/blob/master/src/slackify/main.py#L123-L138" class="git-link">🔎 See on github</a>
 </summary>
 <pre><code class="python">def shortcut(self, shortcut_id: str, **options):
     &#34;&#34;&#34;Register a function as a shortcut callback
@@ -860,7 +853,7 @@ The event payload from slack will be sent on that arg</p>
     Examples:
         &gt;&gt;&gt; @slackify.shortcut(&#39;my-shortcut&#39;)
         &gt;&gt;&gt; def hello():
-        &gt;&gt;&gt;     print(&#39;Someone followed `my-shortcut`&#39;)
+        ...     print(&#39;Someone followed `my-shortcut`&#39;)
     &#34;&#34;&#34;
 
     def register_handler(shortcut_handler):
@@ -880,22 +873,22 @@ The event payload from slack will be sent on that arg</p>
 <h2 id="usage">Usage</h2>
 <pre><code class="python-repl">&gt;&gt;&gt; @slackify.view('my_view')
 &gt;&gt;&gt; def view_callback():
-&gt;&gt;&gt;     return 'Hello'
+...     return 'Hello'
 </code></pre></div>
 <details class="source">
 <summary>
-<span>Expand source code</span>
-<a href="https://github.com/Ambro17/slackify/blob/a68ab47afc62bf7aa5271e2f228f46cb703aff9f/src/slackify/main.py#L197-L213" class="git-link">Browse git</a>
+<span>📜 See code</span>
+<a href="https://github.com/Ambro17/slackify/blob/master/src/slackify/main.py#L195-L211" class="git-link">🔎 See on github</a>
 </summary>
 <pre><code class="python">def view(self, view_callback_id, **options):
     &#34;&#34;&#34;Register a function as a view callback.
-    
+
     Usage:
 
         &gt;&gt;&gt; @slackify.view(&#39;my_view&#39;)
         &gt;&gt;&gt; def view_callback():
-        &gt;&gt;&gt;     return &#39;Hello&#39;
-    
+        ...     return &#39;Hello&#39;
+
     &#34;&#34;&#34;
 
     def decorate(func):

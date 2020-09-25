@@ -31,8 +31,8 @@ body.gsc-overflow-hidden #sidebar {overflow: visible;}
 <section id="section-intro">
 <details class="source">
 <summary>
-<span>Expand source code</span>
-<a href="https://github.com/Ambro17/slackify/blob/a68ab47afc62bf7aa5271e2f228f46cb703aff9f/src/slackify/dispatcher.py#L0-L127" class="git-link">Browse git</a>
+<span>📜 See code</span>
+<a href="https://github.com/Ambro17/slackify/blob/master/src/slackify/dispatcher.py#L0-L127" class="git-link">🔎 See on github</a>
 </summary>
 <pre><code class="python">import json
 from abc import ABC, abstractmethod
@@ -179,8 +179,8 @@ class ViewMatcher(FormMatcher):
 <div class="desc"><p>Match interface to capture a specific request</p></div>
 <details class="source">
 <summary>
-<span>Expand source code</span>
-<a href="https://github.com/Ambro17/slackify/blob/a68ab47afc62bf7aa5271e2f228f46cb703aff9f/src/slackify/dispatcher.py#L62-L90" class="git-link">Browse git</a>
+<span>📜 See code</span>
+<a href="https://github.com/Ambro17/slackify/blob/master/src/slackify/dispatcher.py#L62-L90" class="git-link">🔎 See on github</a>
 </summary>
 <pre><code class="python">class ActionMatcher(FormMatcher):
     def __init__(self, action_id: str, block_id: Optional[str] = None, **kwargs: Dict[str, Any]):
@@ -237,8 +237,8 @@ class ViewMatcher(FormMatcher):
 <div class="desc"><p>Match interface to capture a specific request</p></div>
 <details class="source">
 <summary>
-<span>Expand source code</span>
-<a href="https://github.com/Ambro17/slackify/blob/a68ab47afc62bf7aa5271e2f228f46cb703aff9f/src/slackify/dispatcher.py#L50-L59" class="git-link">Browse git</a>
+<span>📜 See code</span>
+<a href="https://github.com/Ambro17/slackify/blob/master/src/slackify/dispatcher.py#L50-L59" class="git-link">🔎 See on github</a>
 </summary>
 <pre><code class="python">class Command(FormMatcher):
     def __init__(self, command):
@@ -275,8 +275,8 @@ class ViewMatcher(FormMatcher):
 <div class="desc"><p>Dispatch requests based on its shape</p></div>
 <details class="source">
 <summary>
-<span>Expand source code</span>
-<a href="https://github.com/Ambro17/slackify/blob/a68ab47afc62bf7aa5271e2f228f46cb703aff9f/src/slackify/dispatcher.py#L20-L35" class="git-link">Browse git</a>
+<span>📜 See code</span>
+<a href="https://github.com/Ambro17/slackify/blob/master/src/slackify/dispatcher.py#L20-L35" class="git-link">🔎 See on github</a>
 </summary>
 <pre><code class="python">class Dispatcher:
     &#34;&#34;&#34;Dispatch requests based on its shape&#34;&#34;&#34;
@@ -311,8 +311,8 @@ class ViewMatcher(FormMatcher):
 <div class="desc"><p>Add a new request matcher to handle incoming slack requests</p></div>
 <details class="source">
 <summary>
-<span>Expand source code</span>
-<a href="https://github.com/Ambro17/slackify/blob/a68ab47afc62bf7aa5271e2f228f46cb703aff9f/src/slackify/dispatcher.py#L25-L27" class="git-link">Browse git</a>
+<span>📜 See code</span>
+<a href="https://github.com/Ambro17/slackify/blob/master/src/slackify/dispatcher.py#L25-L27" class="git-link">🔎 See on github</a>
 </summary>
 <pre><code class="python">def add_matcher(self, matcher: Matcher):
     &#34;&#34;&#34;Add a new request matcher to handle incoming slack requests&#34;&#34;&#34;
@@ -326,8 +326,8 @@ class ViewMatcher(FormMatcher):
 <div class="desc"><p>Find a matcher that handle the request. Raises StopIteration if not found</p></div>
 <details class="source">
 <summary>
-<span>Expand source code</span>
-<a href="https://github.com/Ambro17/slackify/blob/a68ab47afc62bf7aa5271e2f228f46cb703aff9f/src/slackify/dispatcher.py#L29-L35" class="git-link">Browse git</a>
+<span>📜 See code</span>
+<a href="https://github.com/Ambro17/slackify/blob/master/src/slackify/dispatcher.py#L29-L35" class="git-link">🔎 See on github</a>
 </summary>
 <pre><code class="python">def match(self, request: flask.Request) -&gt; bool:
     &#34;&#34;&#34;Find a matcher that handle the request. Raises StopIteration if not found&#34;&#34;&#34;
@@ -347,8 +347,8 @@ class ViewMatcher(FormMatcher):
 <div class="desc"><p>Match interface to capture a specific request</p></div>
 <details class="source">
 <summary>
-<span>Expand source code</span>
-<a href="https://github.com/Ambro17/slackify/blob/a68ab47afc62bf7aa5271e2f228f46cb703aff9f/src/slackify/dispatcher.py#L38-L47" class="git-link">Browse git</a>
+<span>📜 See code</span>
+<a href="https://github.com/Ambro17/slackify/blob/master/src/slackify/dispatcher.py#L38-L47" class="git-link">🔎 See on github</a>
 </summary>
 <pre><code class="python">class FormMatcher(Matcher):
     def match(self, request) -&gt; bool:
@@ -382,8 +382,8 @@ class ViewMatcher(FormMatcher):
 <div class="desc"><p>Extract payload from request.form as dict</p></div>
 <details class="source">
 <summary>
-<span>Expand source code</span>
-<a href="https://github.com/Ambro17/slackify/blob/a68ab47afc62bf7aa5271e2f228f46cb703aff9f/src/slackify/dispatcher.py#L42-L47" class="git-link">Browse git</a>
+<span>📜 See code</span>
+<a href="https://github.com/Ambro17/slackify/blob/master/src/slackify/dispatcher.py#L42-L47" class="git-link">🔎 See on github</a>
 </summary>
 <pre><code class="python">def get_payload(self, request: flask.Request) -&gt; Optional[Dict[str, Any]]:
     &#34;&#34;&#34;Extract payload from request.form as dict&#34;&#34;&#34;
@@ -411,8 +411,8 @@ class ViewMatcher(FormMatcher):
 <div class="desc"><p>Match interface to capture a specific request</p></div>
 <details class="source">
 <summary>
-<span>Expand source code</span>
-<a href="https://github.com/Ambro17/slackify/blob/a68ab47afc62bf7aa5271e2f228f46cb703aff9f/src/slackify/dispatcher.py#L8-L17" class="git-link">Browse git</a>
+<span>📜 See code</span>
+<a href="https://github.com/Ambro17/slackify/blob/master/src/slackify/dispatcher.py#L8-L17" class="git-link">🔎 See on github</a>
 </summary>
 <pre><code class="python">class Matcher(ABC):
     &#34;&#34;&#34;Match interface to capture a specific request&#34;&#34;&#34;
@@ -442,8 +442,8 @@ class ViewMatcher(FormMatcher):
 <div class="desc"><p>Flask view endpoint</p></div>
 <details class="source">
 <summary>
-<span>Expand source code</span>
-<a href="https://github.com/Ambro17/slackify/blob/a68ab47afc62bf7aa5271e2f228f46cb703aff9f/src/slackify/dispatcher.py#L15-L17" class="git-link">Browse git</a>
+<span>📜 See code</span>
+<a href="https://github.com/Ambro17/slackify/blob/master/src/slackify/dispatcher.py#L15-L17" class="git-link">🔎 See on github</a>
 </summary>
 <pre><code class="python">@abstractmethod
 def endpoint(self):
@@ -457,8 +457,8 @@ def endpoint(self):
 <div class="desc"><p>Determine if a request should be handled by this matcher</p></div>
 <details class="source">
 <summary>
-<span>Expand source code</span>
-<a href="https://github.com/Ambro17/slackify/blob/a68ab47afc62bf7aa5271e2f228f46cb703aff9f/src/slackify/dispatcher.py#L11-L13" class="git-link">Browse git</a>
+<span>📜 See code</span>
+<a href="https://github.com/Ambro17/slackify/blob/master/src/slackify/dispatcher.py#L11-L13" class="git-link">🔎 See on github</a>
 </summary>
 <pre><code class="python">@abstractmethod
 def match(self, request: flask.Request) -&gt; bool:
@@ -475,8 +475,8 @@ def match(self, request: flask.Request) -&gt; bool:
 <div class="desc"><p>Match interface to capture a specific request</p></div>
 <details class="source">
 <summary>
-<span>Expand source code</span>
-<a href="https://github.com/Ambro17/slackify/blob/a68ab47afc62bf7aa5271e2f228f46cb703aff9f/src/slackify/dispatcher.py#L93-L108" class="git-link">Browse git</a>
+<span>📜 See code</span>
+<a href="https://github.com/Ambro17/slackify/blob/master/src/slackify/dispatcher.py#L93-L108" class="git-link">🔎 See on github</a>
 </summary>
 <pre><code class="python">class ShortcutMatcher(FormMatcher):
     def __init__(self, shortcut_id: str):
@@ -520,8 +520,8 @@ def match(self, request: flask.Request) -&gt; bool:
 <div class="desc"><p>Match interface to capture a specific request</p></div>
 <details class="source">
 <summary>
-<span>Expand source code</span>
-<a href="https://github.com/Ambro17/slackify/blob/a68ab47afc62bf7aa5271e2f228f46cb703aff9f/src/slackify/dispatcher.py#L111-L128" class="git-link">Browse git</a>
+<span>📜 See code</span>
+<a href="https://github.com/Ambro17/slackify/blob/master/src/slackify/dispatcher.py#L111-L128" class="git-link">🔎 See on github</a>
 </summary>
 <pre><code class="python">class ViewMatcher(FormMatcher):
     def __init__(self, view_id):

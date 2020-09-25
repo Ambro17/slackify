@@ -15,7 +15,6 @@ _flask-like_ decorator syntax.
 Hopefully, this will allow you to focus on the workflows you want to support,
 instead of struggling with routing or payload details.
 
-.. include:: ../../README.md
 """
 
 from flask import *  # noqa: Expose all flask objects as top level imports

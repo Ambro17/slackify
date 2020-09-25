@@ -31,22 +31,22 @@ body.gsc-overflow-hidden #sidebar {overflow: visible;}
 <section id="section-intro">
 <details class="source">
 <summary>
-<span>Expand source code</span>
-<a href="https://github.com/Ambro17/slackify/blob/a68ab47afc62bf7aa5271e2f228f46cb703aff9f/src/slackify/blueprint.py#L0-L21" class="git-link">Browse git</a>
+<span>📜 See code</span>
+<a href="https://github.com/Ambro17/slackify/blob/master/src/slackify/blueprint.py#L0-L21" class="git-link">🔎 See on github</a>
 </summary>
 <pre><code class="python">from flask import Blueprint as BP
 
 
 class Blueprint(BP):
-    &#34;&#34;&#34;Slackify `Blueprint` that allows to register slack handlers to later attach to Flask instance 
+    &#34;&#34;&#34;Slackify `Blueprint` that allows to register slack handlers to later attach to Flask instance
 
     If you have an existent web server, or you want to separate slack handlers
     from all your other server endpoints you can register them with this blueprint
     and then attach them to the Flask instance using the app factory pattern.
 
-    .. note:: 
+    .. note::
         Only one blueprint is supported. All slack handlers should be handled on
-        the same blueprint.    
+        the same blueprint.
     &#34;&#34;&#34;
 
     def register(self, app, options, first_registration: bool = False):
@@ -70,7 +70,7 @@ class Blueprint(BP):
 <span>(</span><span>name, import_name, static_folder=None, static_url_path=None, template_folder=None, url_prefix=None, subdomain=None, url_defaults=None, root_path=None, cli_group=&lt;object object&gt;)</span>
 </code></dt>
 <dd>
-<div class="desc"><p>Slackify <code><a title="slackify.blueprint.Blueprint" href="#slackify.blueprint.Blueprint">Blueprint</a></code> that allows to register slack handlers to later attach to Flask instance </p>
+<div class="desc"><p>Slackify <code><a title="slackify.blueprint.Blueprint" href="#slackify.blueprint.Blueprint">Blueprint</a></code> that allows to register slack handlers to later attach to Flask instance</p>
 <p>If you have an existent web server, or you want to separate slack handlers
 from all your other server endpoints you can register them with this blueprint
 and then attach them to the Flask instance using the app factory pattern.</p>
@@ -81,19 +81,19 @@ the same blueprint.</p>
 </div></div>
 <details class="source">
 <summary>
-<span>Expand source code</span>
-<a href="https://github.com/Ambro17/slackify/blob/a68ab47afc62bf7aa5271e2f228f46cb703aff9f/src/slackify/blueprint.py#L4-L22" class="git-link">Browse git</a>
+<span>📜 See code</span>
+<a href="https://github.com/Ambro17/slackify/blob/master/src/slackify/blueprint.py#L4-L22" class="git-link">🔎 See on github</a>
 </summary>
 <pre><code class="python">class Blueprint(BP):
-    &#34;&#34;&#34;Slackify `Blueprint` that allows to register slack handlers to later attach to Flask instance 
+    &#34;&#34;&#34;Slackify `Blueprint` that allows to register slack handlers to later attach to Flask instance
 
     If you have an existent web server, or you want to separate slack handlers
     from all your other server endpoints you can register them with this blueprint
     and then attach them to the Flask instance using the app factory pattern.
 
-    .. note:: 
+    .. note::
         Only one blueprint is supported. All slack handlers should be handled on
-        the same blueprint.    
+        the same blueprint.
     &#34;&#34;&#34;
 
     def register(self, app, options, first_registration: bool = False):
@@ -119,8 +119,8 @@ the same blueprint.</p>
 <p>For more details see <code>Slackify._get_endpoint_handler</code></p></div>
 <details class="source">
 <summary>
-<span>Expand source code</span>
-<a href="https://github.com/Ambro17/slackify/blob/a68ab47afc62bf7aa5271e2f228f46cb703aff9f/src/slackify/blueprint.py#L16-L22" class="git-link">Browse git</a>
+<span>📜 See code</span>
+<a href="https://github.com/Ambro17/slackify/blob/master/src/slackify/blueprint.py#L16-L22" class="git-link">🔎 See on github</a>
 </summary>
 <pre><code class="python">def register(self, app, options, first_registration: bool = False):
     &#34;&#34;&#34;Override to allow polymorphic treatment in Slackify routing logic.
