@@ -10,7 +10,7 @@ run:
 	docker run -it --rm -v $(PWD):/app slackify
 
 style:
-	docker run --rm slackify pre-commit
+	docker run --rm -v $(PWD):/app slackify pre-commit
 
 test:
 	docker run --rm slackify pytest
