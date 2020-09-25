@@ -7,15 +7,9 @@
 - Modals
 - Messages
 
-Its main focus is to make the task of developing slack bots _fun and fast_.
+Its main focus is to make the task of developing slack bots *fun and fast*.
+It can be used with a normal Flask instance or as a Blueprint to group slack requests
 
-That's why it tries to hide all implementation details and offer a clean
-_flask-like_ decorator syntax.
-
-Hopefully, this will allow you to focus on the workflows you want to support,
-instead of struggling with routing or payload details.
-
-.. include:: ../../README.md
 """
 
 from flask import *  # noqa: Expose all flask objects as top level imports

@@ -1,11 +1,11 @@
-from typing import Union
+from typing import Callable, Union
 
 from slackify.injection import Injector, injector as builtin_injector
 from inspect import signature
 import logging
 import re
 
-from flask import Flask, _request_ctx_stack, request, make_response, Blueprint  # type: ignore
+from flask import Flask, _request_ctx_stack, request, make_response, Blueprint, Response  # type: ignore
 import pyee  # type: ignore
 
 from .dispatcher import ActionMatcher, Command, Dispatcher, ShortcutMatcher, ViewMatcher
@@ -16,6 +16,20 @@ logger = logging.getLogger(__name__)
 
 
 class Slackify:
+    """:class:`Slackify` is the orchestrator of the slack dance
+
+    It has two main responsabilities:
+        1. Registering callbacks for slack requests.
+        2. Dispatch incoming requests to the registered callback.
+
+    Args:
+        app (Union[Flask, Blueprint]): Flask instance or Blueprint which will be used to register callbacks
+        endpoint (str): Endpoint to expose in slack requests for automatic redirection
+        events_endpoint (str): Endpoint to expose as slack events listener
+        emitter (pyee.BaseEventEmitter): Class in charge of emitting events
+        dispatcher (Dispatcher): Class in charge of adding and dispatching slack requests
+        injector (Injector): Class in charge of injecting arguments to callback functions
+    """
 
     _endpoint = ''
 
@@ -28,7 +42,7 @@ class Slackify:
         dispatcher: Dispatcher = None,
         injector: Injector = None,
         **kwargs
-    ):
+    ):  
         self.app = app or Flask(__name__)
         self._configure_app(endpoint, events_endpoint)
         self.dispatcher = dispatcher or Dispatcher()
@@ -105,7 +119,7 @@ class Slackify:
     def _should_handle_request(self, req):
         return req.method == 'POST' and request.path == self._endpoint
 
-    def default(self, func):
+    def default(self, func: Callable[[], Response]):
         """Register function to execute when an unknown command is received"""
         self._handle_unknown = func
 
@@ -113,7 +127,7 @@ class Slackify:
         """Ignore unknown commands by default."""
         return None
 
-    def error(self, func):
+    def error(self, func: Callable[[Exception], Response]):
         """Register function to execute when an exception was raised on any registered handler"""
         self._handle_error = func
 
@@ -123,10 +137,10 @@ class Slackify:
     def shortcut(self, shortcut_id: str, **options):
         """Register a function as a shortcut callback
 
-        Examples:
+        Usage:
             >>> @slackify.shortcut('my-shortcut')
             >>> def hello():
-            >>>     print('Someone followed `my-shortcut`')
+            ...     print('Someone followed `my-shortcut`')
         """
 
         def register_handler(shortcut_handler):
@@ -140,18 +154,17 @@ class Slackify:
     def command(self, func=None, **options):
         """Register a function as a command handler.
 
-           It can be used as a plain decorator or as a parametrized decorator factory.
-           This does the same as `add_command_handler`
+        It can be used as a plain decorator or as a parametrized decorator factory.
 
         Usage:
             >>> @command
             >>> def hola():
-            >>>     print('hola')
+            ...     print('hola')
 
 
             >>> @command(name='goodbye')
             >>> def chau():
-            >>>     print('chau')
+            ...     print('chau')
         """
         def decorate(func):
             command = options.pop('name', func.__name__)
@@ -175,11 +188,11 @@ class Slackify:
 
             >>> @slackify.action('action_id')
             >>> def action_id_callback():
-            >>>    return 'Hello'
-            >>>
+            ...    return 'Hello'
+            ...
             >>> @slackify.action(action_id='action_id', block_id='block_id')
             >>> def other_callback():
-            >>>     return 'Bye'
+            ...     return 'Bye'
         """
 
         if action_id is None and options.get('block_id') is None or callable(action_id):
@@ -198,11 +211,9 @@ class Slackify:
         """Register a function as a view callback.
 
         Usage:
-
             >>> @slackify.view('my_view')
             >>> def view_callback():
-            >>>     return 'Hello'
-
+            ...     return 'Hello'
         """
 
         def decorate(func):
@@ -212,7 +223,7 @@ class Slackify:
 
         return decorate
 
-    def event(self, event, func=None):
+    def event(self, event: str, func=None):
         """Register a function as an event callback.
 
         Note:
@@ -223,8 +234,8 @@ class Slackify:
 
             >>> @slackify.event('reaction_added')
             >>> def handle_reaction(payload):
-            >>>     print(payload)
-            >>>     return 'Hello'
+            ...     print(payload)
+            ...     return 'Hello'
         """
         def add_listener(func):
             if len(signature(func).parameters) != 1:
@@ -246,12 +257,12 @@ class Slackify:
 
             >>> @slackify.message('hello')
             >>> def handle_reaction(payload):
-            >>>    return 'How are you?'
-            >>>
+            ...    return 'How are you?'
+            ...
             >>> BYE_REGEX = re.compile(r'bye|goodbye|see you|chau')
             >>> @slackify.message(BYE_REGEX)
             >>> def say_bye(payload):
-            >>>    return 'Bye!
+            ...    return 'Bye!
 
         """
 
