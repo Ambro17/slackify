@@ -21,7 +21,7 @@ instead of struggling with routing, endpoint or payload details.
    :caption: Content
 
    getting_started
-   api_reference
+   slackify
    examples
 
 Search docs

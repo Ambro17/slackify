@@ -85,7 +85,12 @@
               <p class="caption"><span class="caption-text">Content</span></p>
 <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="getting_started.html">Getting Started</a></li>
-<li class="toctree-l1 current"><a class="current reference internal" href="#">API Reference</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">API Reference</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#slackify">Slackify</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#module-slackify.slack">Slack Helpers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#module-slackify.tasks">Tasks</a></li>
+</ul>
+</li>
 <li class="toctree-l1"><a class="reference internal" href="examples.html">Examples</a></li>
 </ul>
 
@@ -139,7 +144,7 @@
       <li class="wy-breadcrumbs-aside">
         
             
-            <a href="_sources/api_reference.rst.txt" rel="nofollow"> View page source</a>
+            <a href="_sources/slackify.rst.txt" rel="nofollow"> View page source</a>
           
         
       </li>
@@ -152,47 +157,10 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
             
-  <div class="section" id="module-slackify">
-<span id="api-reference"></span><h1>API Reference<a class="headerlink" href="#module-slackify" title="Permalink to this headline">¶</a></h1>
-<p><cite>Slackify</cite> provides a declarative API to register handlers for Slack</p>
-<ul class="simple">
-<li><p>Commands</p></li>
-<li><p>Actions</p></li>
-<li><p>Events</p></li>
-<li><p>Shorcuts</p></li>
-<li><p>Modals</p></li>
-<li><p>Messages</p></li>
-</ul>
-<p>Its main focus is to make the task of developing slack bots <em>fun and fast</em>.
-It can be used with a normal Flask instance or as a Blueprint to group slack requests</p>
-<dl class="py class">
-<dt id="slackify.Blueprint">
-<em class="property">class </em><code class="sig-prename descclassname">slackify.</code><code class="sig-name descname">Blueprint</code><span class="sig-paren">(</span><em class="sig-param">name</em>, <em class="sig-param">import_name</em>, <em class="sig-param">static_folder=None</em>, <em class="sig-param">static_url_path=None</em>, <em class="sig-param">template_folder=None</em>, <em class="sig-param">url_prefix=None</em>, <em class="sig-param">subdomain=None</em>, <em class="sig-param">url_defaults=None</em>, <em class="sig-param">root_path=None</em>, <em class="sig-param">cli_group=&lt;object object&gt;</em><span class="sig-paren">)</span><a class="headerlink" href="#slackify.Blueprint" title="Permalink to this definition">¶</a></dt>
-<dd><p>Slackify <cite>Blueprint</cite> that allows to register slack handlers to later attach to Flask instance</p>
-<p>If you have an existent web server, or you want to separate slack handlers
-from all your other server endpoints you can register them with this blueprint
-and then attach them to the Flask instance using the app factory pattern.</p>
-<div class="admonition note">
-<p class="admonition-title">Note</p>
-<p>Only one blueprint is supported. All slack handlers should be handled on
-the same blueprint.</p>
-</div>
-<dl class="py method">
-<dt id="slackify.Blueprint.register">
-<code class="sig-name descname">register</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">app</span></em>, <em class="sig-param"><span class="n">options</span></em>, <em class="sig-param"><span class="n">first_registration</span><span class="p">:</span> <span class="n">bool</span> <span class="o">=</span> <span class="default_value">False</span></em><span class="sig-paren">)</span><a class="headerlink" href="#slackify.Blueprint.register" title="Permalink to this definition">¶</a></dt>
-<dd><p>Overriden to allow polymorphic treatment in Slackify routing logic.</p>
-<p>By adding a view_functions attribute we can treat apps and blueprints routing
-indifferently. For more details see <cite>Slackify._get_endpoint_handler</cite></p>
-</dd></dl>
-
-</dd></dl>
-
-<dl class="py attribute">
-<dt id="slackify.Slack">
-<code class="sig-prename descclassname">slackify.</code><code class="sig-name descname">Slack</code><a class="headerlink" href="#slackify.Slack" title="Permalink to this definition">¶</a></dt>
-<dd><p>alias of <code class="xref py py-class docutils literal notranslate"><span class="pre">slack.web.client.WebClient</span></code></p>
-</dd></dl>
-
+  <div class="section" id="api-reference">
+<h1>API Reference<a class="headerlink" href="#api-reference" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="slackify">
+<h2>Slackify<a class="headerlink" href="#slackify" title="Permalink to this headline">¶</a></h2>
 <dl class="py class">
 <dt id="slackify.Slackify">
 <em class="property">class </em><code class="sig-prename descclassname">slackify.</code><code class="sig-name descname">Slackify</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">app</span><span class="p">:</span> <span class="n">Optional<span class="p">[</span>Union<span class="p">[</span>flask.app.Flask<span class="p">, </span>flask.blueprints.Blueprint<span class="p">]</span><span class="p">]</span></span> <span class="o">=</span> <span class="default_value">None</span></em>, <em class="sig-param"><span class="n">endpoint</span><span class="p">:</span> <span class="n">str</span> <span class="o">=</span> <span class="default_value">'/'</span></em>, <em class="sig-param"><span class="n">events_endpoint</span><span class="p">:</span> <span class="n">str</span> <span class="o">=</span> <span class="default_value">'/slack/events'</span></em>, <em class="sig-param"><span class="n">emitter</span><span class="p">:</span> <span class="n">pyee.BaseEventEmitter</span> <span class="o">=</span> <span class="default_value">None</span></em>, <em class="sig-param"><span class="n">dispatcher</span><span class="p">:</span> <span class="n">slackify.dispatcher.Dispatcher</span> <span class="o">=</span> <span class="default_value">None</span></em>, <em class="sig-param"><span class="n">injector</span><span class="p">:</span> <span class="n">slackify.injection.Injector</span> <span class="o">=</span> <span class="default_value">None</span></em>, <em class="sig-param"><span class="o">**</span><span class="n">kwargs</span></em><span class="sig-paren">)</span><a class="headerlink" href="#slackify.Slackify" title="Permalink to this definition">¶</a></dt>
@@ -207,7 +175,7 @@ indifferently. For more details see <cite>Slackify._get_endpoint_handler</cite><
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>app</strong> (<em>Union</em><em>[</em><em>Flask</em><em>, </em><a class="reference internal" href="#slackify.Blueprint" title="slackify.Blueprint"><em>Blueprint</em></a><em>]</em>) – Flask instance or Blueprint which will be used to register callbacks</p></li>
+<li><p><strong>app</strong> (<em>Union</em><em>[</em><em>Flask</em><em>, </em><em>Blueprint</em><em>]</em>) – Flask instance or Blueprint which will be used to register callbacks</p></li>
 <li><p><strong>endpoint</strong> (<em>str</em>) – Endpoint to expose in slack requests for automatic redirection</p></li>
 <li><p><strong>events_endpoint</strong> (<em>str</em>) – Endpoint to expose as slack events listener</p></li>
 <li><p><strong>emitter</strong> (<em>pyee.BaseEventEmitter</em>) – Class in charge of emitting events</p></li>
@@ -257,12 +225,28 @@ indifferently. For more details see <cite>Slackify._get_endpoint_handler</cite><
 <dt id="slackify.Slackify.default">
 <code class="sig-name descname">default</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">func</span><span class="p">:</span> <span class="n">Callable<span class="p">[</span><span class="p">]</span><span class="p">, </span>flask.wrappers.Response<span class="p">]</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#slackify.Slackify.default" title="Permalink to this definition">¶</a></dt>
 <dd><p>Register function to execute when an unknown command is received</p>
+<dl>
+<dt>Usage:</dt><dd><div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="nd">@slackify</span><span class="o">.</span><span class="n">default</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">def</span> <span class="nf">unknown_command</span><span class="p">():</span>
+<span class="gp">... </span>   <span class="k">return</span> <span class="s1">&#39;Unknown Command&#39;</span>
+</pre></div>
+</div>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="py method">
 <dt id="slackify.Slackify.error">
 <code class="sig-name descname">error</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">func</span><span class="p">:</span> <span class="n">Callable<span class="p">[</span><span class="p">[</span>Exception<span class="p">]</span><span class="p">, </span>flask.wrappers.Response<span class="p">]</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#slackify.Slackify.error" title="Permalink to this definition">¶</a></dt>
 <dd><p>Register function to execute when an exception was raised on any registered handler</p>
+<dl>
+<dt>Usage:</dt><dd><div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="nd">@slackify</span><span class="o">.</span><span class="n">error</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">def</span> <span class="nf">new_handler</span><span class="p">(</span><span class="n">exception</span><span class="p">):</span>
+<span class="gp">... </span>    <span class="k">return</span> <span class="sa">f</span><span class="s1">&#39;Something went wrong! </span><span class="si">{</span><span class="n">exception</span><span class="si">!r}</span><span class="s1">&#39;</span>
+</pre></div>
+</div>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="py method">
@@ -335,24 +319,18 @@ The event payload from slack will be sent on that arg</p>
 
 </dd></dl>
 
+</div>
+<div class="section" id="module-slackify.slack">
+<span id="slack-helpers"></span><h2>Slack Helpers<a class="headerlink" href="#module-slackify.slack" title="Permalink to this headline">¶</a></h2>
 <dl class="py function">
-<dt id="slackify.async_task">
-<code class="sig-prename descclassname">slackify.</code><code class="sig-name descname">async_task</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">callable</span><span class="p">:</span> <span class="n">Callable</span></em><span class="sig-paren">)</span><a class="headerlink" href="#slackify.async_task" title="Permalink to this definition">¶</a></dt>
-<dd><p>Run a <cite>Callable</cite> in a background thread so it doesn’t block main thread</p>
-<p>This decorator might be useful if you want to avoid getting slack timeout
-because your handlers are taking more than 3 seconds to respond.
-See <cite>examples.async_task</cite> for usage details</p>
-</dd></dl>
-
-<dl class="py function">
-<dt id="slackify.block_reply">
-<code class="sig-prename descclassname">slackify.</code><code class="sig-name descname">block_reply</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">blocks</span><span class="p">:</span> <span class="n">List</span></em><span class="sig-paren">)</span> &#x2192; Tuple<span class="p">[</span>str<span class="p">, </span>int<span class="p">, </span>Dict<span class="p">]</span><a class="headerlink" href="#slackify.block_reply" title="Permalink to this definition">¶</a></dt>
+<dt id="slackify.slack.block_reply">
+<code class="sig-prename descclassname">slackify.slack.</code><code class="sig-name descname">block_reply</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">blocks</span><span class="p">:</span> <span class="n">List</span></em><span class="sig-paren">)</span> &#x2192; Tuple<span class="p">[</span>str<span class="p">, </span>int<span class="p">, </span>Dict<span class="p">]</span><a class="headerlink" href="#slackify.slack.block_reply" title="Permalink to this definition">¶</a></dt>
 <dd><p>Respond to slack with a block payload. See <a class="reference external" href="https://api.slack.com/block-kit/building">https://api.slack.com/block-kit/building</a> for reference</p>
 </dd></dl>
 
 <dl class="py function">
-<dt id="slackify.reply">
-<code class="sig-prename descclassname">slackify.</code><code class="sig-name descname">reply</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">body</span><span class="p">:</span> <span class="n">dict</span></em><span class="sig-paren">)</span> &#x2192; Tuple<span class="p">[</span>str<span class="p">, </span>int<span class="p">, </span>Dict<span class="p">]</span><a class="headerlink" href="#slackify.reply" title="Permalink to this definition">¶</a></dt>
+<dt id="slackify.slack.reply">
+<code class="sig-prename descclassname">slackify.slack.</code><code class="sig-name descname">reply</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">body</span><span class="p">:</span> <span class="n">dict</span></em><span class="sig-paren">)</span> &#x2192; Tuple<span class="p">[</span>str<span class="p">, </span>int<span class="p">, </span>Dict<span class="p">]</span><a class="headerlink" href="#slackify.slack.reply" title="Permalink to this definition">¶</a></dt>
 <dd><p>Helper method that returns a complex response to slack</p>
 <p>It may contain a blocks payload. A simple text structure or
 whatever slack admits as a valid response to certain action.
@@ -361,24 +339,37 @@ passes json as Content-Type as slack requires.</p>
 </dd></dl>
 
 <dl class="py function">
-<dt id="slackify.reply_text">
-<code class="sig-prename descclassname">slackify.</code><code class="sig-name descname">reply_text</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">text</span><span class="p">:</span> <span class="n">str</span></em><span class="sig-paren">)</span> &#x2192; Tuple<span class="p">[</span>str<span class="p">, </span>int<span class="p">, </span>Dict<span class="p">]</span><a class="headerlink" href="#slackify.reply_text" title="Permalink to this definition">¶</a></dt>
+<dt id="slackify.slack.reply_text">
+<code class="sig-prename descclassname">slackify.slack.</code><code class="sig-name descname">reply_text</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">text</span><span class="p">:</span> <span class="n">str</span></em><span class="sig-paren">)</span> &#x2192; Tuple<span class="p">[</span>str<span class="p">, </span>int<span class="p">, </span>Dict<span class="p">]</span><a class="headerlink" href="#slackify.slack.reply_text" title="Permalink to this definition">¶</a></dt>
 <dd><p>Helper method that returns a plain text response to slack</p>
 </dd></dl>
 
 <dl class="py function">
-<dt id="slackify.respond">
-<code class="sig-prename descclassname">slackify.</code><code class="sig-name descname">respond</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">url</span><span class="p">:</span> <span class="n">str</span></em>, <em class="sig-param"><span class="n">message</span><span class="p">:</span> <span class="n">Dict<span class="p">[</span>str<span class="p">, </span>Any<span class="p">]</span></span></em><span class="sig-paren">)</span> &#x2192; requests.models.Response<a class="headerlink" href="#slackify.respond" title="Permalink to this definition">¶</a></dt>
+<dt id="slackify.slack.respond">
+<code class="sig-prename descclassname">slackify.slack.</code><code class="sig-name descname">respond</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">url</span><span class="p">:</span> <span class="n">str</span></em>, <em class="sig-param"><span class="n">message</span><span class="p">:</span> <span class="n">Dict<span class="p">[</span>str<span class="p">, </span>Any<span class="p">]</span></span></em><span class="sig-paren">)</span> &#x2192; requests.models.Response<a class="headerlink" href="#slackify.slack.respond" title="Permalink to this definition">¶</a></dt>
 <dd><p>Respond async to interaction to allow fast acknowledge of interactive message request</p>
 <p>You should use this method when responding to actions. See <code class="code docutils literal notranslate"><span class="pre">examples/actions.py</span></code></p>
 </dd></dl>
 
 <dl class="py function">
-<dt id="slackify.text_block">
-<code class="sig-prename descclassname">slackify.</code><code class="sig-name descname">text_block</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">text</span><span class="p">:</span> <span class="n">str</span></em>, <em class="sig-param"><span class="n">markdown</span><span class="p">:</span> <span class="n">bool</span> <span class="o">=</span> <span class="default_value">True</span></em><span class="sig-paren">)</span> &#x2192; Dict<span class="p">[</span>str<span class="p">, </span>Any<span class="p">]</span><a class="headerlink" href="#slackify.text_block" title="Permalink to this definition">¶</a></dt>
+<dt id="slackify.slack.text_block">
+<code class="sig-prename descclassname">slackify.slack.</code><code class="sig-name descname">text_block</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">text</span><span class="p">:</span> <span class="n">str</span></em>, <em class="sig-param"><span class="n">markdown</span><span class="p">:</span> <span class="n">bool</span> <span class="o">=</span> <span class="default_value">True</span></em><span class="sig-paren">)</span> &#x2192; Dict<span class="p">[</span>str<span class="p">, </span>Any<span class="p">]</span><a class="headerlink" href="#slackify.slack.text_block" title="Permalink to this definition">¶</a></dt>
 <dd><p>Respond to slack with a block including just text with markdown support</p>
 </dd></dl>
 
+</div>
+<div class="section" id="module-slackify.tasks">
+<span id="tasks"></span><h2>Tasks<a class="headerlink" href="#module-slackify.tasks" title="Permalink to this headline">¶</a></h2>
+<dl class="py function">
+<dt id="slackify.tasks.async_task">
+<code class="sig-prename descclassname">slackify.tasks.</code><code class="sig-name descname">async_task</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">callable</span><span class="p">:</span> <span class="n">Callable</span></em><span class="sig-paren">)</span><a class="headerlink" href="#slackify.tasks.async_task" title="Permalink to this definition">¶</a></dt>
+<dd><p>Run a <cite>Callable</cite> in a background thread so it doesn’t block main thread</p>
+<p>This decorator might be useful if you want to avoid getting slack timeout
+because your handlers are taking more than 3 seconds to respond.
+See <cite>examples.async_task</cite> for usage details</p>
+</dd></dl>
+
+</div>
 </div>
 
 

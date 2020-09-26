@@ -120,7 +120,13 @@ class Slackify:
         return req.method == 'POST' and request.path == self._endpoint
 
     def default(self, func: Callable[[], Response]):
-        """Register function to execute when an unknown command is received"""
+        """Register function to execute when an unknown command is received
+        
+        Usage:
+            >>> @slackify.default
+            >>> def unknown_command():
+            ...    return 'Unknown Command'
+        """
         self._handle_unknown = func
 
     def _handle_unknown(self):
@@ -128,7 +134,13 @@ class Slackify:
         return None
 
     def error(self, func: Callable[[Exception], Response]):
-        """Register function to execute when an exception was raised on any registered handler"""
+        """Register function to execute when an exception was raised on any registered handler
+        
+        Usage:
+            >>> @slackify.error
+            >>> def new_handler(exception):
+            ...     return f'Something went wrong! {exception!r}'
+        """
         self._handle_error = func
 
     def _handle_error(self, e):
