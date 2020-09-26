@@ -1,0 +1,440 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>API Reference &mdash; Slackify 1.0.0 documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+
+  
+  
+  
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/doctools.js"></script>
+        <script src="_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Examples" href="examples.html" />
+    <link rel="prev" title="Getting Started" href="getting_started.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="index.html" class="icon icon-home" alt="Documentation Home"> Slackify
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Content</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="getting_started.html">Getting Started</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">API Reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="examples.html">Examples</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">Slackify</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
+        
+      <li>API Reference</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="_sources/api_reference.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="module-slackify">
+<span id="api-reference"></span><h1>API Reference<a class="headerlink" href="#module-slackify" title="Permalink to this headline">¶</a></h1>
+<p><cite>Slackify</cite> provides a declarative API to register handlers for Slack</p>
+<ul class="simple">
+<li><p>Commands</p></li>
+<li><p>Actions</p></li>
+<li><p>Events</p></li>
+<li><p>Shorcuts</p></li>
+<li><p>Modals</p></li>
+<li><p>Messages</p></li>
+</ul>
+<p>Its main focus is to make the task of developing slack bots <em>fun and fast</em>.
+It can be used with a normal Flask instance or as a Blueprint to group slack requests</p>
+<dl class="py class">
+<dt id="slackify.Blueprint">
+<em class="property">class </em><code class="sig-prename descclassname">slackify.</code><code class="sig-name descname">Blueprint</code><span class="sig-paren">(</span><em class="sig-param">name</em>, <em class="sig-param">import_name</em>, <em class="sig-param">static_folder=None</em>, <em class="sig-param">static_url_path=None</em>, <em class="sig-param">template_folder=None</em>, <em class="sig-param">url_prefix=None</em>, <em class="sig-param">subdomain=None</em>, <em class="sig-param">url_defaults=None</em>, <em class="sig-param">root_path=None</em>, <em class="sig-param">cli_group=&lt;object object&gt;</em><span class="sig-paren">)</span><a class="headerlink" href="#slackify.Blueprint" title="Permalink to this definition">¶</a></dt>
+<dd><p>Slackify <cite>Blueprint</cite> that allows to register slack handlers to later attach to Flask instance</p>
+<p>If you have an existent web server, or you want to separate slack handlers
+from all your other server endpoints you can register them with this blueprint
+and then attach them to the Flask instance using the app factory pattern.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Only one blueprint is supported. All slack handlers should be handled on
+the same blueprint.</p>
+</div>
+<dl class="py method">
+<dt id="slackify.Blueprint.register">
+<code class="sig-name descname">register</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">app</span></em>, <em class="sig-param"><span class="n">options</span></em>, <em class="sig-param"><span class="n">first_registration</span><span class="p">:</span> <span class="n">bool</span> <span class="o">=</span> <span class="default_value">False</span></em><span class="sig-paren">)</span><a class="headerlink" href="#slackify.Blueprint.register" title="Permalink to this definition">¶</a></dt>
+<dd><p>Overriden to allow polymorphic treatment in Slackify routing logic.</p>
+<p>By adding a view_functions attribute we can treat apps and blueprints routing
+indifferently. For more details see <cite>Slackify._get_endpoint_handler</cite></p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="slackify.Slack">
+<code class="sig-prename descclassname">slackify.</code><code class="sig-name descname">Slack</code><a class="headerlink" href="#slackify.Slack" title="Permalink to this definition">¶</a></dt>
+<dd><p>alias of <code class="xref py py-class docutils literal notranslate"><span class="pre">slack.web.client.WebClient</span></code></p>
+</dd></dl>
+
+<dl class="py class">
+<dt id="slackify.Slackify">
+<em class="property">class </em><code class="sig-prename descclassname">slackify.</code><code class="sig-name descname">Slackify</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">app</span><span class="p">:</span> <span class="n">Optional<span class="p">[</span>Union<span class="p">[</span>flask.app.Flask<span class="p">, </span>flask.blueprints.Blueprint<span class="p">]</span><span class="p">]</span></span> <span class="o">=</span> <span class="default_value">None</span></em>, <em class="sig-param"><span class="n">endpoint</span><span class="p">:</span> <span class="n">str</span> <span class="o">=</span> <span class="default_value">'/'</span></em>, <em class="sig-param"><span class="n">events_endpoint</span><span class="p">:</span> <span class="n">str</span> <span class="o">=</span> <span class="default_value">'/slack/events'</span></em>, <em class="sig-param"><span class="n">emitter</span><span class="p">:</span> <span class="n">pyee.BaseEventEmitter</span> <span class="o">=</span> <span class="default_value">None</span></em>, <em class="sig-param"><span class="n">dispatcher</span><span class="p">:</span> <span class="n">slackify.dispatcher.Dispatcher</span> <span class="o">=</span> <span class="default_value">None</span></em>, <em class="sig-param"><span class="n">injector</span><span class="p">:</span> <span class="n">slackify.injection.Injector</span> <span class="o">=</span> <span class="default_value">None</span></em>, <em class="sig-param"><span class="o">**</span><span class="n">kwargs</span></em><span class="sig-paren">)</span><a class="headerlink" href="#slackify.Slackify" title="Permalink to this definition">¶</a></dt>
+<dd><p><a class="reference internal" href="#slackify.Slackify" title="slackify.Slackify"><code class="xref py py-class docutils literal notranslate"><span class="pre">Slackify</span></code></a> is the orchestrator of the slack dance</p>
+<dl class="simple">
+<dt>It has two main responsabilities:</dt><dd><ol class="arabic simple">
+<li><p>Registering callbacks for slack requests.</p></li>
+<li><p>Dispatch incoming requests to the registered callback.</p></li>
+</ol>
+</dd>
+</dl>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>app</strong> (<em>Union</em><em>[</em><em>Flask</em><em>, </em><a class="reference internal" href="#slackify.Blueprint" title="slackify.Blueprint"><em>Blueprint</em></a><em>]</em>) – Flask instance or Blueprint which will be used to register callbacks</p></li>
+<li><p><strong>endpoint</strong> (<em>str</em>) – Endpoint to expose in slack requests for automatic redirection</p></li>
+<li><p><strong>events_endpoint</strong> (<em>str</em>) – Endpoint to expose as slack events listener</p></li>
+<li><p><strong>emitter</strong> (<em>pyee.BaseEventEmitter</em>) – Class in charge of emitting events</p></li>
+<li><p><strong>dispatcher</strong> (<em>Dispatcher</em>) – Class in charge of adding and dispatching slack requests</p></li>
+<li><p><strong>injector</strong> (<em>Injector</em>) – Class in charge of injecting arguments to callback functions</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py method">
+<dt id="slackify.Slackify.action">
+<code class="sig-name descname">action</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">action_id</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="o">**</span><span class="n">options</span></em><span class="sig-paren">)</span><a class="headerlink" href="#slackify.Slackify.action" title="Permalink to this definition">¶</a></dt>
+<dd><p>Register a function as an action callback.</p>
+<p>It supports registering actions by just <cite>action_id</cite> and  <cite>action_id</cite> + <cite>block_id</cite></p>
+<p>Usage:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="nd">@slackify</span><span class="o">.</span><span class="n">action</span><span class="p">(</span><span class="s1">&#39;action_id&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">def</span> <span class="nf">action_id_callback</span><span class="p">():</span>
+<span class="gp">... </span>   <span class="k">return</span> <span class="s1">&#39;Hello&#39;</span>
+<span class="gp">...</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nd">@slackify</span><span class="o">.</span><span class="n">action</span><span class="p">(</span><span class="n">action_id</span><span class="o">=</span><span class="s1">&#39;action_id&#39;</span><span class="p">,</span> <span class="n">block_id</span><span class="o">=</span><span class="s1">&#39;block_id&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">def</span> <span class="nf">other_callback</span><span class="p">():</span>
+<span class="gp">... </span>    <span class="k">return</span> <span class="s1">&#39;Bye&#39;</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py method">
+<dt id="slackify.Slackify.command">
+<code class="sig-name descname">command</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">func</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="o">**</span><span class="n">options</span></em><span class="sig-paren">)</span><a class="headerlink" href="#slackify.Slackify.command" title="Permalink to this definition">¶</a></dt>
+<dd><p>Register a function as a command handler.</p>
+<p>It can be used as a plain decorator or as a parametrized decorator factory.</p>
+<dl>
+<dt>Usage:</dt><dd><div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="nd">@command</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">def</span> <span class="nf">hola</span><span class="p">():</span>
+<span class="gp">... </span>    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;hola&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="nd">@command</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s1">&#39;goodbye&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">def</span> <span class="nf">chau</span><span class="p">():</span>
+<span class="gp">... </span>    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;chau&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="slackify.Slackify.default">
+<code class="sig-name descname">default</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">func</span><span class="p">:</span> <span class="n">Callable<span class="p">[</span><span class="p">]</span><span class="p">, </span>flask.wrappers.Response<span class="p">]</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#slackify.Slackify.default" title="Permalink to this definition">¶</a></dt>
+<dd><p>Register function to execute when an unknown command is received</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="slackify.Slackify.error">
+<code class="sig-name descname">error</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">func</span><span class="p">:</span> <span class="n">Callable<span class="p">[</span><span class="p">[</span>Exception<span class="p">]</span><span class="p">, </span>flask.wrappers.Response<span class="p">]</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#slackify.Slackify.error" title="Permalink to this definition">¶</a></dt>
+<dd><p>Register function to execute when an exception was raised on any registered handler</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="slackify.Slackify.event">
+<code class="sig-name descname">event</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">event</span><span class="p">:</span> <span class="n">str</span></em>, <em class="sig-param"><span class="n">func</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="headerlink" href="#slackify.Slackify.event" title="Permalink to this definition">¶</a></dt>
+<dd><p>Register a function as an event callback.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>All event callbacks <em>MUST</em> accept a payload positional argument.
+The event payload from slack will be sent on that arg</p>
+</div>
+<p>Usage:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="nd">@slackify</span><span class="o">.</span><span class="n">event</span><span class="p">(</span><span class="s1">&#39;reaction_added&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">def</span> <span class="nf">handle_reaction</span><span class="p">(</span><span class="n">payload</span><span class="p">):</span>
+<span class="gp">... </span>    <span class="nb">print</span><span class="p">(</span><span class="n">payload</span><span class="p">)</span>
+<span class="gp">... </span>    <span class="k">return</span> <span class="s1">&#39;Hello&#39;</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py method">
+<dt id="slackify.Slackify.message">
+<code class="sig-name descname">message</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">message</span></em>, <em class="sig-param"><span class="n">func</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="o">**</span><span class="n">kwargs</span></em><span class="sig-paren">)</span><a class="headerlink" href="#slackify.Slackify.message" title="Permalink to this definition">¶</a></dt>
+<dd><p>Register a function as a callback for when a string matching <cite>message</cite> is found.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>The event callback <em>MUST</em> accept a payload positional argument.
+The event payload from slack will be sent on that arg</p>
+</div>
+<p>Usage:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="nd">@slackify</span><span class="o">.</span><span class="n">message</span><span class="p">(</span><span class="s1">&#39;hello&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">def</span> <span class="nf">handle_reaction</span><span class="p">(</span><span class="n">payload</span><span class="p">):</span>
+<span class="gp">... </span>   <span class="k">return</span> <span class="s1">&#39;How are you?&#39;</span>
+<span class="gp">...</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">BYE_REGEX</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;bye|goodbye|see you|chau&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nd">@slackify</span><span class="o">.</span><span class="n">message</span><span class="p">(</span><span class="n">BYE_REGEX</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">def</span> <span class="nf">say_bye</span><span class="p">(</span><span class="n">payload</span><span class="p">):</span>
+<span class="gp">... </span>   <span class="k">return</span> <span class="s1">&#39;Bye!</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py method">
+<dt id="slackify.Slackify.shortcut">
+<code class="sig-name descname">shortcut</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">shortcut_id</span><span class="p">:</span> <span class="n">str</span></em>, <em class="sig-param"><span class="o">**</span><span class="n">options</span></em><span class="sig-paren">)</span><a class="headerlink" href="#slackify.Slackify.shortcut" title="Permalink to this definition">¶</a></dt>
+<dd><p>Register a function as a shortcut callback</p>
+<dl>
+<dt>Usage:</dt><dd><div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="nd">@slackify</span><span class="o">.</span><span class="n">shortcut</span><span class="p">(</span><span class="s1">&#39;my-shortcut&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">def</span> <span class="nf">hello</span><span class="p">():</span>
+<span class="gp">... </span>    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Someone followed `my-shortcut`&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="slackify.Slackify.view">
+<code class="sig-name descname">view</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">view_callback_id</span></em>, <em class="sig-param"><span class="o">**</span><span class="n">options</span></em><span class="sig-paren">)</span><a class="headerlink" href="#slackify.Slackify.view" title="Permalink to this definition">¶</a></dt>
+<dd><p>Register a function as a view callback.</p>
+<dl>
+<dt>Usage:</dt><dd><div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="nd">@slackify</span><span class="o">.</span><span class="n">view</span><span class="p">(</span><span class="s1">&#39;my_view&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">def</span> <span class="nf">view_callback</span><span class="p">():</span>
+<span class="gp">... </span>    <span class="k">return</span> <span class="s1">&#39;Hello&#39;</span>
+</pre></div>
+</div>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py function">
+<dt id="slackify.async_task">
+<code class="sig-prename descclassname">slackify.</code><code class="sig-name descname">async_task</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">callable</span><span class="p">:</span> <span class="n">Callable</span></em><span class="sig-paren">)</span><a class="headerlink" href="#slackify.async_task" title="Permalink to this definition">¶</a></dt>
+<dd><p>Run a <cite>Callable</cite> in a background thread so it doesn’t block main thread</p>
+<p>This decorator might be useful if you want to avoid getting slack timeout
+because your handlers are taking more than 3 seconds to respond.
+See <cite>examples.async_task</cite> for usage details</p>
+</dd></dl>
+
+<dl class="py function">
+<dt id="slackify.block_reply">
+<code class="sig-prename descclassname">slackify.</code><code class="sig-name descname">block_reply</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">blocks</span><span class="p">:</span> <span class="n">List</span></em><span class="sig-paren">)</span> &#x2192; Tuple<span class="p">[</span>str<span class="p">, </span>int<span class="p">, </span>Dict<span class="p">]</span><a class="headerlink" href="#slackify.block_reply" title="Permalink to this definition">¶</a></dt>
+<dd><p>Respond to slack with a block payload. See <a class="reference external" href="https://api.slack.com/block-kit/building">https://api.slack.com/block-kit/building</a> for reference</p>
+</dd></dl>
+
+<dl class="py function">
+<dt id="slackify.reply">
+<code class="sig-prename descclassname">slackify.</code><code class="sig-name descname">reply</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">body</span><span class="p">:</span> <span class="n">dict</span></em><span class="sig-paren">)</span> &#x2192; Tuple<span class="p">[</span>str<span class="p">, </span>int<span class="p">, </span>Dict<span class="p">]</span><a class="headerlink" href="#slackify.reply" title="Permalink to this definition">¶</a></dt>
+<dd><p>Helper method that returns a complex response to slack</p>
+<p>It may contain a blocks payload. A simple text structure or
+whatever slack admits as a valid response to certain action.
+It does nothing fancy. Just transforms dict to json, and
+passes json as Content-Type as slack requires.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt id="slackify.reply_text">
+<code class="sig-prename descclassname">slackify.</code><code class="sig-name descname">reply_text</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">text</span><span class="p">:</span> <span class="n">str</span></em><span class="sig-paren">)</span> &#x2192; Tuple<span class="p">[</span>str<span class="p">, </span>int<span class="p">, </span>Dict<span class="p">]</span><a class="headerlink" href="#slackify.reply_text" title="Permalink to this definition">¶</a></dt>
+<dd><p>Helper method that returns a plain text response to slack</p>
+</dd></dl>
+
+<dl class="py function">
+<dt id="slackify.respond">
+<code class="sig-prename descclassname">slackify.</code><code class="sig-name descname">respond</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">url</span><span class="p">:</span> <span class="n">str</span></em>, <em class="sig-param"><span class="n">message</span><span class="p">:</span> <span class="n">Dict<span class="p">[</span>str<span class="p">, </span>Any<span class="p">]</span></span></em><span class="sig-paren">)</span> &#x2192; requests.models.Response<a class="headerlink" href="#slackify.respond" title="Permalink to this definition">¶</a></dt>
+<dd><p>Respond async to interaction to allow fast acknowledge of interactive message request</p>
+<p>You should use this method when responding to actions. See <code class="code docutils literal notranslate"><span class="pre">examples/actions.py</span></code></p>
+</dd></dl>
+
+<dl class="py function">
+<dt id="slackify.text_block">
+<code class="sig-prename descclassname">slackify.</code><code class="sig-name descname">text_block</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">text</span><span class="p">:</span> <span class="n">str</span></em>, <em class="sig-param"><span class="n">markdown</span><span class="p">:</span> <span class="n">bool</span> <span class="o">=</span> <span class="default_value">True</span></em><span class="sig-paren">)</span> &#x2192; Dict<span class="p">[</span>str<span class="p">, </span>Any<span class="p">]</span><a class="headerlink" href="#slackify.text_block" title="Permalink to this definition">¶</a></dt>
+<dd><p>Respond to slack with a block including just text with markdown support</p>
+</dd></dl>
+
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="examples.html" class="btn btn-neutral float-right" title="Examples" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="getting_started.html" class="btn btn-neutral float-left" title="Getting Started" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        
+        &copy; Copyright 2020, Nahuel Ambrosini
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

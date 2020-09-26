@@ -14,9 +14,10 @@ class Blueprint(BP):
     """
 
     def register(self, app, options, first_registration: bool = False):
-        """Override to allow polymorphic treatment in Slackify routing logic.
+        """Overriden to allow polymorphic treatment in Slackify routing logic.
 
-        For more details see `Slackify._get_endpoint_handler`
+        By adding a view_functions attribute we can treat apps and blueprints routing
+        indifferently. For more details see `Slackify._get_endpoint_handler`
         """
         super().register(app, options, first_registration)
         self.view_functions = app.view_functions

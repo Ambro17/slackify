@@ -1,0 +1,949 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Examples &mdash; Slackify 1.0.0 documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+
+  
+  
+  
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/doctools.js"></script>
+        <script src="_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="prev" title="API Reference" href="api_reference.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="index.html" class="icon icon-home" alt="Documentation Home"> Slackify
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Content</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="getting_started.html">Getting Started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api_reference.html">API Reference</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Examples</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#commands">Commands</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#interactive-actions">Interactive Actions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#modals-views">Modals (Views)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#shortcuts">Shortcuts</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#event-hooks">Event Hooks</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#message-hooks">Message Hooks</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#home-tab">Home Tab</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#async-tasks">Async tasks</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#as-a-blueprint">As a Blueprint</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#arguments-injection">Arguments Injection</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#block-messages">Block Messages</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#full-example">Full example</a></li>
+</ul>
+</li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">Slackify</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
+        
+      <li>Examples</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="_sources/examples.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="examples">
+<h1>Examples<a class="headerlink" href="#examples" title="Permalink to this headline">¶</a></h1>
+<p>As you navigate through <a class="reference external" href="https://api.slack.com/">Slack Api Docs</a>. you may find yourself with 20+ tabs open
+and still no clue on how to accomplish what you want.</p>
+<p>If that’s your case, this section might help you getting started quickly</p>
+<p>There are examples of the most frequent use cases. Ranging from a bot
+with just a few commands, to a full workflow of registration and callbacks
+on userinput.</p>
+<p>Examples:</p>
+<ul class="simple">
+<li><p><a class="reference internal" href="#commands"><span class="std std-ref">Commands</span></a></p></li>
+<li><p><a class="reference internal" href="#interactive-actions"><span class="std std-ref">Interactive Actions</span></a></p></li>
+<li><p><a class="reference internal" href="#modals-views"><span class="std std-ref">Modals/Views</span></a></p></li>
+<li><p><a class="reference internal" href="#shortcuts"><span class="std std-ref">Global/Message Shortcuts</span></a></p></li>
+<li><p><a class="reference internal" href="#event-hooks"><span class="std std-ref">Event Hooks</span></a></p></li>
+<li><p><a class="reference internal" href="#message-hooks"><span class="std std-ref">Message Hooks</span></a></p></li>
+<li><p><a class="reference internal" href="#home-tab"><span class="std std-ref">Home tab personalization</span></a></p></li>
+<li><p><a class="reference internal" href="#async-tasks"><span class="std std-ref">Async tasks</span></a></p></li>
+<li><p><a class="reference internal" href="#as-a-blueprint"><span class="std std-ref">Usage as a Blueprint</span></a></p></li>
+<li><p><a class="reference internal" href="#arguments-injection"><span class="std std-ref">Arguments Injection</span></a></p></li>
+<li><p><a class="reference internal" href="#block-messages"><span class="std std-ref">Block Messages</span></a></p></li>
+<li><p><a class="reference internal" href="#full-example"><span class="std std-ref">Full example</span></a></p></li>
+</ul>
+<div class="section" id="commands">
+<h2>Commands<a class="headerlink" href="#commands" title="Permalink to this headline">¶</a></h2>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">flask</span> <span class="kn">import</span> <span class="n">Flask</span>
+<span class="kn">from</span> <span class="nn">slackify</span> <span class="kn">import</span> <span class="n">Slackify</span><span class="p">,</span> <span class="n">request</span><span class="p">,</span> <span class="n">reply_text</span>
+
+<span class="c1"># Important! Before running set FLASK_APP=examples.async_task:app</span>
+<span class="n">app</span> <span class="o">=</span> <span class="n">Flask</span><span class="p">(</span><span class="vm">__name__</span><span class="p">)</span>
+<span class="n">slackify</span> <span class="o">=</span> <span class="n">Slackify</span><span class="p">(</span><span class="n">app</span><span class="o">=</span><span class="n">app</span><span class="p">)</span>
+
+
+<span class="nd">@slackify</span><span class="o">.</span><span class="n">command</span>
+<span class="k">def</span> <span class="nf">hello</span><span class="p">():</span>
+    <span class="n">form</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">form</span><span class="p">[</span><span class="s1">&#39;command&#39;</span><span class="p">]</span>
+    <span class="n">text</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">form</span><span class="p">[</span><span class="s1">&#39;text&#39;</span><span class="p">]</span>
+    <span class="k">return</span> <span class="n">reply_text</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;You called `</span><span class="si">{</span><span class="n">form</span><span class="si">}</span><span class="s1"> </span><span class="si">{</span><span class="n">text</span><span class="si">}</span><span class="s1">`&#39;</span><span class="p">)</span>
+
+
+<span class="nd">@slackify</span><span class="o">.</span><span class="n">command</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s1">&#39;bye&#39;</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">goodbye</span><span class="p">():</span>
+    <span class="k">return</span> <span class="n">reply_text</span><span class="p">(</span><span class="s1">&#39;Goodbye&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="interactive-actions">
+<h2>Interactive Actions<a class="headerlink" href="#interactive-actions" title="Permalink to this headline">¶</a></h2>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">flask</span> <span class="kn">import</span> <span class="n">Flask</span>
+<span class="kn">from</span> <span class="nn">slackify</span> <span class="kn">import</span> <span class="n">Slackify</span><span class="p">,</span> <span class="n">respond</span><span class="p">,</span> <span class="n">Slack</span><span class="p">,</span> <span class="n">reply</span><span class="p">,</span> <span class="n">request</span><span class="p">,</span> <span class="n">OK</span>
+<span class="kn">import</span> <span class="nn">json</span>
+
+<span class="n">app</span> <span class="o">=</span> <span class="n">Flask</span><span class="p">(</span><span class="vm">__name__</span><span class="p">)</span>
+<span class="n">slackify</span> <span class="o">=</span> <span class="n">Slackify</span><span class="p">(</span><span class="n">app</span><span class="o">=</span><span class="n">app</span><span class="p">)</span>
+<span class="n">cli</span> <span class="o">=</span> <span class="n">Slack</span><span class="p">(</span><span class="s1">&#39;xoxb-SECRET-token&#39;</span><span class="p">)</span>
+
+
+<span class="k">def</span> <span class="nf">text_block</span><span class="p">(</span><span class="n">text</span><span class="p">):</span>
+    <span class="k">return</span> <span class="p">{</span>
+        <span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;section&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;text&quot;</span><span class="p">:</span> <span class="p">{</span>
+            <span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;mrkdwn&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;text&quot;</span><span class="p">:</span> <span class="n">text</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+
+
+<span class="nd">@slackify</span><span class="o">.</span><span class="n">command</span>
+<span class="k">def</span> <span class="nf">askme</span><span class="p">():</span>
+    <span class="sd">&quot;&quot;&quot;Slack API recommended way of making messages interactive is through blocks</span>
+
+<span class="sd">    Messages no longer are simple text. Even if you want to send just text, the</span>
+<span class="sd">    recommended way is to create a section block, with the text property.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="c1"># This is simple text, wrapped in a section to comply with slack new recommendations</span>
+    <span class="n">message_block</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;section&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;text&quot;</span><span class="p">:</span> <span class="p">{</span>
+            <span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;mrkdwn&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;text&quot;</span><span class="p">:</span> <span class="s2">&quot;Do you like bots?&quot;</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+
+    <span class="c1"># And here it gets cool. Actions blocks are what make messages special.</span>
+    <span class="c1"># Here we include two button elements. But there are many more elements.</span>
+    <span class="c1"># Check them out at https://api.slack.com/reference/block-kit/block-elements</span>
+    <span class="n">buttons_block</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;actions&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;elements&quot;</span><span class="p">:</span> <span class="p">[</span>
+            <span class="p">{</span>
+                <span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;button&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;text&quot;</span><span class="p">:</span> <span class="p">{</span>
+                    <span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;plain_text&quot;</span><span class="p">,</span>
+                    <span class="s2">&quot;emoji&quot;</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span>
+                    <span class="s2">&quot;text&quot;</span><span class="p">:</span> <span class="s2">&quot;Yes&quot;</span>
+                <span class="p">},</span>
+                <span class="s2">&quot;style&quot;</span><span class="p">:</span> <span class="s2">&quot;primary&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;value&quot;</span><span class="p">:</span> <span class="s2">&quot;i_like_bots&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;action_id&quot;</span><span class="p">:</span> <span class="s2">&quot;yes&quot;</span>
+            <span class="p">},</span>
+            <span class="p">{</span>
+                <span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;button&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;text&quot;</span><span class="p">:</span> <span class="p">{</span>
+                    <span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;plain_text&quot;</span><span class="p">,</span>
+                    <span class="s2">&quot;emoji&quot;</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span>
+                    <span class="s2">&quot;text&quot;</span><span class="p">:</span> <span class="s2">&quot;No&quot;</span>
+                <span class="p">},</span>
+                <span class="s2">&quot;style&quot;</span><span class="p">:</span> <span class="s2">&quot;danger&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;value&quot;</span><span class="p">:</span> <span class="s2">&quot;i_dont_like_bots&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;action_id&quot;</span><span class="p">:</span> <span class="s2">&quot;no&quot;</span>
+            <span class="p">}</span>
+        <span class="p">]</span>
+    <span class="p">}</span>
+    <span class="n">blocks</span> <span class="o">=</span> <span class="p">[</span>
+        <span class="n">message_block</span><span class="p">,</span>
+        <span class="n">buttons_block</span>
+    <span class="p">]</span>
+    <span class="n">message_as_blocks</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s1">&#39;blocks&#39;</span><span class="p">:</span> <span class="n">blocks</span>
+    <span class="p">}</span>
+    <span class="k">return</span> <span class="n">reply</span><span class="p">(</span><span class="n">message_as_blocks</span><span class="p">)</span>
+
+
+<span class="nd">@slackify</span><span class="o">.</span><span class="n">action</span><span class="p">(</span><span class="s2">&quot;yes&quot;</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">yes</span><span class="p">():</span>
+    <span class="sd">&quot;&quot;&quot;You may ask here, why do we respond to response_url instead of the request itself?</span>
+
+<span class="sd">    Well, slack decided you can&#39;t respond directly to interaction actions requests.</span>
+<span class="sd">    So we must use the response_url. If you know why did they decide this please tell</span>
+<span class="sd">    me. I&#39;m sure they might be a reason but it isn&#39;t obvious to me..</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">action</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">request</span><span class="o">.</span><span class="n">form</span><span class="p">[</span><span class="s2">&quot;payload&quot;</span><span class="p">])</span>
+
+    <span class="n">text_blok</span> <span class="o">=</span> <span class="n">text_block</span><span class="p">(</span><span class="s1">&#39;Super! I do too :thumbsup:&#39;</span><span class="p">)</span>
+    <span class="n">blocks</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;blocks&#39;</span><span class="p">:</span> <span class="p">[</span><span class="n">text_blok</span><span class="p">]}</span>
+    <span class="n">respond</span><span class="p">(</span><span class="n">action</span><span class="p">[</span><span class="s1">&#39;response_url&#39;</span><span class="p">],</span> <span class="n">blocks</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">OK</span>
+
+
+<span class="nd">@slackify</span><span class="o">.</span><span class="n">action</span><span class="p">(</span><span class="s2">&quot;no&quot;</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">no</span><span class="p">():</span>
+    <span class="n">action</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">request</span><span class="o">.</span><span class="n">form</span><span class="p">[</span><span class="s2">&quot;payload&quot;</span><span class="p">])</span>
+
+    <span class="n">text_blok</span> <span class="o">=</span> <span class="n">text_block</span><span class="p">(</span><span class="s1">&#39;Boo! You are so boring :thumbsdown:&#39;</span><span class="p">)</span>
+    <span class="n">blocks</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;blocks&#39;</span><span class="p">:</span> <span class="p">[</span><span class="n">text_blok</span><span class="p">]}</span>
+    <span class="n">respond</span><span class="p">(</span><span class="n">action</span><span class="p">[</span><span class="s1">&#39;response_url&#39;</span><span class="p">],</span> <span class="n">blocks</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">OK</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="modals-views">
+<h2>Modals (Views)<a class="headerlink" href="#modals-views" title="Permalink to this headline">¶</a></h2>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">flask</span> <span class="kn">import</span> <span class="n">Flask</span>
+<span class="kn">from</span> <span class="nn">slackify</span> <span class="kn">import</span> <span class="n">Slackify</span><span class="p">,</span> <span class="n">request</span><span class="p">,</span> <span class="n">text_block</span><span class="p">,</span> <span class="n">Slack</span><span class="p">,</span> <span class="n">ACK</span>
+<span class="kn">import</span> <span class="nn">json</span>
+
+<span class="kn">from</span> <span class="nn">slackify.tasks</span> <span class="kn">import</span> <span class="n">async_task</span>
+
+
+<span class="c1"># Important! Before running set FLASK_APP=examples.async_task:app</span>
+<span class="n">app</span> <span class="o">=</span> <span class="n">Flask</span><span class="p">(</span><span class="vm">__name__</span><span class="p">)</span>
+<span class="n">slackify</span> <span class="o">=</span> <span class="n">Slackify</span><span class="p">(</span><span class="n">app</span><span class="o">=</span><span class="n">app</span><span class="p">)</span>
+<span class="n">cli</span> <span class="o">=</span> <span class="n">Slack</span><span class="p">(</span><span class="s1">&#39;xoxb-SECRET-TOKEN&#39;</span><span class="p">)</span>
+
+
+<span class="nd">@slackify</span><span class="o">.</span><span class="n">command</span>
+<span class="k">def</span> <span class="nf">register</span><span class="p">():</span>
+    <span class="n">username_input_block</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;input&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;block_id&quot;</span><span class="p">:</span> <span class="s2">&quot;username_block&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;element&quot;</span><span class="p">:</span> <span class="p">{</span>
+            <span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;plain_text_input&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;placeholder&quot;</span><span class="p">:</span> <span class="p">{</span>
+                <span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;plain_text&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;text&quot;</span><span class="p">:</span> <span class="s2">&quot;Enter your username&quot;</span>
+            <span class="p">},</span>
+            <span class="s2">&quot;action_id&quot;</span><span class="p">:</span> <span class="s2">&quot;username_value&quot;</span>
+        <span class="p">},</span>
+        <span class="s2">&quot;label&quot;</span><span class="p">:</span> <span class="p">{</span>
+            <span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;plain_text&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;text&quot;</span><span class="p">:</span> <span class="s2">&quot;👤 Username&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;emoji&quot;</span><span class="p">:</span> <span class="kc">True</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+    <span class="n">password_input_block</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;input&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;block_id&quot;</span><span class="p">:</span> <span class="s2">&quot;password_block&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;element&quot;</span><span class="p">:</span> <span class="p">{</span>
+            <span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;plain_text_input&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;placeholder&quot;</span><span class="p">:</span> <span class="p">{</span>
+                <span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;plain_text&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;text&quot;</span><span class="p">:</span> <span class="s2">&quot;Enter your password&quot;</span>
+            <span class="p">},</span>
+            <span class="s2">&quot;action_id&quot;</span><span class="p">:</span> <span class="s2">&quot;password_value&quot;</span>
+        <span class="p">},</span>
+        <span class="s2">&quot;label&quot;</span><span class="p">:</span> <span class="p">{</span>
+            <span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;plain_text&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;text&quot;</span><span class="p">:</span> <span class="s2">&quot;🔑 Password&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;emoji&quot;</span><span class="p">:</span> <span class="kc">True</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+    <span class="n">modal_blocks</span> <span class="o">=</span> <span class="p">[</span>
+        <span class="n">username_input_block</span><span class="p">,</span>
+        <span class="n">password_input_block</span><span class="p">,</span>
+    <span class="p">]</span>
+    <span class="n">registration_form</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;modal&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;callback_id&quot;</span><span class="p">:</span> <span class="s2">&quot;registration_form&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;title&quot;</span><span class="p">:</span> <span class="p">{</span>
+            <span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;plain_text&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;text&quot;</span><span class="p">:</span> <span class="s2">&quot;My First Modal&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;emoji&quot;</span><span class="p">:</span> <span class="kc">True</span>
+        <span class="p">},</span>
+        <span class="s2">&quot;submit&quot;</span><span class="p">:</span> <span class="p">{</span>
+            <span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;plain_text&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;text&quot;</span><span class="p">:</span> <span class="s2">&quot;Register&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;emoji&quot;</span><span class="p">:</span> <span class="kc">True</span>
+        <span class="p">},</span>
+        <span class="s2">&quot;close&quot;</span><span class="p">:</span> <span class="p">{</span>
+            <span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;plain_text&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;text&quot;</span><span class="p">:</span> <span class="s2">&quot;Cancel&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;emoji&quot;</span><span class="p">:</span> <span class="kc">True</span>
+        <span class="p">},</span>
+        <span class="s2">&quot;blocks&quot;</span><span class="p">:</span> <span class="n">modal_blocks</span>
+    <span class="p">}</span>
+    <span class="n">cli</span><span class="o">.</span><span class="n">views_open</span><span class="p">(</span>
+        <span class="n">trigger_id</span><span class="o">=</span><span class="n">request</span><span class="o">.</span><span class="n">form</span><span class="p">[</span><span class="s1">&#39;trigger_id&#39;</span><span class="p">],</span>
+        <span class="n">view</span><span class="o">=</span><span class="n">registration_form</span>
+    <span class="p">)</span>
+    <span class="k">return</span> <span class="n">ACK</span>
+
+
+<span class="nd">@slackify</span><span class="o">.</span><span class="n">view</span><span class="p">(</span><span class="s2">&quot;registration_form&quot;</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">register_callback</span><span class="p">():</span>
+    <span class="sd">&quot;&quot;&quot;You may ask here, why DON&#39;T we also use the response_url as we did in actions.py?</span>
+
+<span class="sd">    Well, slack doesn&#39;t include a response_url on view_submission payload.</span>
+<span class="sd">    https://api.slack.com/surfaces/modals/using#handling_submissions#modal_response_url</span>
+<span class="sd">    From that link we understand we have 3 options:</span>
+<span class="sd">    - Use the WebClient API</span>
+<span class="sd">    - Use a webhook,</span>
+<span class="sd">    - Include a `conversation_select` block in your modal view.</span>
+
+<span class="sd">    We&#39;ll stick to the first one as it is the easiest for demostration purposes. But</span>
+<span class="sd">    read the link to respond by any of the other options.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">action</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">request</span><span class="o">.</span><span class="n">form</span><span class="p">[</span><span class="s2">&quot;payload&quot;</span><span class="p">])</span>
+    <span class="n">response</span> <span class="o">=</span> <span class="n">action</span><span class="p">[</span><span class="s1">&#39;view&#39;</span><span class="p">][</span><span class="s1">&#39;state&#39;</span><span class="p">][</span><span class="s1">&#39;values&#39;</span><span class="p">]</span>
+    <span class="n">text_blok</span> <span class="o">=</span> <span class="n">text_block</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;:heavy_check_mark: You are now registered.</span><span class="se">\n</span><span class="s1">Payload:</span><span class="se">\n</span><span class="s1">```</span><span class="si">{</span><span class="n">response</span><span class="si">}</span><span class="s1">```&#39;</span><span class="p">)</span>
+    <span class="n">send_message</span><span class="p">(</span><span class="n">cli</span><span class="p">,</span> <span class="p">[</span><span class="n">text_blok</span><span class="p">],</span> <span class="n">action</span><span class="p">[</span><span class="s1">&#39;user&#39;</span><span class="p">][</span><span class="s1">&#39;id&#39;</span><span class="p">])</span>
+    <span class="k">return</span> <span class="n">ACK</span>
+
+
+<span class="nd">@async_task</span>
+<span class="k">def</span> <span class="nf">send_message</span><span class="p">(</span><span class="n">cli</span><span class="p">,</span> <span class="n">blocks</span><span class="p">,</span> <span class="n">user_id</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">cli</span><span class="o">.</span><span class="n">chat_postMessage</span><span class="p">(</span><span class="n">channel</span><span class="o">=</span><span class="n">user_id</span><span class="p">,</span> <span class="n">user_id</span><span class="o">=</span><span class="n">user_id</span><span class="p">,</span> <span class="n">blocks</span><span class="o">=</span><span class="n">blocks</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="shortcuts">
+<h2>Shortcuts<a class="headerlink" href="#shortcuts" title="Permalink to this headline">¶</a></h2>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">flask</span> <span class="kn">import</span> <span class="n">Flask</span>
+<span class="kn">from</span> <span class="nn">slackify</span> <span class="kn">import</span> <span class="n">Slackify</span><span class="p">,</span> <span class="n">request</span><span class="p">,</span> <span class="n">Slack</span>
+<span class="kn">import</span> <span class="nn">json</span>
+
+
+<span class="c1"># Important! Before running set FLASK_APP=examples.async_task:app</span>
+<span class="n">app</span> <span class="o">=</span> <span class="n">Flask</span><span class="p">(</span><span class="vm">__name__</span><span class="p">)</span>
+<span class="n">slackify</span> <span class="o">=</span> <span class="n">Slackify</span><span class="p">(</span><span class="n">app</span><span class="o">=</span><span class="n">app</span><span class="p">)</span>
+<span class="n">cli</span> <span class="o">=</span> <span class="n">Slack</span><span class="p">(</span><span class="s1">&#39;xoxb-SECRET-bot-token&#39;</span><span class="p">)</span>
+
+
+<span class="nd">@slackify</span><span class="o">.</span><span class="n">shortcut</span><span class="p">(</span><span class="s1">&#39;funny_joke&#39;</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">tell_joke</span><span class="p">():</span>
+    <span class="n">payload</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">request</span><span class="o">.</span><span class="n">form</span><span class="p">[</span><span class="s1">&#39;payload&#39;</span><span class="p">])</span>
+    <span class="n">user</span> <span class="o">=</span> <span class="n">payload</span><span class="p">[</span><span class="s1">&#39;user&#39;</span><span class="p">]</span>
+    <span class="n">name</span> <span class="o">=</span> <span class="n">user</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;username&#39;</span><span class="p">,</span> <span class="n">user</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;id&#39;</span><span class="p">))</span>
+    <span class="n">cli</span><span class="o">.</span><span class="n">chat_postMessage</span><span class="p">(</span><span class="n">channel</span><span class="o">=</span><span class="s1">&#39;#general&#39;</span><span class="p">,</span> <span class="n">text</span><span class="o">=</span><span class="sa">f</span><span class="s1">&#39;Knock Knock `</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s1">`&#39;</span><span class="p">)</span>
+    <span class="k">return</span> <span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="mi">200</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="event-hooks">
+<h2>Event Hooks<a class="headerlink" href="#event-hooks" title="Permalink to this headline">¶</a></h2>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">from</span> <span class="nn">flask</span> <span class="kn">import</span> <span class="n">Flask</span>
+<span class="kn">from</span> <span class="nn">slackify</span> <span class="kn">import</span> <span class="n">Slackify</span><span class="p">,</span> <span class="n">Slack</span>
+
+<span class="c1"># Important! Before running set FLASK_APP=examples.async_task:app</span>
+<span class="n">app</span> <span class="o">=</span> <span class="n">Flask</span><span class="p">(</span><span class="vm">__name__</span><span class="p">)</span>
+<span class="n">slackify</span> <span class="o">=</span> <span class="n">Slackify</span><span class="p">(</span><span class="n">app</span><span class="o">=</span><span class="n">app</span><span class="p">)</span>
+
+<span class="n">slack</span> <span class="o">=</span> <span class="n">Slack</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="p">[</span><span class="s2">&quot;SLACK_BOT_TOKEN&quot;</span><span class="p">])</span>
+
+
+<span class="nd">@slackify</span><span class="o">.</span><span class="n">event</span><span class="p">(</span><span class="s2">&quot;message&quot;</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">handle_message</span><span class="p">(</span><span class="n">payload</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Listen to messages containing `python` and react with python emoji</span>
+
+<span class="sd">    Note:</span>
+<span class="sd">        Your event handler function *MUST* accept a positional argument with the event payload</span>
+
+<span class="sd">    Preconditions:</span>
+<span class="sd">        - Setup event subscription https://api.slack.com/events-api and point to `/slack/events` uri</span>
+<span class="sd">        - Suscribe to `message.channels` events so your app gets notified of this event</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">event</span> <span class="o">=</span> <span class="n">payload</span><span class="p">[</span><span class="s2">&quot;event&quot;</span><span class="p">]</span>
+    <span class="k">if</span> <span class="n">event</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;subtype&quot;</span><span class="p">)</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">and</span> <span class="s1">&#39;python&#39;</span> <span class="ow">in</span> <span class="n">event</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;text&#39;</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">):</span>
+        <span class="n">slack</span><span class="o">.</span><span class="n">reactions_add</span><span class="p">(</span>
+            <span class="n">name</span><span class="o">=</span><span class="s1">&#39;snake&#39;</span><span class="p">,</span>
+            <span class="n">channel</span><span class="o">=</span><span class="n">event</span><span class="p">[</span><span class="s2">&quot;channel&quot;</span><span class="p">],</span>
+            <span class="n">timestamp</span><span class="o">=</span><span class="n">event</span><span class="p">[</span><span class="s1">&#39;ts&#39;</span><span class="p">]</span>
+        <span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="message-hooks">
+<h2>Message Hooks<a class="headerlink" href="#message-hooks" title="Permalink to this headline">¶</a></h2>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">re</span>
+<span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">from</span> <span class="nn">flask</span> <span class="kn">import</span> <span class="n">Flask</span>
+<span class="kn">from</span> <span class="nn">slackify</span> <span class="kn">import</span> <span class="n">Slackify</span><span class="p">,</span> <span class="n">Slack</span>
+
+
+<span class="c1"># Important! Before running set FLASK_APP=examples.async_task:app</span>
+<span class="n">app</span> <span class="o">=</span> <span class="n">Flask</span><span class="p">(</span><span class="vm">__name__</span><span class="p">)</span>
+<span class="n">slackify</span> <span class="o">=</span> <span class="n">Slackify</span><span class="p">(</span><span class="n">app</span><span class="o">=</span><span class="n">app</span><span class="p">)</span>
+<span class="n">slack</span> <span class="o">=</span> <span class="n">Slack</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">getenv</span><span class="p">(</span><span class="s1">&#39;BOT_TOKEN&#39;</span><span class="p">))</span>
+
+
+<span class="nd">@slackify</span><span class="o">.</span><span class="n">message</span><span class="p">(</span><span class="s1">&#39;hello&#39;</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">say_hi</span><span class="p">(</span><span class="n">payload</span><span class="p">):</span>
+    <span class="n">event</span> <span class="o">=</span> <span class="n">payload</span><span class="p">[</span><span class="s1">&#39;event&#39;</span><span class="p">]</span>
+    <span class="n">slack</span><span class="o">.</span><span class="n">chat_postMessage</span><span class="p">(</span><span class="n">channel</span><span class="o">=</span><span class="n">event</span><span class="p">[</span><span class="s1">&#39;channel&#39;</span><span class="p">],</span> <span class="n">text</span><span class="o">=</span><span class="s1">&#39;Hi! 👋&#39;</span><span class="p">)</span>
+
+
+<span class="n">BYE_REGEX</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;bye|goodbye|see you|chau&#39;</span><span class="p">)</span>
+<span class="nd">@slackify</span><span class="o">.</span><span class="n">message</span><span class="p">(</span><span class="n">BYE_REGEX</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">say_bye</span><span class="p">(</span><span class="n">payload</span><span class="p">):</span>
+    <span class="n">event</span> <span class="o">=</span> <span class="n">payload</span><span class="p">[</span><span class="s1">&#39;event&#39;</span><span class="p">]</span>
+    <span class="n">slack</span><span class="o">.</span><span class="n">chat_postMessage</span><span class="p">(</span>
+        <span class="n">channel</span><span class="o">=</span><span class="n">event</span><span class="p">[</span><span class="s1">&#39;channel&#39;</span><span class="p">],</span>
+        <span class="n">text</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;See you tomorrow &lt;@</span><span class="si">{</span><span class="n">event</span><span class="p">[</span><span class="s1">&#39;user&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">&gt; 👋&quot;</span>
+    <span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="home-tab">
+<h2>Home Tab<a class="headerlink" href="#home-tab" title="Permalink to this headline">¶</a></h2>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">from</span> <span class="nn">flask</span> <span class="kn">import</span> <span class="n">Flask</span>
+<span class="kn">from</span> <span class="nn">slackify</span> <span class="kn">import</span> <span class="n">Slackify</span><span class="p">,</span> <span class="n">request</span><span class="p">,</span> <span class="n">reply_text</span><span class="p">,</span> <span class="n">Slack</span><span class="p">,</span> <span class="n">ACK</span>
+
+<span class="c1"># Initialize App</span>
+<span class="n">app</span> <span class="o">=</span> <span class="n">Flask</span><span class="p">(</span><span class="vm">__name__</span><span class="p">)</span>
+<span class="n">slackify</span> <span class="o">=</span> <span class="n">Slackify</span><span class="p">(</span><span class="n">app</span><span class="o">=</span><span class="n">app</span><span class="p">)</span>
+<span class="n">cli</span> <span class="o">=</span> <span class="n">Slack</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">getenv</span><span class="p">(</span><span class="s1">&#39;SLACK_BOT_TOKEN&#39;</span><span class="p">))</span>
+
+
+<span class="nd">@slackify</span><span class="o">.</span><span class="n">command</span>
+<span class="k">def</span> <span class="nf">update_home_view</span><span class="p">():</span>
+    <span class="n">user</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">form</span><span class="p">[</span><span class="s1">&#39;user_id&#39;</span><span class="p">]</span>
+    <span class="n">sample</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;home&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;blocks&quot;</span><span class="p">:</span> <span class="p">[</span>
+            <span class="p">{</span>
+                <span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;section&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;text&quot;</span><span class="p">:</span> <span class="p">{</span>
+                    <span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;mrkdwn&quot;</span><span class="p">,</span>
+                    <span class="s2">&quot;text&quot;</span><span class="p">:</span> <span class="s2">&quot;A simple stack of blocks for the simple sample Block Kit Home tab.&quot;</span>
+                <span class="p">}</span>
+            <span class="p">},</span>
+            <span class="p">{</span>
+                <span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;actions&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;elements&quot;</span><span class="p">:</span> <span class="p">[</span>
+                    <span class="p">{</span>
+                        <span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;button&quot;</span><span class="p">,</span>
+                        <span class="s2">&quot;action_id&quot;</span><span class="p">:</span> <span class="s2">&quot;tell_joke&quot;</span><span class="p">,</span>
+                        <span class="s2">&quot;text&quot;</span><span class="p">:</span> <span class="p">{</span>
+                            <span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;plain_text&quot;</span><span class="p">,</span>
+                            <span class="s2">&quot;text&quot;</span><span class="p">:</span> <span class="s2">&quot;Tell me a Joke&quot;</span><span class="p">,</span>
+                            <span class="s2">&quot;emoji&quot;</span><span class="p">:</span> <span class="kc">True</span>
+                        <span class="p">}</span>
+                    <span class="p">},</span>
+                <span class="p">]</span>
+            <span class="p">}</span>
+        <span class="p">]</span>
+    <span class="p">}</span>
+    <span class="n">resp</span> <span class="o">=</span> <span class="n">cli</span><span class="o">.</span><span class="n">views_publish</span><span class="p">(</span>
+        <span class="n">user_id</span><span class="o">=</span><span class="n">user</span><span class="p">,</span>
+        <span class="n">view</span><span class="o">=</span><span class="n">sample</span>
+    <span class="p">)</span>
+    <span class="k">assert</span> <span class="n">resp</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;ok&#39;</span><span class="p">,</span> <span class="kc">False</span><span class="p">),</span> <span class="sa">f</span><span class="s2">&quot;Could not build home tab.</span><span class="se">\n</span><span class="s2">Error:</span><span class="se">\n</span><span class="si">{</span><span class="n">resp</span><span class="o">.</span><span class="n">data</span><span class="si">!r}</span><span class="s2">&quot;</span>
+    <span class="k">return</span> <span class="n">reply_text</span><span class="p">(</span><span class="s1">&#39;Home tab updated.&#39;</span><span class="p">)</span>
+
+
+<span class="nd">@slackify</span><span class="o">.</span><span class="n">action</span><span class="p">(</span><span class="s1">&#39;tell_joke&#39;</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">tell_a_joke</span><span class="p">(</span><span class="n">action</span><span class="p">):</span>
+    <span class="n">resp</span> <span class="o">=</span> <span class="n">cli</span><span class="o">.</span><span class="n">chat_postMessage</span><span class="p">(</span>
+        <span class="n">channel</span><span class="o">=</span><span class="n">action</span><span class="p">[</span><span class="s1">&#39;user&#39;</span><span class="p">][</span><span class="s1">&#39;id&#39;</span><span class="p">],</span>  <span class="c1"># Send the user a private message through slackbot</span>
+        <span class="n">text</span><span class="o">=</span><span class="s2">&quot;I can&#39;t remember any joke right now 😅&quot;</span>
+    <span class="p">)</span>
+    <span class="k">assert</span> <span class="n">resp</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;ok&#39;</span><span class="p">),</span> <span class="sa">f</span><span class="s2">&quot;Error sending message. </span><span class="si">{</span><span class="n">resp</span><span class="o">.</span><span class="n">data</span><span class="si">}</span><span class="s2">&quot;</span>
+    <span class="k">return</span> <span class="n">ACK</span>
+
+
+<span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s1">&#39;__main__&#39;</span><span class="p">:</span>
+    <span class="n">app</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="s1">&#39;0.0.0.0&#39;</span><span class="p">,</span> <span class="n">port</span><span class="o">=</span><span class="mi">3000</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="async-tasks">
+<h2>Async tasks<a class="headerlink" href="#async-tasks" title="Permalink to this headline">¶</a></h2>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">time</span>
+<span class="kn">from</span> <span class="nn">flask</span> <span class="kn">import</span> <span class="n">Flask</span>
+<span class="kn">from</span> <span class="nn">slackify</span> <span class="kn">import</span> <span class="n">Slackify</span><span class="p">,</span> <span class="n">async_task</span><span class="p">,</span> <span class="n">reply_text</span><span class="p">,</span> <span class="n">Slack</span>
+
+<span class="c1"># Important! Before running set FLASK_APP=examples.async_task:app</span>
+<span class="n">app</span> <span class="o">=</span> <span class="n">Flask</span><span class="p">(</span><span class="vm">__name__</span><span class="p">)</span>
+<span class="n">slackify</span> <span class="o">=</span> <span class="n">Slackify</span><span class="p">(</span><span class="n">app</span><span class="o">=</span><span class="n">app</span><span class="p">)</span>
+<span class="n">cli</span> <span class="o">=</span> <span class="n">Slack</span><span class="p">(</span><span class="s1">&#39;xoxb-SECRET-token&#39;</span><span class="p">)</span>
+
+
+<span class="nd">@slackify</span><span class="o">.</span><span class="n">command</span><span class="p">()</span>
+<span class="k">def</span> <span class="nf">hello</span><span class="p">():</span>
+    <span class="n">my_background_job</span><span class="p">()</span>
+    <span class="k">return</span> <span class="n">reply_text</span><span class="p">(</span><span class="s1">&#39;Instant Response&#39;</span><span class="p">)</span>
+
+
+<span class="nd">@async_task</span>
+<span class="k">def</span> <span class="nf">my_background_job</span><span class="p">():</span>
+    <span class="sd">&quot;&quot;&quot;Non blocking long task&quot;&quot;&quot;</span>
+    <span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="mi">5</span><span class="p">)</span>  <span class="c1"># Wait more than slack&#39;s 3 seconds time limit</span>
+    <span class="n">cli</span><span class="o">.</span><span class="n">chat_postMessage</span><span class="p">(</span><span class="n">channel</span><span class="o">=</span><span class="s1">&#39;#general&#39;</span><span class="p">,</span> <span class="n">text</span><span class="o">=</span><span class="s1">&#39;I come from the future&#39;</span><span class="p">)</span>
+    <span class="k">return</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="as-a-blueprint">
+<h2>As a Blueprint<a class="headerlink" href="#as-a-blueprint" title="Permalink to this headline">¶</a></h2>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># slack_blueprint.py</span>
+<span class="kn">from</span> <span class="nn">slackify</span> <span class="kn">import</span> <span class="n">Slackify</span><span class="p">,</span> <span class="n">Blueprint</span><span class="p">,</span> <span class="n">reply_text</span>
+
+<span class="n">bp</span> <span class="o">=</span> <span class="n">Blueprint</span><span class="p">(</span><span class="s1">&#39;slackify_bp&#39;</span><span class="p">,</span> <span class="vm">__name__</span><span class="p">,</span> <span class="n">url_prefix</span><span class="o">=</span><span class="s1">&#39;/slack&#39;</span><span class="p">)</span>
+<span class="n">slackify</span> <span class="o">=</span> <span class="n">Slackify</span><span class="p">(</span><span class="n">app</span><span class="o">=</span><span class="n">bp</span><span class="p">)</span>
+
+
+<span class="nd">@slackify</span><span class="o">.</span><span class="n">command</span>
+<span class="k">def</span> <span class="nf">hello</span><span class="p">():</span>
+    <span class="k">return</span> <span class="n">reply_text</span><span class="p">(</span><span class="s1">&#39;Hello from a blueprint&#39;</span><span class="p">)</span>
+
+
+<span class="c1"># app.py</span>
+<span class="kn">from</span> <span class="nn">flask</span> <span class="kn">import</span> <span class="n">Flask</span>                                 <span class="c1"># noqa: Ignore E402, as it is an example</span>
+<span class="c1"># from slack_blueprint import bp</span>
+
+<span class="k">def</span> <span class="nf">create_app</span><span class="p">():</span>
+    <span class="n">app</span> <span class="o">=</span> <span class="n">Flask</span><span class="p">(</span><span class="vm">__name__</span><span class="p">)</span>
+    <span class="n">app</span><span class="o">.</span><span class="n">register_blueprint</span><span class="p">(</span><span class="n">bp</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">app</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="arguments-injection">
+<h2>Arguments Injection<a class="headerlink" href="#arguments-injection" title="Permalink to this headline">¶</a></h2>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">flask</span> <span class="kn">import</span> <span class="n">Flask</span>
+<span class="kn">from</span> <span class="nn">slackify</span> <span class="kn">import</span> <span class="n">Slackify</span><span class="p">,</span> <span class="n">reply_text</span><span class="p">,</span> <span class="n">Slack</span><span class="p">,</span> <span class="n">ACK</span>
+
+<span class="n">app</span> <span class="o">=</span> <span class="n">Flask</span><span class="p">(</span><span class="vm">__name__</span><span class="p">)</span>
+<span class="n">slackify</span> <span class="o">=</span> <span class="n">Slackify</span><span class="p">(</span><span class="n">app</span><span class="o">=</span><span class="n">app</span><span class="p">)</span>
+<span class="n">cli</span> <span class="o">=</span> <span class="n">Slack</span><span class="p">(</span><span class="s1">&#39;xoxb-SECRET&#39;</span><span class="p">)</span>
+
+<span class="nd">@slackify</span><span class="o">.</span><span class="n">command</span>
+<span class="k">def</span> <span class="nf">hello</span><span class="p">(</span><span class="n">command</span><span class="p">,</span> <span class="n">command_args</span><span class="p">,</span> <span class="n">response_url</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">reply_text</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;You called `</span><span class="si">{</span><span class="n">command</span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="n">command_args</span><span class="si">}</span><span class="s2">`. POST to </span><span class="si">{</span><span class="n">response_url</span><span class="si">}</span><span class="s2"> for delayed responses (&gt;3sec)&quot;</span><span class="p">)</span>
+
+
+<span class="nd">@slackify</span><span class="o">.</span><span class="n">shortcut</span><span class="p">(</span><span class="s1">&#39;greet_me&#39;</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">goodbye</span><span class="p">(</span><span class="n">payload</span><span class="p">):</span>
+    <span class="n">cli</span><span class="o">.</span><span class="n">chat_postMessage</span><span class="p">(</span><span class="n">channel</span><span class="o">=</span><span class="s1">&#39;#general&#39;</span><span class="p">,</span> <span class="n">text</span><span class="o">=</span><span class="sa">f</span><span class="s1">&#39;Knock Knock</span><span class="se">\n</span><span class="s1">`</span><span class="si">{</span><span class="n">payload</span><span class="si">}</span><span class="s1">`&#39;</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">ACK</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="block-messages">
+<h2>Block Messages<a class="headerlink" href="#block-messages" title="Permalink to this headline">¶</a></h2>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">from</span> <span class="nn">slackify</span> <span class="kn">import</span> <span class="n">Slackify</span><span class="p">,</span> <span class="n">Flask</span><span class="p">,</span> <span class="n">Slack</span>
+
+<span class="c1"># Initialize App</span>
+<span class="n">app</span> <span class="o">=</span> <span class="n">Flask</span><span class="p">(</span><span class="vm">__name__</span><span class="p">)</span>
+<span class="n">slackify</span> <span class="o">=</span> <span class="n">Slackify</span><span class="p">(</span><span class="n">app</span><span class="o">=</span><span class="n">app</span><span class="p">)</span>
+<span class="n">cli</span> <span class="o">=</span> <span class="n">Slack</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">getenv</span><span class="p">(</span><span class="s1">&#39;SLACK_BOT_TOKEN&#39;</span><span class="p">))</span>
+
+
+<span class="c1"># Create greeting with formatted text response</span>
+<span class="nd">@slackify</span><span class="o">.</span><span class="n">message</span><span class="p">(</span><span class="s1">&#39;hello&#39;</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">say_hi</span><span class="p">(</span><span class="n">payload</span><span class="p">):</span>
+    <span class="n">event</span> <span class="o">=</span> <span class="n">payload</span><span class="p">[</span><span class="s1">&#39;event&#39;</span><span class="p">]</span>
+    <span class="n">cli</span><span class="o">.</span><span class="n">chat_postMessage</span><span class="p">(</span>
+        <span class="n">channel</span><span class="o">=</span><span class="n">event</span><span class="p">[</span><span class="s1">&#39;channel&#39;</span><span class="p">],</span>
+        <span class="c1"># Blocks can be used to insert markdown support for links, images, and more.</span>
+        <span class="c1"># Check out https://api.slack.com/reference/block-kit for more.</span>
+        <span class="n">blocks</span><span class="o">=</span><span class="p">[</span>
+            <span class="p">{</span>
+                <span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;section&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;text&quot;</span><span class="p">:</span> <span class="p">{</span>
+                    <span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;mrkdwn&quot;</span><span class="p">,</span>
+                    <span class="s2">&quot;text&quot;</span><span class="p">:</span> <span class="s2">&quot;Danny Torrence left the following review for your property:&quot;</span>
+                <span class="p">}</span>
+            <span class="p">},</span>
+            <span class="p">{</span>
+                <span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;section&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;text&quot;</span><span class="p">:</span> <span class="p">{</span>
+                    <span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;mrkdwn&quot;</span><span class="p">,</span>
+                    <span class="s2">&quot;text&quot;</span><span class="p">:</span> <span class="s2">&quot;&lt;https://example.com|Overlook Hotel&gt; </span><span class="se">\n</span><span class="s2"> :star:</span><span class="se">\n</span><span class="s2">&quot;</span> <span class="o">+</span> \
+                            <span class="s2">&quot;Doors had too many axe holes, guest in room &quot;</span> <span class="o">+</span> \
+                            <span class="s2">&quot;237 was far too rowdy, whole place felt stuck in the 1920s.&quot;</span>
+                <span class="p">},</span>
+                <span class="s2">&quot;accessory&quot;</span><span class="p">:</span> <span class="p">{</span>
+                    <span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;image&quot;</span><span class="p">,</span>
+                    <span class="s2">&quot;image_url&quot;</span><span class="p">:</span> <span class="s2">&quot;https://images.pexels.com/photos/750319/pexels-photo-750319.jpeg&quot;</span><span class="p">,</span>
+                    <span class="s2">&quot;alt_text&quot;</span><span class="p">:</span> <span class="s2">&quot;Haunted hotel image&quot;</span>
+                <span class="p">}</span>
+            <span class="p">},</span>
+            <span class="p">{</span>
+                <span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;section&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;fields&quot;</span><span class="p">:</span> <span class="p">[</span>
+                    <span class="p">{</span>
+                        <span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;mrkdwn&quot;</span><span class="p">,</span>
+                        <span class="s2">&quot;text&quot;</span><span class="p">:</span> <span class="s2">&quot;*Average Rating*</span><span class="se">\n</span><span class="s2">1.0&quot;</span>
+                    <span class="p">}</span>
+                <span class="p">]</span>
+            <span class="p">}</span>
+        <span class="p">]</span>
+    <span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="full-example">
+<h2>Full example<a class="headerlink" href="#full-example" title="Permalink to this headline">¶</a></h2>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">import</span> <span class="nn">random</span>
+<span class="kn">import</span> <span class="nn">re</span>
+
+<span class="kn">from</span> <span class="nn">flask</span> <span class="kn">import</span> <span class="n">Flask</span>
+<span class="kn">from</span> <span class="nn">slackify</span> <span class="kn">import</span> <span class="p">(</span><span class="n">ACK</span><span class="p">,</span> <span class="n">OK</span><span class="p">,</span> <span class="n">Slackify</span><span class="p">,</span> <span class="n">async_task</span><span class="p">,</span> <span class="n">block_reply</span><span class="p">,</span>
+                      <span class="n">request</span><span class="p">,</span> <span class="n">respond</span><span class="p">,</span> <span class="n">text_block</span><span class="p">,</span> <span class="n">Slack</span><span class="p">)</span>
+
+
+<span class="n">app</span> <span class="o">=</span> <span class="n">Flask</span><span class="p">(</span><span class="vm">__name__</span><span class="p">)</span>
+<span class="n">slackify</span> <span class="o">=</span> <span class="n">Slackify</span><span class="p">(</span><span class="n">app</span><span class="o">=</span><span class="n">app</span><span class="p">)</span>
+<span class="n">cli</span> <span class="o">=</span> <span class="n">Slack</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">getenv</span><span class="p">(</span><span class="s1">&#39;BOT_TOKEN&#39;</span><span class="p">))</span>
+
+
+<span class="nd">@slackify</span><span class="o">.</span><span class="n">command</span>
+<span class="k">def</span> <span class="nf">hello</span><span class="p">():</span>
+    <span class="n">YES</span> <span class="o">=</span> <span class="s1">&#39;yes&#39;</span>
+    <span class="n">NO</span> <span class="o">=</span> <span class="s1">&#39;no&#39;</span>
+    <span class="n">yes_no_buttons_block</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;actions&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;elements&quot;</span><span class="p">:</span> <span class="p">[</span>
+            <span class="p">{</span>
+                <span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;button&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;text&quot;</span><span class="p">:</span> <span class="p">{</span>
+                    <span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;plain_text&quot;</span><span class="p">,</span>
+                    <span class="s2">&quot;emoji&quot;</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span>
+                    <span class="s2">&quot;text&quot;</span><span class="p">:</span> <span class="s2">&quot;Yes&quot;</span>
+                <span class="p">},</span>
+                <span class="s2">&quot;style&quot;</span><span class="p">:</span> <span class="s2">&quot;primary&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;value&quot;</span><span class="p">:</span> <span class="s2">&quot;i_like_bots&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;action_id&quot;</span><span class="p">:</span> <span class="n">YES</span>
+            <span class="p">},</span>
+            <span class="p">{</span>
+                <span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;button&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;text&quot;</span><span class="p">:</span> <span class="p">{</span>
+                    <span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;plain_text&quot;</span><span class="p">,</span>
+                    <span class="s2">&quot;emoji&quot;</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span>
+                    <span class="s2">&quot;text&quot;</span><span class="p">:</span> <span class="s2">&quot;No&quot;</span>
+                <span class="p">},</span>
+                <span class="s2">&quot;style&quot;</span><span class="p">:</span> <span class="s2">&quot;danger&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;value&quot;</span><span class="p">:</span> <span class="s2">&quot;i_dont_like_bots&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;action_id&quot;</span><span class="p">:</span> <span class="n">NO</span>
+            <span class="p">}</span>
+        <span class="p">]</span>
+    <span class="p">}</span>
+    <span class="n">blocks</span> <span class="o">=</span> <span class="p">[</span>
+        <span class="n">text_block</span><span class="p">(</span><span class="s1">&#39;Do you like Bots?&#39;</span><span class="p">),</span>
+        <span class="n">yes_no_buttons_block</span>
+    <span class="p">]</span>
+    <span class="k">return</span> <span class="n">block_reply</span><span class="p">(</span><span class="n">blocks</span><span class="p">)</span>
+
+
+<span class="nd">@slackify</span><span class="o">.</span><span class="n">action</span><span class="p">(</span><span class="s2">&quot;yes&quot;</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">yes</span><span class="p">(</span><span class="n">action</span><span class="p">):</span>
+    <span class="n">text_blok</span> <span class="o">=</span> <span class="n">text_block</span><span class="p">(</span><span class="s1">&#39;Super! I do too :thumbsup:&#39;</span><span class="p">)</span>
+    <span class="n">respond</span><span class="p">(</span><span class="n">action</span><span class="p">[</span><span class="s1">&#39;response_url&#39;</span><span class="p">],</span> <span class="p">{</span><span class="s1">&#39;blocks&#39;</span><span class="p">:</span> <span class="p">[</span><span class="n">text_blok</span><span class="p">]})</span>
+    <span class="k">return</span> <span class="n">OK</span>
+
+
+<span class="nd">@slackify</span><span class="o">.</span><span class="n">action</span><span class="p">(</span><span class="s2">&quot;no&quot;</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">no</span><span class="p">(</span><span class="n">action</span><span class="p">):</span>
+    <span class="n">text_blok</span> <span class="o">=</span> <span class="n">text_block</span><span class="p">(</span><span class="s1">&#39;Boo! You are so boring :thumbsdown:&#39;</span><span class="p">)</span>
+    <span class="n">respond</span><span class="p">(</span><span class="n">action</span><span class="p">[</span><span class="s1">&#39;response_url&#39;</span><span class="p">],</span> <span class="p">{</span><span class="s1">&#39;blocks&#39;</span><span class="p">:</span> <span class="p">[</span><span class="n">text_blok</span><span class="p">]})</span>
+    <span class="k">return</span> <span class="n">OK</span>
+
+
+<span class="nd">@slackify</span><span class="o">.</span><span class="n">command</span>
+<span class="k">def</span> <span class="nf">register</span><span class="p">():</span>
+    <span class="n">username_input_block</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;input&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;block_id&quot;</span><span class="p">:</span> <span class="s2">&quot;username_block&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;element&quot;</span><span class="p">:</span> <span class="p">{</span>
+            <span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;plain_text_input&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;placeholder&quot;</span><span class="p">:</span> <span class="p">{</span>
+                <span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;plain_text&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;text&quot;</span><span class="p">:</span> <span class="s2">&quot;Enter your username&quot;</span>
+            <span class="p">},</span>
+            <span class="s2">&quot;action_id&quot;</span><span class="p">:</span> <span class="s2">&quot;username_value&quot;</span>
+        <span class="p">},</span>
+        <span class="s2">&quot;label&quot;</span><span class="p">:</span> <span class="p">{</span>
+            <span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;plain_text&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;text&quot;</span><span class="p">:</span> <span class="s2">&quot;👤 Username&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;emoji&quot;</span><span class="p">:</span> <span class="kc">True</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+    <span class="n">password_input_block</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;input&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;block_id&quot;</span><span class="p">:</span> <span class="s2">&quot;password_block&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;element&quot;</span><span class="p">:</span> <span class="p">{</span>
+            <span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;plain_text_input&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;placeholder&quot;</span><span class="p">:</span> <span class="p">{</span>
+                <span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;plain_text&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;text&quot;</span><span class="p">:</span> <span class="s2">&quot;Enter your password&quot;</span>
+            <span class="p">},</span>
+            <span class="s2">&quot;action_id&quot;</span><span class="p">:</span> <span class="s2">&quot;password_value&quot;</span>
+        <span class="p">},</span>
+        <span class="s2">&quot;label&quot;</span><span class="p">:</span> <span class="p">{</span>
+            <span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;plain_text&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;text&quot;</span><span class="p">:</span> <span class="s2">&quot;🔑 Password&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;emoji&quot;</span><span class="p">:</span> <span class="kc">True</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+    <span class="n">modal_blocks</span> <span class="o">=</span> <span class="p">[</span>
+        <span class="n">username_input_block</span><span class="p">,</span>
+        <span class="n">password_input_block</span><span class="p">,</span>
+    <span class="p">]</span>
+    <span class="n">callback_id</span> <span class="o">=</span> <span class="s1">&#39;registration_form&#39;</span>
+    <span class="n">registration_form</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;modal&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;callback_id&quot;</span><span class="p">:</span> <span class="n">callback_id</span><span class="p">,</span>
+        <span class="s2">&quot;title&quot;</span><span class="p">:</span> <span class="p">{</span>
+            <span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;plain_text&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;text&quot;</span><span class="p">:</span> <span class="s2">&quot;My First Modal&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;emoji&quot;</span><span class="p">:</span> <span class="kc">True</span>
+        <span class="p">},</span>
+        <span class="s2">&quot;submit&quot;</span><span class="p">:</span> <span class="p">{</span>
+            <span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;plain_text&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;text&quot;</span><span class="p">:</span> <span class="s2">&quot;Register&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;emoji&quot;</span><span class="p">:</span> <span class="kc">True</span>
+        <span class="p">},</span>
+        <span class="s2">&quot;close&quot;</span><span class="p">:</span> <span class="p">{</span>
+            <span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;plain_text&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;text&quot;</span><span class="p">:</span> <span class="s2">&quot;Cancel&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;emoji&quot;</span><span class="p">:</span> <span class="kc">True</span>
+        <span class="p">},</span>
+        <span class="s2">&quot;blocks&quot;</span><span class="p">:</span> <span class="n">modal_blocks</span>
+    <span class="p">}</span>
+    <span class="n">cli</span><span class="o">.</span><span class="n">views_open</span><span class="p">(</span>
+        <span class="n">trigger_id</span><span class="o">=</span><span class="n">request</span><span class="o">.</span><span class="n">form</span><span class="p">[</span><span class="s1">&#39;trigger_id&#39;</span><span class="p">],</span>
+        <span class="n">view</span><span class="o">=</span><span class="n">registration_form</span>
+    <span class="p">)</span>
+    <span class="k">return</span> <span class="n">OK</span>
+
+
+<span class="nd">@slackify</span><span class="o">.</span><span class="n">view</span><span class="p">(</span><span class="s2">&quot;registration_form&quot;</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">register_callback</span><span class="p">(</span><span class="n">payload</span><span class="p">):</span>
+    <span class="n">response</span> <span class="o">=</span> <span class="n">payload</span><span class="p">[</span><span class="s1">&#39;view&#39;</span><span class="p">][</span><span class="s1">&#39;state&#39;</span><span class="p">][</span><span class="s1">&#39;values&#39;</span><span class="p">]</span>
+    <span class="n">text_blok</span> <span class="o">=</span> <span class="n">text_block</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;:heavy_check_mark: You are now registered.</span><span class="se">\n</span><span class="s1">Form payload:</span><span class="se">\n</span><span class="s1">```</span><span class="si">{</span><span class="n">response</span><span class="si">}</span><span class="s1">```&#39;</span><span class="p">)</span>
+    <span class="n">send_message</span><span class="p">(</span><span class="n">cli</span><span class="p">,</span> <span class="p">[</span><span class="n">text_blok</span><span class="p">],</span> <span class="n">payload</span><span class="p">[</span><span class="s1">&#39;user&#39;</span><span class="p">][</span><span class="s1">&#39;id&#39;</span><span class="p">])</span>
+    <span class="k">return</span> <span class="n">ACK</span>
+
+
+<span class="nd">@async_task</span>
+<span class="k">def</span> <span class="nf">send_message</span><span class="p">(</span><span class="n">cli</span><span class="p">,</span> <span class="n">blocks</span><span class="p">,</span> <span class="n">user_id</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">cli</span><span class="o">.</span><span class="n">chat_postMessage</span><span class="p">(</span><span class="n">channel</span><span class="o">=</span><span class="n">user_id</span><span class="p">,</span> <span class="n">user_id</span><span class="o">=</span><span class="n">user_id</span><span class="p">,</span> <span class="n">blocks</span><span class="o">=</span><span class="n">blocks</span><span class="p">)</span>
+
+
+<span class="nd">@slackify</span><span class="o">.</span><span class="n">shortcut</span><span class="p">(</span><span class="s1">&#39;dice_roll&#39;</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">dice_roll</span><span class="p">(</span><span class="n">payload</span><span class="p">):</span>
+    <span class="n">dice_value</span> <span class="o">=</span> <span class="n">random</span><span class="o">.</span><span class="n">randint</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">6</span><span class="p">)</span>
+    <span class="n">msg</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;🎲 </span><span class="si">{</span><span class="n">dice_value</span><span class="si">}</span><span class="s1">&#39;</span>
+    <span class="n">send_message</span><span class="p">(</span><span class="n">cli</span><span class="p">,</span> <span class="n">blocks</span><span class="o">=</span><span class="p">[</span><span class="n">text_block</span><span class="p">(</span><span class="n">msg</span><span class="p">)],</span> <span class="n">user_id</span><span class="o">=</span><span class="n">payload</span><span class="p">[</span><span class="s1">&#39;user&#39;</span><span class="p">][</span><span class="s1">&#39;id&#39;</span><span class="p">])</span>
+    <span class="k">return</span> <span class="n">ACK</span>
+
+
+<span class="nd">@slackify</span><span class="o">.</span><span class="n">event</span><span class="p">(</span><span class="s1">&#39;reaction_added&#39;</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">echo_reaction</span><span class="p">(</span><span class="n">payload</span><span class="p">):</span>
+    <span class="n">event</span> <span class="o">=</span> <span class="n">payload</span><span class="p">[</span><span class="s1">&#39;event&#39;</span><span class="p">]</span>
+    <span class="n">reaction</span> <span class="o">=</span> <span class="n">event</span><span class="p">[</span><span class="s1">&#39;reaction&#39;</span><span class="p">]</span>
+    <span class="n">cli</span><span class="o">.</span><span class="n">reactions_add</span><span class="p">(</span>
+        <span class="n">name</span><span class="o">=</span><span class="n">reaction</span><span class="p">,</span>
+        <span class="n">channel</span><span class="o">=</span><span class="n">event</span><span class="p">[</span><span class="s1">&#39;item&#39;</span><span class="p">][</span><span class="s1">&#39;channel&#39;</span><span class="p">],</span>
+        <span class="n">timestamp</span><span class="o">=</span><span class="n">event</span><span class="p">[</span><span class="s1">&#39;item&#39;</span><span class="p">][</span><span class="s1">&#39;ts&#39;</span><span class="p">]</span>
+    <span class="p">)</span>
+
+
+<span class="nd">@slackify</span><span class="o">.</span><span class="n">message</span><span class="p">(</span><span class="s1">&#39;hello&#39;</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">say_hi</span><span class="p">(</span><span class="n">payload</span><span class="p">):</span>
+    <span class="n">event</span> <span class="o">=</span> <span class="n">payload</span><span class="p">[</span><span class="s1">&#39;event&#39;</span><span class="p">]</span>
+    <span class="n">cli</span><span class="o">.</span><span class="n">chat_postMessage</span><span class="p">(</span><span class="n">channel</span><span class="o">=</span><span class="n">event</span><span class="p">[</span><span class="s1">&#39;channel&#39;</span><span class="p">],</span> <span class="n">text</span><span class="o">=</span><span class="s1">&#39;Hi! 👋&#39;</span><span class="p">)</span>
+
+
+<span class="nd">@slackify</span><span class="o">.</span><span class="n">message</span><span class="p">(</span><span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;python&#39;</span><span class="p">,</span> <span class="n">re</span><span class="o">.</span><span class="n">IGNORECASE</span><span class="p">))</span>
+<span class="k">def</span> <span class="nf">reply_python_emoji</span><span class="p">(</span><span class="n">payload</span><span class="p">):</span>
+    <span class="n">event</span> <span class="o">=</span> <span class="n">payload</span><span class="p">[</span><span class="s1">&#39;event&#39;</span><span class="p">]</span>
+    <span class="n">cli</span><span class="o">.</span><span class="n">reactions_add</span><span class="p">(</span>
+        <span class="n">name</span><span class="o">=</span><span class="s1">&#39;snake&#39;</span><span class="p">,</span>
+        <span class="n">channel</span><span class="o">=</span><span class="n">event</span><span class="p">[</span><span class="s1">&#39;channel&#39;</span><span class="p">],</span>
+        <span class="n">timestamp</span><span class="o">=</span><span class="n">event</span><span class="p">[</span><span class="s1">&#39;ts&#39;</span><span class="p">]</span>
+    <span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+      
+        <a href="api_reference.html" class="btn btn-neutral float-left" title="API Reference" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        
+        &copy; Copyright 2020, Nahuel Ambrosini
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

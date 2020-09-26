@@ -1,0 +1,307 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Getting Started &mdash; Slackify 1.0.0 documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+
+  
+  
+  
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/doctools.js"></script>
+        <script src="_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="API Reference" href="api_reference.html" />
+    <link rel="prev" title="Welcome to Slackify’s documentation!" href="index.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="index.html" class="icon icon-home" alt="Documentation Home"> Slackify
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Content</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Getting Started</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#installation">Installation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#running-the-bot">Running the bot</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#connecting-to-slack">Connecting to slack</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#install-ngrok">Install ngrok</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#create-a-slack-app">Create a Slack App</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="api_reference.html">API Reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="examples.html">Examples</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">Slackify</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
+        
+      <li>Getting Started</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="_sources/getting_started.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="getting-started">
+<h1>Getting Started<a class="headerlink" href="#getting-started" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="installation">
+<h2>Installation<a class="headerlink" href="#installation" title="Permalink to this headline">¶</a></h2>
+<p>The first step to use slackify is to install it inside your virtualenv</p>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>python3 -m pip install slackify
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Slackify requires python3.6 or higher to run</p>
+</div>
+</div>
+<div class="section" id="running-the-bot">
+<h2>Running the bot<a class="headerlink" href="#running-the-bot" title="Permalink to this headline">¶</a></h2>
+<p>To run the bot create a file named <code class="code docutils literal notranslate"><span class="pre">app.py</span></code> with the following content</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">flask</span> <span class="kn">import</span> <span class="n">Flask</span>
+<span class="kn">from</span> <span class="nn">slackify</span> <span class="kn">import</span> <span class="n">Slackify</span><span class="p">,</span> <span class="n">reply_text</span>
+
+<span class="n">app</span> <span class="o">=</span> <span class="n">Flask</span><span class="p">(</span><span class="vm">__name__</span><span class="p">)</span>
+<span class="n">slackify</span> <span class="o">=</span> <span class="n">Slackify</span><span class="p">(</span><span class="n">app</span><span class="o">=</span><span class="n">app</span><span class="p">)</span>
+
+
+<span class="nd">@slackify</span><span class="o">.</span><span class="n">command</span>
+<span class="k">def</span> <span class="nf">hello</span><span class="p">():</span>
+    <span class="k">return</span> <span class="n">reply_text</span><span class="p">(</span><span class="s1">&#39;Hello from Slackify!&#39;</span><span class="p">)</span>
+
+
+<span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s1">&#39;__main__&#39;</span><span class="p">:</span>
+    <span class="n">app</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">host</span><span class="o">=</span><span class="s1">&#39;0.0.0.0&#39;</span><span class="p">,</span> <span class="n">port</span><span class="o">=</span><span class="mi">5000</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Then run the server with</p>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>python3 app.py
+</pre></div>
+</div>
+<p>What happened here?
+We created a <code class="code docutils literal notranslate"><span class="pre">Flask</span></code> app, then we passed it to Slackify to get a
+slackified app.
+Then we decorated a function with <code class="code docutils literal notranslate"><span class="pre">&#64;slackify.command</span></code> to register it
+as the function that should be called when slack user invokes <code class="code docutils literal notranslate"><span class="pre">/hello</span></code></p>
+<p>Let’s check if it works, type <code class="code docutils literal notranslate"><span class="pre">http://localhost:5050/hello</span></code> in your browser.
+You should see the following response:</p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+    <span class="nt">&quot;text&quot;</span><span class="p">:</span> <span class="s2">&quot;Hello from Slackify!&quot;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>Great! Now our bot is fully operational, but we must connect it to slack so
+users other than ourselves can start using it. Let’s do that</p>
+</div>
+<div class="section" id="connecting-to-slack">
+<h2>Connecting to slack<a class="headerlink" href="#connecting-to-slack" title="Permalink to this headline">¶</a></h2>
+<p>Slack requires a publicly available url for our bot,
+while developing it might get tedious to upload every change to a public server
+just to test if everything works.
+To overcome this we can use ngrok to create an https tunnel from a
+public, temporal url, to your localhost server.</p>
+<p>That way slack has the url it needs, but we can still quickly make
+changes to our bot to change its behaviour.</p>
+<p>To connect our bot we must complete these 2 Steps:</p>
+<ol class="arabic simple">
+<li><p>Install ngrok</p></li>
+<li><p>Create slack app pointing to our ngrok’s public url</p></li>
+</ol>
+<div class="section" id="install-ngrok">
+<h3>Install ngrok<a class="headerlink" href="#install-ngrok" title="Permalink to this headline">¶</a></h3>
+<p>Go to <a class="reference external" href="https://ngrok.com/download">https://ngrok.com/download</a> and follow the instructions
+Then run <code class="code docutils literal notranslate"><span class="pre">ngrok</span> <span class="pre">http</span> <span class="pre">5000</span></code>. This will expose an http url, and redirect
+all requests to localhost on port 5000.</p>
+</div>
+<div class="section" id="create-a-slack-app">
+<h3>Create a Slack App<a class="headerlink" href="#create-a-slack-app" title="Permalink to this headline">¶</a></h3>
+<p>Go to <a class="reference external" href="https://api.slack.com/apps?new_app=1">https://api.slack.com/apps?new_app=1</a> and create a new app.
+Enable <code class="code docutils literal notranslate"><span class="pre">Bots</span></code> feature and install it to your workspace, then
+save your <cite>Bot User OAuth Access Token</cite> that we will need later.
+Enable <code class="code docutils literal notranslate"><span class="pre">Slash</span> <span class="pre">Commands</span></code> feature and create a new command
+<code class="code docutils literal notranslate"><span class="pre">hello</span></code> with the url set to ngrok’s http url of step #1</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>It might ask you to login to your workspace before creating an app.
+After you login, follow that link and you should be able to create it</p>
+</div>
+</div>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="api_reference.html" class="btn btn-neutral float-right" title="API Reference" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="index.html" class="btn btn-neutral float-left" title="Welcome to Slackify’s documentation!" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        
+        &copy; Copyright 2020, Nahuel Ambrosini
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

@@ -305,7 +305,7 @@ If you are a user of pytest, this idea is similar to pytest fixtures
 See [examples/injection.py](examples/injection.py) for the full example
 
 
-## Usage as a Blueprint
+## Blueprint Support
 If you already have a Flask app, you can attach
 flask functionality _slackifying_ your blueprint
 ```python
@@ -334,4 +334,4 @@ def create_app():
 > Note: You must import Blueprint from slackify instead of flask to get it working
 
 ## Dependencies
-This projects uses `Flask` as the web server and `slackclient` (_The official python slack client_) as slack's API wrapper
+This projects uses `Flask` as the web server and `slackclient` (_The official python slack client_) as slack's API wrapper. It also uses `pyee` for async handling of events

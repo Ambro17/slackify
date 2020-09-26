@@ -1,6 +1,6 @@
 import json
 import re
-from typing import Any, Dict, Tuple
+from typing import Any, Dict, List, Tuple
 
 import requests
 from slack import WebClient as Slack  # noqa: Add the import where it makes most sense
@@ -43,12 +43,15 @@ def text_block(text: str, markdown: bool = True) -> Dict[str, Any]:
     }
 
 
-def block_reply(blocks: list) -> Tuple[str, int, Dict]:
+def block_reply(blocks: List) -> Tuple[str, int, Dict]:
     """Respond to slack with a block payload. See https://api.slack.com/block-kit/building for reference"""
     return json.dumps({'blocks': blocks}), 200, JSON_TYPE
 
 
 @async_task
 def respond(url: str, message: Dict[str, Any]) -> requests.Response:
-    """Respond async to interaction to allow fast acknowledge of interactive message request"""
+    """Respond async to interaction to allow fast acknowledge of interactive message request
+
+    You should use this method when responding to actions. See :code:`examples/actions.py`
+    """
     return requests.post(url, json=message, timeout=5)
