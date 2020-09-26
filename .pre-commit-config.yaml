@@ -1,3 +1,4 @@
+exclude: 'docs'
 repos:
   - repo: https://github.com/pre-commit/pre-commit-hooks
     rev: v3.0.0
@@ -16,5 +17,3 @@ repos:
       - id: flake8
         language_version: python3
         args: ['src/slackify', 'tests', 'examples']
-    stages:
-      - push

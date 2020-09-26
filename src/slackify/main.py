@@ -161,7 +161,6 @@ class Slackify:
             >>> def hola():
             ...     print('hola')
 
-
             >>> @command(name='goodbye')
             >>> def chau():
             ...     print('chau')

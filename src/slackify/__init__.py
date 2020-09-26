@@ -9,7 +9,6 @@
 
 Its main focus is to make the task of developing slack bots *fun and fast*.
 It can be used with a normal Flask instance or as a Blueprint to group slack requests
-
 """
 
 from flask import *  # noqa: Expose all flask objects as top level imports
