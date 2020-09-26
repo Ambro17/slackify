@@ -42,7 +42,7 @@ class Slackify:
         dispatcher: Dispatcher = None,
         injector: Injector = None,
         **kwargs
-    ):  
+    ):
         self.app = app or Flask(__name__)
         self._configure_app(endpoint, events_endpoint)
         self.dispatcher = dispatcher or Dispatcher()

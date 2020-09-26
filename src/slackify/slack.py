@@ -51,7 +51,7 @@ def block_reply(blocks: List) -> Tuple[str, int, Dict]:
 @async_task
 def respond(url: str, message: Dict[str, Any]) -> requests.Response:
     """Respond async to interaction to allow fast acknowledge of interactive message request
-    
-    You should use this method when responding to actions. See :code:`examples/actions.py` 
+
+    You should use this method when responding to actions. See :code:`examples/actions.py`
     """
     return requests.post(url, json=message, timeout=5)
