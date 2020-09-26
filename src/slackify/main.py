@@ -121,7 +121,7 @@ class Slackify:
 
     def default(self, func: Callable[[], Response]):
         """Register function to execute when an unknown command is received
-        
+
         Usage:
             >>> @slackify.default
             >>> def unknown_command():
@@ -135,7 +135,7 @@ class Slackify:
 
     def error(self, func: Callable[[Exception], Response]):
         """Register function to execute when an exception was raised on any registered handler
-        
+
         Usage:
             >>> @slackify.error
             >>> def new_handler(exception):
