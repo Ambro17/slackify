@@ -169,11 +169,11 @@ class Slackify:
         It can be used as a plain decorator or as a parametrized decorator factory.
 
         Usage:
-            >>> @command
+            >>> @slackify.command
             >>> def hola():
             ...     print('hola')
 
-            >>> @command(name='goodbye')
+            >>> @slackify.command(name='goodbye')
             >>> def chau():
             ...     print('chau')
         """
