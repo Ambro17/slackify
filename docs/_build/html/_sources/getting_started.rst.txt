@@ -47,7 +47,7 @@ slackified app.
 Then we decorated a function with :code:`@slackify.command` to register it
 as the function that should be called when slack user invokes :code:`/hello`
 
-Let's check if it works, type :code:`http://localhost:5050/hello` in your browser.
+Let's check if it works, type :code:`http://localhost:5000/hello` in your browser.
 You should see the following response:
 
 .. code-block:: json
