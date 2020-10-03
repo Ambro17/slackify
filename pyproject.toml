@@ -14,8 +14,8 @@ authors = [
   {name = "Nahuel Ambrosini", email = "ambro17.1@gmail.com"}
 ]
 maintainers = [
-  {name = "Nahuel Ambrosini", email = "ambro17.1@gmail.com"}
-  {name = "Gustavo Silva", email = "gustavosantaremsilva@gmail.com"}
+  {name = "Nahuel Ambrosini", email = "ambro17.1@gmail.com"},
+  {name = "Gustavo Silva", email = "gustavosantaremsilva@gmail.com"},
   {name = "rdbreak"}
 ]
 classifiers = [
