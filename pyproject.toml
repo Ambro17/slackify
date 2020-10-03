@@ -1,33 +1,27 @@
-[build-system]
-requires = ["setuptools >= 40.8", "wheel"]
-build-backend = "setuptools.build_meta"
-
-[project]
-name = "Slackify"
+[tool.poetry]
+name = "slackify"
 version = "1.0.0"
-description = "Quickly build modern slack bots"
-readme = "README.md"
-requires-python = ">=3.6"
-license = {file = "LICENSE"}
-keywords = ["slack", "python", "app", "bot", "modern", "integrations", "workflow"]
-authors = [
-  {name = "Nahuel Ambrosini", email = "ambro17.1@gmail.com"}
-]
-maintainers = [
-  {name = "Nahuel Ambrosini", email = "ambro17.1@gmail.com"},
-  {name = "Gustavo Silva", email = "gustavosantaremsilva@gmail.com"},
-  {name = "rdbreak"}
-]
-classifiers = [
-  "Development Status :: 5 - Production/Stable",
-  "Programming Language :: Python",
-  "Programming Language :: Python :: 3.6",
-  "Programming Language :: Python :: 3.7",
-  "Programming Language :: Python :: 3.8",
-  "License :: OSI Approved :: GNU General Public License v3 (GPLv3)"  
-]
+description = "Quickly develop modern slack bots"
+authors = ["Ambro17 <ambro17.1@gmail.com>"]
 
-[project.urls]
-homepage = "https://github.com/Ambro17/slackify"
-documentation = "https://ambro17.github.io/slackify/"
-repository = "https://github.com/Ambro17/slackify"
+[tool.poetry.dependencies]
+python = ">=3.6.1"
+Flask = ">=1.0.0"
+slackclient = ">=2.5.0"
+requests = ">=2.0.0"
+pyee = ">=7.0.0"
+
+[tool.poetry.dev-dependencies]
+codecov = "^2.1.9"
+flake8 = "^3.8.4"
+mypy = "^0.782"
+pre-commit = "^2.7.1"
+pytest = "^6.1.0"
+pytest-cov = "^2.10.1"
+pytest-mock = "^3.3.1"
+Sphinx = "^3.2.1"
+sphinx-rtd-theme = "^0.5.0"
+
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"
