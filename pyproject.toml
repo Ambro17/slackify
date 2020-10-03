@@ -1,6 +1,33 @@
 [build-system]
-requires = [
-    "setuptools >= 40.8",
-    "wheel"
-]
+requires = ["setuptools >= 40.8", "wheel"]
 build-backend = "setuptools.build_meta"
+
+[project]
+name = "Slackify"
+version = "1.0.0"
+description = "Quickly build modern slack bots"
+readme = "README.md"
+requires-python = ">=3.6"
+license = {file = "LICENSE"}
+keywords = ["slack", "python", "app", "bot", "modern", "integrations", "workflow"]
+authors = [
+  {name = "Nahuel Ambrosini", email = "ambro17.1@gmail.com"}
+]
+maintainers = [
+  {name = "Nahuel Ambrosini", email = "ambro17.1@gmail.com"}
+  {name = "Gustavo Silva", email = "gustavosantaremsilva@gmail.com"}
+  {name = "rdbreak"}
+]
+classifiers = [
+  "Development Status :: 5 - Production/Stable",
+  "Programming Language :: Python",
+  "Programming Language :: Python :: 3.6",
+  "Programming Language :: Python :: 3.7",
+  "Programming Language :: Python :: 3.8",
+  "License :: OSI Approved :: GNU General Public License v3 (GPLv3)"  
+]
+
+[project.urls]
+homepage = "https://github.com/Ambro17/slackify"
+documentation = "https://ambro17.github.io/slackify/"
+repository = "https://github.com/Ambro17/slackify"
